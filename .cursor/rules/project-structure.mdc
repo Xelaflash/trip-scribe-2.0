@@ -1,0 +1,200 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Trip-Scribe Project Structure
+
+## Root Directory
+```
+trip-scribe/
+├── prisma/                     # Database schema and migrations
+├── public/                     # Static assets
+├── src/                        # Source code
+├── components.json             # Shadcn/ui configuration
+├── next.config.js              # Next.js configuration
+├── package.json                # Dependencies and scripts
+├── pnpm-lock.yaml             # Package lock file
+├── postcss.config.js           # PostCSS configuration
+├── tailwind.config.ts          # Tailwind CSS configuration
+├── tsconfig.json               # TypeScript configuration
+└── README.md                   # Project documentation
+```
+
+## Source Code Structure (`src/`)
+
+### App Router (`src/app/`)
+```
+src/app/
+├── api/                        # API routes
+│   ├── auth/                   # Authentication endpoints
+│   │   └── [...nextauth]/      # NextAuth.js configuration
+│   ├── trips/                  # Trip-related API endpoints
+│   └── users/                  # User-related API endpoints
+├── auth/                       # Authentication pages
+│   ├── new-user/               # New user registration
+│   ├── signin/                 # Sign in page
+│   └── signout/                # Sign out functionality
+├── profile/                    # User profile pages
+│   └── [id]/                   # Dynamic profile routes
+├── globals.scss                # Global styles
+├── Home.module.scss            # Home page styles
+├── layout.tsx                  # Root layout component
+└── page.tsx                    # Home page component
+```
+
+### Components (`src/components/`)
+```
+src/components/
+├── ui/                         # Shadcn/ui components
+│   ├── accordion.tsx
+│   ├── auto-form.tsx
+│   ├── button.tsx
+│   ├── calendar.tsx
+│   ├── card.tsx
+│   ├── checkbox.tsx
+│   ├── date-picker.tsx
+│   ├── dialog.tsx
+│   ├── form.tsx
+│   ├── input.tsx
+│   ├── label.tsx
+│   ├── popover.tsx
+│   ├── radio-group.tsx
+│   ├── select.tsx
+│   ├── separator.tsx
+│   ├── switch.tsx
+│   ├── table.tsx
+│   ├── textarea.tsx
+│   └── toggle.tsx
+├── Footer/                     # Footer component
+├── Header/                     # Header component
+│   └── components/
+│       └── Links.tsx
+├── Logo/                       # Logo component
+├── RespectMotionPreference/    # Motion preference component
+├── TitleAndLine/               # Title with decorative line
+├── VisuallyHidden/             # Accessibility component
+└── trip-list.tsx               # Trip list component
+```
+
+### Core Libraries (`src/lib/`)
+```
+src/lib/
+├── authProvider.tsx            # Authentication provider
+├── prisma.ts                   # Prisma client configuration
+├── tanStackProvider.tsx        # TanStack Query provider
+└── utils.ts                    # Utility functions
+```
+
+### Data Layer (`src/queries/`)
+```
+src/queries/
+├── tripQueries.ts              # Trip-related queries
+└── userQueries.ts              # User-related queries
+```
+
+### State Management (`src/store/`)
+```
+src/store/
+└── UserStore.ts                # User state management
+```
+
+### Custom Hooks (`src/hooks/`)
+```
+src/hooks/
+└── useCurrentUser.ts           # Current user hook
+```
+
+### Type Definitions (`src/types/`)
+```
+src/types/
+├── next-auth.d.ts              # NextAuth.js type extensions
+└── user.ts                     # User type definitions
+```
+
+### Utilities (`src/`)
+```
+src/
+├── constants.ts                # Application constants
+└── utils.ts                    # General utility functions
+```
+
+## Database (`prisma/`)
+```
+prisma/
+├── data/                       # Seed data
+│   ├── trips.ts
+│   └── users.ts
+├── migrations/                 # Database migrations
+│   ├── 20230831145857_init/
+│   │   └── migration.sql
+│   └── migration_lock.toml
+├── schema.prisma               # Database schema
+└── seed.ts                     # Database seeding script
+```
+
+## Static Assets (`public/`)
+```
+public/
+├── handline1.svg               # Decorative SVG elements
+├── handline2.svg
+├── handline3.svg
+├── handline4.svg
+├── homeBg.jpg                  # Home page background
+├── illusHome.svg               # Home page illustration
+└── logo.svg                    # Application logo
+```
+
+## Key Files and Their Purposes
+
+### Configuration Files
+- `components.json`: Shadcn/ui component configuration
+- `next.config.js`: Next.js framework configuration
+- `tailwind.config.ts`: Tailwind CSS styling configuration
+- `tsconfig.json`: TypeScript compiler configuration
+- `postcss.config.js`: PostCSS processing configuration
+
+### Core Application Files
+- `src/app/layout.tsx`: Root layout with providers and global structure
+- `src/app/page.tsx`: Home page component
+- `src/lib/prisma.ts`: Database client initialization
+- `src/lib/authProvider.tsx`: Authentication context provider
+- `src/lib/tanStackProvider.tsx`: Query client provider
+
+### Data and State
+- `src/queries/tripQueries.ts`: Trip data fetching logic
+- `src/queries/userQueries.ts`: User data fetching logic
+- `src/store/UserStore.ts`: Global user state management
+- `src/hooks/useCurrentUser.ts`: Current user data hook
+
+### Styling
+- `src/app/globals.scss`: Global CSS styles
+- `src/app/Home.module.scss`: Home page specific styles
+
+## Development Guidelines
+
+### File Organization
+- Use kebab-case for directory names
+- Use PascalCase for component files
+- Use camelCase for utility and hook files
+- Group related functionality in dedicated directories
+
+### Component Structure
+- Each component should have its own directory if it includes multiple files
+- Include component-specific styles in the same directory
+- Use index files for clean imports when appropriate
+
+### API Routes
+- Organize by resource type (auth, trips, users)
+- Use dynamic routes for parameterized endpoints
+- Follow RESTful conventions
+
+### Database
+- Keep migrations in chronological order
+- Use descriptive migration names
+- Maintain seed data for development
+
+### Static Assets
+- Use descriptive filenames for images and SVGs
+- Optimize images for web delivery
+- Keep assets organized by type or feature

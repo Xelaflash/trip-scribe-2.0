@@ -1,0 +1,316 @@
+---
+description:
+globs:
+alwaysApply: false
+---
+# Trip-Scribe Technology Stack
+
+## Core Framework
+
+### Next.js 15.3.4 ⚠️ MAJOR UPDATE
+- **App Router**: Using the new app directory structure
+- **Server Components**: Default to server components for better performance
+- **API Routes**: RESTful API endpoints in `/app/api/`
+- **TypeScript**: Full TypeScript support with strict mode
+- **Breaking Changes**: Major update from 13.5.4 to 15.3.4
+
+**Best Practices:**
+- Use Server Components by default, only add `'use client'` when necessary
+- Implement proper loading states with `loading.tsx`
+- Use error boundaries with `error.tsx`
+- Leverage Next.js Image component for optimization
+- Review Next.js 15 migration guide for breaking changes
+
+## Frontend Libraries
+
+### React 19.1.0 ⚠️ MAJOR UPDATE
+- **Concurrent Features**: React 19 features enabled
+- **Strict Mode**: Enabled for better development experience
+- **TypeScript**: Full type safety with @types/react 19.1.8
+- **Breaking Changes**: Major update from 18.2.0 to 19.1.0
+
+**Best Practices:**
+- Use functional components with hooks
+- Implement proper cleanup in useEffect
+- Use React.memo() strategically for performance
+- Follow the rules of hooks
+- Review React 19 migration guide for new features and breaking changes
+
+### TypeScript 5.8.3
+- **Strict Mode**: Enabled for maximum type safety
+- **Node Types**: @types/node 24.0.3 for server-side code
+- **React Types**: @types/react 19.1.8 and @types/react-dom 19.1.6
+
+**Best Practices:**
+- Use interfaces over types for object structures
+- Implement proper type guards
+- Use utility types (Partial, Pick, Omit) effectively
+- Define clear prop interfaces for components
+
+## Styling & UI
+
+### Tailwind CSS 4.1.10 ⚠️ MAJOR UPDATE
+- **PostCSS 8.5.6**: For processing
+- **Autoprefixer 10.4.21**: For vendor prefixes
+- **tailwindcss-animate 1.0.7**: For animations
+- **tailwind-merge 3.3.1**: For class merging utilities
+- **Breaking Changes**: Major update from 3.3.3 to 4.1.10
+
+**Best Practices:**
+- Use utility-first approach
+- Leverage Tailwind's responsive design system
+- Use custom CSS sparingly, prefer Tailwind utilities
+- Implement dark mode with Tailwind's dark: variant
+- Review Tailwind CSS 4 migration guide for breaking changes
+
+### SCSS/Sass 1.89.2
+- **Module System**: Using CSS modules for component-specific styles
+- **Global Styles**: globals.scss for application-wide styles
+
+**Best Practices:**
+- Use SCSS modules for component-specific styling
+- Keep global styles minimal
+- Use SCSS variables for consistent theming
+- Prefer Tailwind utilities over custom SCSS when possible
+
+### Radix UI Components
+- **Accordion 1.2.11**: Collapsible content sections
+- **Checkbox 1.3.2**: Accessible checkbox component
+- **Dialog 1.1.14**: Modal dialogs
+- **Label 2.1.7**: Form labels
+- **Popover 1.1.14**: Floating content
+- **Radio Group 1.3.7**: Radio button groups
+- **Select 2.2.5**: Dropdown selections
+- **Separator 1.1.7**: Visual dividers
+- **Switch 1.2.5**: Toggle switches
+- **Toggle 1.1.9**: Button toggles
+
+**Best Practices:**
+- Always use Radix primitives for complex interactions
+- Implement proper ARIA attributes
+- Follow accessibility guidelines
+- Use consistent styling patterns
+
+### Shadcn/ui
+- **Component Library**: Built on top of Radix UI
+- **Class Variance Authority 0.7.1**: For component variants
+- **clsx 2.1.1**: For conditional class names
+- **Lucide React 0.522.0**: Icon library
+
+**Best Practices:**
+- Use Shadcn components as the foundation
+- Customize through Tailwind classes
+- Maintain consistent design tokens
+- Follow the component composition pattern
+
+## Data Management
+
+### TanStack Query 5.81.2 ⚠️ MAJOR UPDATE
+- **React Query**: For server state management
+- **DevTools**: @tanstack/react-query-devtools 5.81.2
+- **ESLint Plugin**: @tanstack/eslint-plugin-query 5.81.2
+- **Breaking Changes**: Major update from 4.35.7 to 5.81.2
+
+**Best Practices:**
+- Use query keys consistently
+- Implement proper error handling
+- Use optimistic updates where appropriate
+- Leverage query invalidation for cache management
+- Use the ESLint plugin to catch common mistakes
+- Review TanStack Query v5 migration guide for breaking changes
+
+### Zustand 5.0.5 ⚠️ MAJOR UPDATE
+- **State Management**: Lightweight state management
+- **User Store**: Managing user state globally
+- **Breaking Changes**: Major update from 4.4.3 to 5.0.5
+
+**Best Practices:**
+- Keep stores focused and minimal
+- Use TypeScript for store types
+- Implement proper state persistence when needed
+- Avoid over-engineering with complex state
+- Review Zustand v5 migration guide for breaking changes
+
+## Database & ORM
+
+### Prisma 6.10.1 ⚠️ MAJOR UPDATE
+- **Client**: @prisma/client 6.10.1
+- **Adapter**: @auth/prisma-adapter 2.10.0 for NextAuth
+- **Database**: PostgreSQL (implied by schema)
+- **Breaking Changes**: Major update from 5.4.1 to 6.10.1
+
+**Best Practices:**
+- Use Prisma migrations for schema changes
+- Implement proper seed data
+- Use Prisma's type safety features
+- Optimize queries with proper select statements
+- Use transactions for complex operations
+- Review Prisma v6 migration guide for breaking changes
+
+## Authentication
+
+### NextAuth.js 4.24.11
+- **Prisma Adapter**: @auth/prisma-adapter 2.10.0 for database integration
+- **Email Provider**: nodemailer 7.0.3 for email authentication
+- **⚠️ Peer Dependency Warning**: nodemailer version mismatch
+
+**Best Practices:**
+- Implement proper session management
+- Use secure authentication flows
+- Handle authentication errors gracefully
+- Implement proper redirect handling
+- Consider updating nodemailer to resolve peer dependency warnings
+
+## Form Handling
+
+### React Hook Form 7.58.1
+- **Zod Integration**: @hookform/resolvers 5.1.1
+- **Validation**: zod 3.25.67 for schema validation
+
+**Best Practices:**
+- Use Zod schemas for validation
+- Implement proper error handling
+- Use controlled components when necessary
+- Leverage form state for UI feedback
+
+## Date & Time
+
+### date-fns 4.1.0 ⚠️ MAJOR UPDATE
+- **Date Manipulation**: Lightweight date utility library
+- **React Day Picker 9.7.0**: Date picker component
+- **Breaking Changes**: Major update from 2.30.0 to 4.1.0
+
+**Best Practices:**
+- Use date-fns for consistent date formatting
+- Implement proper timezone handling
+- Use React Day Picker for date selection
+- Format dates consistently across the application
+- Review date-fns v4 migration guide for breaking changes
+
+## Development Tools
+
+### ESLint & Prettier
+- **ESLint 9.29.0**: Code linting
+- **Next.js Config**: eslint-config-next 15.3.4
+- **Prettier 3.6.0**: Code formatting
+- **ESLint Prettier**: eslint-config-prettier 10.1.5, eslint-plugin-prettier 5.5.0
+
+**Best Practices:**
+- Use consistent code formatting
+- Follow ESLint rules strictly
+- Configure Prettier to work with ESLint
+- Use the TanStack Query ESLint plugin
+
+### Package Management
+- **pnpm**: Enforced via preinstall script
+- **Lock File**: pnpm-lock.yaml for reproducible builds
+
+**Best Practices:**
+- Always use pnpm for consistency
+- Keep dependencies up to date
+- Use exact versions for critical dependencies
+- Regular security audits
+
+## Animation & Motion
+
+### Framer Motion 12.19.1 ⚠️ MAJOR UPDATE
+- **Motion Components**: For smooth animations
+- **RespectMotionPreference**: Accessibility consideration
+- **Breaking Changes**: Major update from 10.16.4 to 12.19.1
+
+**Best Practices:**
+- Respect user motion preferences
+- Use animations sparingly and purposefully
+- Implement proper loading states
+- Ensure animations don't interfere with usability
+- Review Framer Motion v12 migration guide for breaking changes
+
+## Utilities
+
+### UUID 11.1.0 ⚠️ MAJOR UPDATE
+- **Type Definitions**: @types/uuid 10.0.0
+- **Usage**: For generating unique identifiers
+- **Breaking Changes**: Major update from 9.0.1 to 11.1.0
+
+**Best Practices:**
+- Use UUIDs for client-side ID generation
+- Implement proper type safety with TypeScript
+- Use consistent ID generation patterns
+- Review UUID v11 migration guide for breaking changes
+
+## Version Compatibility Notes
+
+### Major Updates Applied
+- **Next.js**: 13.5.4 → 15.3.4 (Major version jump)
+- **React**: 18.2.0 → 19.1.0 (Major version jump)
+- **Tailwind CSS**: 3.3.3 → 4.1.10 (Major version jump)
+- **TanStack Query**: 4.35.7 → 5.81.2 (Major version jump)
+- **Zustand**: 4.4.3 → 5.0.5 (Major version jump)
+- **Prisma**: 5.4.1 → 6.10.1 (Major version jump)
+- **date-fns**: 2.30.0 → 4.1.0 (Major version jump)
+- **Framer Motion**: 10.16.4 → 12.19.1 (Major version jump)
+- **UUID**: 9.0.1 → 11.1.0 (Major version jump)
+
+### Critical Migration Requirements
+1. **Next.js 15**: Review breaking changes in App Router and Server Components
+2. **React 19**: Check for deprecated APIs and new concurrent features
+3. **Tailwind CSS 4**: Review new syntax and configuration changes
+4. **TanStack Query v5**: Major API changes in query keys and mutations
+5. **Zustand v5**: Check for store API changes
+6. **Prisma v6**: Review schema and client API changes
+7. **date-fns v4**: Check for function signature changes
+8. **Framer Motion v12**: Review animation API changes
+
+### Peer Dependency Issues
+- **nodemailer**: Version 7.0.3 conflicts with @auth/prisma-adapter (expects ^6.8.0) and next-auth (expects ^6.6.5)
+- **Recommendation**: Consider downgrading nodemailer to v6.x or updating auth libraries
+
+## Security Considerations
+
+### Authentication
+- Use NextAuth.js for secure authentication
+- Implement proper session management
+- Use environment variables for sensitive data
+
+### Data Validation
+- Use Zod for runtime validation
+- Implement proper input sanitization
+- Use Prisma's type safety for database operations
+
+### Dependencies
+- Regular security audits
+- Keep dependencies up to date
+- Use exact versions for critical packages
+
+## Performance Optimization
+
+### Next.js 15
+- Use Server Components for better performance
+- Implement proper image optimization
+- Use dynamic imports for code splitting
+- Leverage new streaming and suspense features
+
+### React 19
+- Use React.memo() strategically
+- Implement proper key props in lists
+- Avoid unnecessary re-renders
+- Leverage new concurrent features
+
+### Database
+- Use Prisma's query optimization features
+- Implement proper indexing
+- Use connection pooling
+
+## Development Workflow
+
+### Scripts
+- `dev`: Development server with hot reload
+- `build`: Prisma generate + Next.js build
+- `start`: Production server
+- `lint`: ESLint checking
+- `preinstall`: Enforce pnpm usage
+
+### Database
+- Prisma seed script for development data
+- Migration-based schema changes
+- Type-safe database operations

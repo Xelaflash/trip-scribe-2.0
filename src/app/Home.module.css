@@ -1,0 +1,71 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: bold;
+  color: var(--color-primary);
+}
+
+/* Add more styles as needed */
+
+.bgImgWrapper {
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.05), rgba(0, 0, 0, 0.25)), url('/homeBg.jpg');
+  background-size: cover;
+  background-position: top center;
+  background-repeat: no-repeat;
+  min-height: 65vh;
+  margin-top: -80px;
+}
+
+.homeContainer {
+  padding-top: 85px;
+  display: flex;
+  padding-left: 6rem;
+}
+
+.titleWrapper {
+  text-align: center;
+  margin-top: 4rem;
+}
+
+.homeTitle {
+  font-size: 3.5rem;
+  color: var(--color-backdrop);
+  text-shadow: 1px 2px 1px var(--color-primary-950);
+  text-transform: uppercase;
+  line-height: 1;
+  margin-bottom: 0;
+}
+
+.homeSubTitle {
+  font-size: 1.2rem;
+  color: var(--color-backdrop);
+  text-shadow: 1px 1px 1px var(--color-primary-800);
+  font-style: italic;
+  margin: 0;
+}
+
+.explinationContainer {
+  padding: var(--sectionPadding);
+  margin: 0 auto;
+}
+
+.explinationList {
+  width: fit-content;
+  margin: 0 auto;
+
+  li {
+    font-size: 1.15rem;
+    margin: 1rem 0;
+  }
+}
+
+.stepSectionWrapper {
+  padding: var(--sectionPadding);
+  background-color: var(--color-primary-700);
+  color: var(--color-backdrop);
+}
