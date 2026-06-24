@@ -3,7 +3,7 @@ import { TripsDashboard } from '@/app/trips/trips-dashboard';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
-export default async function TripsPage() {
+const TripsPage = async () => {
   const session = await getServerSession(authOptions);
 
   if (!session?.user?.id) {
@@ -11,4 +11,6 @@ export default async function TripsPage() {
   }
 
   return <TripsDashboard userName={session.user.name ?? 'Traveler'} />;
-}
+};
+
+export default TripsPage;

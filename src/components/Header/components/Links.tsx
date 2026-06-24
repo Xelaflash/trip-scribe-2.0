@@ -8,10 +8,54 @@ import { useSession } from 'next-auth/react';
 import { motion } from 'framer-motion';
 import type { Variants } from 'framer-motion';
 
-// styles
-import styles from '../Header.module.css';
+const noUserLinks = [
+  {
+    name: 'How it works',
+    href: '/',
+  },
+  {
+    name: 'Features',
+    href: '/',
+  },
+  {
+    name: 'Sign in',
+    href: '/auth/signin',
+  },
+];
 
-export default function Links() {
+const userConnectedLinks = [
+  {
+    name: 'Trips',
+    href: '/trips',
+  },
+  {
+    name: 'How it works',
+    href: '/',
+  },
+];
+
+const linkHoverVariants: Variants = {
+  hover: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 200,
+      damping: 35,
+    },
+  },
+  hidden: {
+    opacity: 0,
+    scale: 0,
+    transition: {
+      type: 'spring' as const,
+      stiffness: 600,
+      damping: 10,
+    },
+  },
+};
+
+const Links = () => {
   const [isHovering, setIsHovering] = useState(false);
   const [hoveredIndex, setHoveredIndex] = useState(-1);
 
@@ -25,63 +69,17 @@ export default function Links() {
     setHoveredIndex(-1);
   };
 
-  const noUserLinks = [
-    {
-      name: 'How it works',
-      href: '/',
-    },
-    {
-      name: 'Features',
-      href: '/',
-    },
-    {
-      name: 'Sign in',
-      href: '/auth/signin',
-    },
-  ];
-
   const { data: session } = useSession();
 
-  const userConnectedLinks = [
-    {
-      name: 'Trips',
-      href: '/trips',
-    },
-    {
-      name: 'How it works',
-      href: '/',
-    },
-  ];
-
-  const linkHoverVariants: Variants = {
-    hover: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 200,
-        damping: 35,
-      },
-    },
-    hidden: {
-      opacity: 0,
-      scale: 0,
-      transition: {
-        type: 'spring' as const,
-        stiffness: 600,
-        damping: 10,
-      },
-    },
-  };
-
-  const Links = session ? userConnectedLinks : noUserLinks;
+  const links = session ? userConnectedLinks : noUserLinks;
 
   return (
-    <ul className={styles.linksList}>
+    <ul className="hidden list-none items-center gap-[clamp(1rem,4vw,2.75rem)] p-0 min-[761px]:flex">
       {}
-      {Links.map((link, index) => (
+      {links.map((link, index) => (
         <motion.li
           key={link.name}
+          className="cursor-pointer"
           whileHover="hover"
           initial="hidden"
           onMouseEnter={() => handleMouseEnter(index)}
@@ -89,7 +87,7 @@ export default function Links() {
         >
           <Link
             href={link.href}
-            className={styles.headerLink}
+            className="text-[0.98rem] font-bold no-underline"
             style={{
               color: isHovering && hoveredIndex === index ? 'var(--color-secondary)' : 'inherit',
               transition: 'color 0.3s ease-in-out',
@@ -97,15 +95,23 @@ export default function Links() {
           >
             {link.name}
             <motion.div
-              className={styles.imageWrapper}
+              className="relative mt-[0.1rem] h-[0.8rem]"
               variants={linkHoverVariants}
               style={{ transformOrigin: '0% 100%' }}
             >
-              <Image src={`/handline${index + 1}.svg`} fill alt="Decorative Hand Drawn line" className={styles.image} />
+              <Image
+                src={`/handline${index + 1}.svg`}
+                fill
+                alt="Decorative Hand Drawn line"
+                className="object-contain"
+                sizes="120px"
+              />
             </motion.div>
           </Link>
         </motion.li>
       ))}
     </ul>
   );
-}
+};
+
+export default Links;

@@ -56,6 +56,7 @@ The implemented app has a public landing page, authentication, an authenticated 
 - Use the existing `@/*` import alias.
 - Use local shadcn/Radix UI primitives from `src/components/ui` before adding new UI dependencies.
 - Use Tailwind utilities for app styling. Do not add CSS modules or component-scoped stylesheet files; keep shared theme tokens in `src/app/globals.css`.
+- Define React components as arrow functions assigned to `const`; avoid `function` declarations for components.
 - Preserve strict TypeScript. Replace `any` with schema-derived or Prisma-backed types.
 - Prefer Zod validation at request and form boundaries before passing data to Prisma.
 - For TanStack Query, keep query keys stable and include route/user identifiers when data is scoped.

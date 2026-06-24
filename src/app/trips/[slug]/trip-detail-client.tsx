@@ -61,7 +61,7 @@ type ItineraryForm = UseFormReturn<z.infer<typeof itinerarySchema>>;
 type NoteForm = UseFormReturn<z.infer<typeof noteSchema>>;
 type PlaceForm = UseFormReturn<z.infer<typeof placeSchema>>;
 
-export function TripDetailClient({ trip }: { trip: TripWithDetails }) {
+export const TripDetailClient = ({ trip }: { trip: TripWithDetails }) => {
   const router = useRouter();
 
   const overviewForm = useForm<z.infer<typeof overviewSchema>>({
@@ -115,9 +115,9 @@ export function TripDetailClient({ trip }: { trip: TripWithDetails }) {
       </section>
     </main>
   );
-}
+};
 
-function TripHeader({ trip, onDelete }: { trip: TripWithDetails; onDelete: () => Promise<void> }) {
+const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete: () => Promise<void> }) => {
   return (
     <section className="rounded-lg border bg-card p-6 shadow-sm">
       <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
@@ -148,9 +148,9 @@ function TripHeader({ trip, onDelete }: { trip: TripWithDetails; onDelete: () =>
       </div>
     </section>
   );
-}
+};
 
-function OverviewSection({
+const OverviewSection = ({
   form,
   trip,
   onRefresh,
@@ -158,7 +158,7 @@ function OverviewSection({
   form: OverviewForm;
   trip: TripWithDetails;
   onRefresh: () => void;
-}) {
+}) => {
   return (
     <article className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="m-0 text-xl font-semibold">Overview</h2>
@@ -266,9 +266,9 @@ function OverviewSection({
       </Form>
     </article>
   );
-}
+};
 
-function ItinerarySection({
+const ItinerarySection = ({
   form,
   trip,
   onRefresh,
@@ -276,7 +276,7 @@ function ItinerarySection({
   form: ItineraryForm;
   trip: TripWithDetails;
   onRefresh: () => void;
-}) {
+}) => {
   return (
     <article className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="m-0 flex items-center gap-2 text-xl font-semibold">
@@ -358,9 +358,9 @@ function ItinerarySection({
       </div>
     </article>
   );
-}
+};
 
-function NotesSection({ form, trip, onRefresh }: { form: NoteForm; trip: TripWithDetails; onRefresh: () => void }) {
+const NotesSection = ({ form, trip, onRefresh }: { form: NoteForm; trip: TripWithDetails; onRefresh: () => void }) => {
   return (
     <article className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="m-0 flex items-center gap-2 text-xl font-semibold">
@@ -416,9 +416,17 @@ function NotesSection({ form, trip, onRefresh }: { form: NoteForm; trip: TripWit
       </div>
     </article>
   );
-}
+};
 
-function PlacesSection({ form, trip, onRefresh }: { form: PlaceForm; trip: TripWithDetails; onRefresh: () => void }) {
+const PlacesSection = ({
+  form,
+  trip,
+  onRefresh,
+}: {
+  form: PlaceForm;
+  trip: TripWithDetails;
+  onRefresh: () => void;
+}) => {
   return (
     <article className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="m-0 flex items-center gap-2 text-xl font-semibold">
@@ -498,4 +506,4 @@ function PlacesSection({ form, trip, onRefresh }: { form: PlaceForm; trip: TripW
       </div>
     </article>
   );
-}
+};

@@ -27,7 +27,7 @@ const highlights = [
   },
 ];
 
-export default function Home() {
+const Home = () => {
   return (
     <>
       <section className="-mt-headerHeight min-h-[72vh] bg-[linear-gradient(90deg,hsl(171deg_60%_12%/0.86),hsl(171deg_60%_12%/0.44)),url('/homeBg.jpg')] bg-cover bg-center">
@@ -109,4 +109,6 @@ export default function Home() {
       </section>
     </>
   );
-}
+};
+
+export default Home;

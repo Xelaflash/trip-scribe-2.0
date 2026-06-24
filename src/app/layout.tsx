@@ -36,7 +36,7 @@ export const metadata: Metadata = {
   description: SITE_DESCRIPTION,
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <RespectMotionPreference>
       <html lang="en">
@@ -52,4 +52,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </html>
     </RespectMotionPreference>
   );
-}
+};
+
+export default RootLayout;
