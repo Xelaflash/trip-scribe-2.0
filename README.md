@@ -64,4 +64,4 @@ The MVP plan is stored in `docs/mvp-plan.md`.
 
 ## Styling
 
-Use Tailwind CSS utilities for application styling. Do not add new CSS modules or component-scoped stylesheet files; shared design tokens live in `src/app/globals.css`.
+Use Tailwind CSS utilities for application styling.
