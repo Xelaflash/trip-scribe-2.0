@@ -1,59 +1,67 @@
 .wrapper {
   position: relative;
+  z-index: 10;
   display: flex;
-  justify-content: space-around;
   align-items: center;
-  height: var(--header-height);
+  justify-content: space-between;
+  min-height: var(--header-height);
   width: 100%;
-  padding: 0 1rem;
-  margin-left: auto;
-  margin-right: auto;
-  box-shadow: var(--shadow-elevation-medium);
-  z-index: 2;
-  background: linear-gradient(to bottom, hsla(168, 74%, 24%, 0.2), hsla(168, 74%, 24%, 0.3));
-  backdrop-filter: blur(10px);
-  color: var(--color-backdrop);
+  padding: 0 var(--viewport-padding);
+  background: hsl(171deg 74% 9% / 0.72);
+  color: white;
+  backdrop-filter: blur(16px);
+  box-shadow: var(--shadow-elevation-low);
 }
 
 .linksList {
   display: flex;
-  gap: 3rem;
-  height: 85%;
   align-items: center;
-  margin-top: 1rem;
+  gap: clamp(1rem, 4vw, 2.75rem);
+  list-style: none;
+  padding: 0;
+}
 
-  li {
-    padding: 0 2rem;
-    cursor: pointer;
-  }
+.linksList li {
+  cursor: pointer;
 }
 
 .headerLink {
-  font-weight: 600;
-  font-size: 1.25rem;
+  font-size: 0.98rem;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .imageWrapper {
-  height: 1rem;
   position: relative;
-  .image {
-    object-fit: contain;
-  }
+  height: 0.8rem;
+  margin-top: 0.1rem;
+}
+
+.imageWrapper .image {
+  object-fit: contain;
 }
 
 .authLink {
-  background-color: var(--color-primary-700);
-  height: 85%;
-  display: flex;
-  justify-content: center;
+  display: inline-flex;
   align-items: center;
-  padding: 0 4rem;
-  border-radius: 0 0 1rem 1rem;
-  align-self: flex-start;
-  font-weight: 600;
-  font-size: 1.25rem;
-  color: var(--color-backdrop);
-  &:hover {
-    opacity: 0.9;
+  justify-content: center;
+  min-height: 2.65rem;
+  border: 1px solid hsl(0deg 0% 100% / 0.24);
+  border-radius: 999px;
+  background: hsl(168deg 74% 24% / 0.88);
+  padding: 0 1.15rem;
+  color: white;
+  font-size: 0.95rem;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.authLink:hover {
+  background: var(--color-secondary);
+}
+
+@media (max-width: 760px) {
+  .linksList {
+    display: none;
   }
 }

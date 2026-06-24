@@ -1,94 +1,90 @@
 import Image from 'next/image';
-// styles
+import Link from 'next/link';
+import { CalendarDays, MapPin, NotebookPen, Share2 } from 'lucide-react';
 import { SITE_TITLE } from '@/constants';
-
-// constants
+import { Button } from '@/components/ui/button';
 import styles from './Home.module.css';
 
-// lib
-// import prisma from '@/lib/prisma';
+const highlights = [
+  {
+    icon: CalendarDays,
+    title: 'Plan the days',
+    text: 'Shape each trip around dated itinerary items, destinations, and the stops that matter.',
+  },
+  {
+    icon: NotebookPen,
+    title: 'Keep useful notes',
+    text: 'Store reminders, context, and travel notes beside the trip they belong to.',
+  },
+  {
+    icon: MapPin,
+    title: 'Save places',
+    text: 'Track restaurants, landmarks, hotels, and links in one clean workspace.',
+  },
+  {
+    icon: Share2,
+    title: 'Share when ready',
+    text: 'Publish a read-only trip page without exposing your private planning tools.',
+  },
+];
 
-// Store
-// import { useUserStore } from '@/store/UserStore';
-
-// components
-import { Button } from '@/components/ui/button';
-import TitleAndLine from '@/components/TitleAndLine/TitleAndLine';
-
-export default async function Home() {
-  // ⚠️ Better to uuse react query for this
-  // const users = await prisma.user.findMany();
-
-  // Fetch your initial data in a Server Component higher up in the component tree, and pass it to your Client Component as a prop.
-  // const initialData = await getUsers();
-
+export default function Home() {
   return (
     <>
-      <section className={styles.bgImgWrapper}>
-        <div className={styles.homeContainer}>
-          <div className={styles.titleWrapper}>
-            <h1 className={styles.homeTitle}>{SITE_TITLE}</h1>
-            <h2 className={styles.homeSubTitle}>Plan, Capture, and Share Your Travel Adventures</h2>
-            <Button size="lg" className="mt-4 px-14 py-2 text-md font-bold hover:shadow-sm bg-primary-700">
-              Get Started
-            </Button>
+      <section className={styles.hero}>
+        <div className={styles.heroOverlay}>
+          <div className={styles.heroContent}>
+            <p className={styles.kicker}>Travel planning, written clearly</p>
+            <h1>{SITE_TITLE}</h1>
+            <p className={styles.heroCopy}>
+              A focused workspace for planning trips, collecting useful notes, and sharing a polished read-only
+              itinerary.
+            </p>
+            <div className={styles.heroActions}>
+              <Button asChild size="lg">
+                <Link href="/trips">Open trip workspace</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link href="/auth/signin">Sign in</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
-      {/* TODO: here Featured Trips section with TripCARD */}
-      <section className={styles.explinationContainer}>
-        <div className={styles.explinationWrapper}>
-          <TitleAndLine color={`var(--color-primary-700)`} title="How it works" />
-          <div className="flex justify-between px-10">
-            <Image src="/illusHome.svg" alt="Illustration of a travelers" width={400} height={800} />
-            <aside className="max-w-3xl">
-              <p className="text-xl font-medium text-left mb-8">
-                Embark on unforgettable journeys with ease using our all-in-one travel app. <br />
-                Plan, experience, and cherish your adventures like never before. Trip Scribe offers a rich array of
-                features to make your trips seamless and memorable:
-              </p>
-              <ul className={styles.explinationList}>
-                <li>📅 Comprehensive Calendar: Stay organized with a detailed trip itinerary.</li>
-                <li>📝 Notes & To-Do Lists: Keep track of important details and tasks.</li>
-                <li>📍 Address Book: Categorize landmarks, shops, bars, and more for quick access.</li>
-                <li>📷 Capture moments with photos and comments.</li>
-                <li>💰 Budget Tracker: Monitor expenses with category-specific alerts.</li>
-                <li>🖼️ Image Gallery: Create visual memories of your travels.</li>
-                <li>📔 Diary-like Journal: Chronicle your experiences for future nostalgia.</li>
-                <li>🤝 Social: Share and Connect with people you love or with your fellow scribers.</li>
-              </ul>
-              <p className="text-2xl font-medium mt-12 text-center">
-                With Trip Scribe, every trip becomes a cherished story waiting to be told. <br />
-                <Button variant="link" className="text-2xl font-bold uppercase my-4">
-                  Start your journey today!
-                </Button>
-              </p>
-            </aside>
-          </div>
-        </div>
-      </section>
-      <section className={styles.stepSectionWrapper}>
-        {/* A kind of step to explain:
-        1. create your trip in your profile page
-        2. Add content to your trip (calendar, notes, addresses, etc)
-        3. Share your trip with your friends
-         */}
 
-        {/* timeline with hand drawn svg arrow going from left to rigfht */}
-        <TitleAndLine color={`var(--color-backdrop)`} title="As Easy as 1, 2, 3" />
-        <p>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odio tenetur consequuntur reiciendis necessitatibus
-          quis, magni suscipit voluptates excepturi quas similique debitis aliquam in vel dolorem possimus incidunt
-          voluptatem deserunt esse! Omnis vero, error blanditiis ipsa consequatur exercitationem nisi ad a recusandae
-          maxime soluta ullam ratione nobis minima voluptatem obcaecati, est repellendus. Laborum vel laboriosam quasi
-          numquam dolores quae minus ex. Facere quo quis maiores possimus necessitatibus repellendus distinctio
-          excepturi magni explicabo nobis perferendis numquam et iure, architecto tenetur nesciunt animi fugit repellat
-          rerum accusamus. Natus delectus eaque quasi debitis et. Officiis possimus iure sed repellat a modi commodi
-          deserunt optio esse, neque perspiciatis, alias vel nihil reiciendis provident officia magnam aperiam
-          voluptatem saepe ex nulla, sunt autem quibusdam quo! Minima. At quo earum asperiores necessitatibus
-          accusantium ut ducimus magni a. Animi odit dolore voluptates repudiandae ullam id iure minima dicta aut rerum.
-          A illo fuga consectetur facilis unde, placeat at.
-        </p>
+      <section className={styles.band}>
+        <div className={styles.bandContent}>
+          <div>
+            <p className={styles.kicker}>Built for the first useful version</p>
+            <h2>Everything needed to get from idea to shared trip</h2>
+          </div>
+          <div className={styles.featureGrid}>
+            {highlights.map((item) => {
+              const Icon = item.icon;
+              return (
+                <article key={item.title} className={styles.feature}>
+                  <Icon className={styles.featureIcon} />
+                  <h3>{item.title}</h3>
+                  <p>{item.text}</p>
+                </article>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      <section className={styles.workflow}>
+        <div className={styles.workflowText}>
+          <p className={styles.kicker}>Simple workflow</p>
+          <h2>Create, organize, publish</h2>
+          <p>
+            Start with the trip basics, add itinerary items as plans firm up, keep notes and places close by, then
+            switch the trip to public when it is ready to share.
+          </p>
+        </div>
+        <div className={styles.illustrationShell}>
+          <Image src="/illusHome.svg" alt="Travelers reviewing a trip plan" width={520} height={520} priority />
+        </div>
       </section>
     </>
   );
