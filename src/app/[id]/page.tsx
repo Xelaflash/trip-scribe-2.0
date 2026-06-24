@@ -3,8 +3,7 @@ import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 
 export default async function Page({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
-  const session = await getServerSession(authOptions);
+  const [{ id }, session] = await Promise.all([params, getServerSession(authOptions)]);
 
   if (!session || session.user.id !== id) {
     redirect('/');

@@ -6,8 +6,7 @@ import { getServerSession } from 'next-auth';
 import { notFound, redirect } from 'next/navigation';
 
 export default async function TripDetailPage({ params }: { params: Promise<{ slug: string }> }) {
-  const { slug } = await params;
-  const session = await getServerSession(authOptions);
+  const [{ slug }, session] = await Promise.all([params, getServerSession(authOptions)]);
 
   if (!session?.user?.id) {
     redirect('/auth/signin');

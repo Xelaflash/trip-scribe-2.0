@@ -58,10 +58,10 @@ export function TripsDashboard({ userName }: { userName: string }) {
         ...values,
         startDate: new Date(values.startDate),
         endDate: new Date(values.endDate),
-        destinations: values.destinations
-          .split(',')
-          .map((destination) => destination.trim())
-          .filter(Boolean),
+        destinations: values.destinations.split(',').flatMap((destination) => {
+          const trimmedDestination = destination.trim();
+          return trimmedDestination ? [trimmedDestination] : [];
+        }),
       }),
     onSuccess: async (trip) => {
       await queryClient.invalidateQueries({ queryKey: ['trips'] });
