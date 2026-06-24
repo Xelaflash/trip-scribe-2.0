@@ -13,7 +13,7 @@ const Header = () => {
   const { data: session } = useSession();
 
   return (
-    <header className="relative z-10 flex min-h-headerHeight w-full items-center justify-between bg-[hsl(171deg_74%_9%/0.72)]px-viewportPadding text-white shadow-elevationLow backdrop-blur-2xl">
+    <header className="relative z-10 flex min-h-headerHeight w-full items-center justify-between bg-[hsl(171deg_74%_9%/0.72)]px-viewportPadding text-white shadow-elevationLow backdrop-blur-2xl px-8">
       <Logo />
       <Links />
       {!session ? (

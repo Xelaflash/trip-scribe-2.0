@@ -16,7 +16,7 @@ const Logo = ({ mobileAlignment = 'left' }: LogoProps) => {
         mobileAlignment === 'center' && 'max-sm:text-center',
       )}
     >
-      <Image src="/logo.svg" width={150} height={100} alt="Trip Scribe logo" className="size-auto" />
+      <Image src="/logo.svg" width={150} height={100} alt="Trip Scribe logo" className="size-auto" loading="eager" />
     </Link>
   );
 };
