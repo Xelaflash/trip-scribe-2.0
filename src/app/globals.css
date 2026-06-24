@@ -1,16 +1,10 @@
 @import 'tailwindcss';
 
-:root {
-  --font-main: var(--font-work-sans), sans-serif;
-  --font-heading: var(--font-work-sans), sans-serif;
-  --radius: 0.625rem;
-  --header-height: 5rem;
-  --content-width: 55rem;
-  --outer-content-width: 80rem;
-  --viewport-padding: 1.25rem;
-  --trimmed-content-width: calc(var(--content-width) - var(--viewport-padding) * 2);
+@custom-variant dark (&:where(.dark, .dark *));
 
+@theme {
   --color-primary: hsl(168 74% 24%);
+  --color-primary-foreground: hsl(42 33% 97%);
   --color-primary-50: hsl(157 62% 96%);
   --color-primary-100: hsl(155 65% 90%);
   --color-primary-200: hsl(157 60% 80%);
@@ -22,14 +16,79 @@
   --color-primary-800: hsl(168 70% 20%);
   --color-primary-900: hsl(169 69% 16%);
   --color-primary-950: hsl(171 74% 9%);
+
   --color-secondary: hsl(22 88% 55%);
-  --color-secondary-light: hsl(24 92% 68%);
-  --color-secondary-dark: hsl(20 84% 42%);
+  --color-secondary-foreground: hsl(42 33% 97%);
+  --color-secondary-orange-light: hsl(24 92% 68%);
+  --color-secondary-orange-dark: hsl(20 84% 42%);
+
+  --color-text: hsl(175 34% 12%);
   --color-backdrop: hsl(42 33% 97%);
   --color-surface: hsl(40 38% 94%);
+  --color-white: hsl(0 0% 97%);
+  --color-transparent: transparent;
+  --color-tahiti: #3ab7bf;
+  --color-bermuda: #78dcca;
+
   --color-border: hsl(36 22% 84%);
-  --color-text: hsl(175 34% 12%);
-  --color-muted: hsl(174 11% 40%);
+  --color-input: hsl(36 22% 84%);
+  --color-ring: hsl(168 74% 24%);
+  --color-background: hsl(42 33% 97%);
+  --color-foreground: hsl(175 34% 12%);
+  --color-destructive: hsl(0 84% 50%);
+  --color-destructive-foreground: hsl(0 0% 100%);
+  --color-muted: hsl(39 38% 92%);
+  --color-muted-foreground: hsl(174 11% 40%);
+  --color-accent: hsl(22 88% 55%);
+  --color-accent-foreground: hsl(0 0% 100%);
+  --color-popover: hsl(0 0% 100%);
+  --color-popover-foreground: hsl(175 34% 12%);
+  --color-card: hsl(0 0% 100%);
+  --color-card-foreground: hsl(175 34% 12%);
+
+  --radius-lg: var(--radius);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-sm: calc(var(--radius) - 4px);
+
+  --spacing-contentWidth: var(--content-width);
+  --spacing-outerContentWidth: var(--outer-content-width);
+  --spacing-viewportPadding: var(--viewport-padding);
+  --spacing-headerHeight: var(--header-height);
+  --spacing-trimmedContentWidth: var(--trimmed-content-width);
+
+  --animate-accordion-down: accordion-down 0.2s ease-out;
+  --animate-accordion-up: accordion-up 0.2s ease-out;
+
+  @keyframes accordion-down {
+    from {
+      height: 0;
+    }
+
+    to {
+      height: var(--radix-accordion-content-height);
+    }
+  }
+
+  @keyframes accordion-up {
+    from {
+      height: var(--radix-accordion-content-height);
+    }
+
+    to {
+      height: 0;
+    }
+  }
+}
+
+:root {
+  --font-main: var(--font-work-sans), sans-serif;
+  --font-heading: var(--font-work-sans), sans-serif;
+  --radius: 0.625rem;
+  --header-height: 5rem;
+  --content-width: 55rem;
+  --outer-content-width: 80rem;
+  --viewport-padding: 1.25rem;
+  --trimmed-content-width: calc(var(--content-width) - var(--viewport-padding) * 2);
 
   --background: 42 33% 97%;
   --foreground: 175 34% 12%;
