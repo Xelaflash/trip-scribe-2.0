@@ -15,7 +15,7 @@ const formSchema = z.object({
   }),
 });
 
-export default function SignInForm() {
+const SignInForm = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -81,6 +81,7 @@ export default function SignInForm() {
       </Form>
     </>
   );
-}
+};
 
+export default SignInForm;
 export { SignInForm };

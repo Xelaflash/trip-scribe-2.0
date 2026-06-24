@@ -14,7 +14,7 @@ export const DatePicker = forwardRef<
     date?: Date;
     setDate: (date?: Date) => void;
   }
->(function DatePickerCmp({ date, setDate }, ref) {
+>(({ date, setDate }, ref) => {
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -32,3 +32,5 @@ export const DatePicker = forwardRef<
     </Popover>
   );
 });
+
+DatePicker.displayName = 'DatePicker';

@@ -21,7 +21,7 @@ const newUserFormSchema = z.object({
   }),
 });
 
-function NewUserForm() {
+const NewUserForm = () => {
   const currentUser = useCurrentUser() as User;
   const router = useRouter();
 
@@ -67,6 +67,6 @@ function NewUserForm() {
       </Form>
     </>
   );
-}
+};
 
 export { NewUserForm };

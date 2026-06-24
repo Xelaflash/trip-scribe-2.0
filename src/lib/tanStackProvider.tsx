@@ -4,7 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { type PropsWithChildren, useState } from 'react';
 
-export default function TanStackProviders({ children }: PropsWithChildren) {
+const TanStackProviders = ({ children }: PropsWithChildren) => {
   const [queryClient] = useState(
     () =>
       new QueryClient({
@@ -23,4 +23,6 @@ export default function TanStackProviders({ children }: PropsWithChildren) {
       <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
-}
+};
+
+export default TanStackProviders;

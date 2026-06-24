@@ -7,6 +7,6 @@ interface AuthProviderProps {
   session?: Session | null;
 }
 
-export function AuthProvider({ children, session }: AuthProviderProps) {
+export const AuthProvider = ({ children, session }: AuthProviderProps) => {
   return <SessionProvider session={session}>{children}</SessionProvider>;
-}
+};

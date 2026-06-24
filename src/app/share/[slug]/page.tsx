@@ -4,7 +4,7 @@ import { notFound } from 'next/navigation';
 import prisma from '@/lib/prisma';
 import { tripInclude } from '@/lib/tripServer';
 
-export default async function PublicTripPage({ params }: { params: Promise<{ slug: string }> }) {
+const PublicTripPage = async ({ params }: { params: Promise<{ slug: string }> }) => {
   const { slug } = await params;
   const trip = await prisma.trip.findUnique({
     where: { slug },
@@ -82,4 +82,6 @@ export default async function PublicTripPage({ params }: { params: Promise<{ slu
       </section>
     </main>
   );
-}
+};
+
+export default PublicTripPage;

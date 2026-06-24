@@ -33,7 +33,7 @@ const tripFormSchema = z.object({
 
 type TripFormValues = z.infer<typeof tripFormSchema>;
 
-export function TripsDashboard({ userName }: { userName: string }) {
+export const TripsDashboard = ({ userName }: { userName: string }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -249,4 +249,4 @@ export function TripsDashboard({ userName }: { userName: string }) {
       </section>
     </main>
   );
-}
+};

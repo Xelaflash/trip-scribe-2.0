@@ -1,5 +1,4 @@
 import clsx from 'clsx';
-import styles from './VisuallyHidden.module.css';
 import type { JSX } from 'react';
 import { useState, useEffect } from 'react';
 
@@ -36,7 +35,7 @@ const VisuallyHidden = ({ children, className, ...delegated }: VisuallyHiddenPro
     return children;
   }
   return (
-    <span className={clsx(styles.wrapper, className)} {...delegated}>
+    <span className={clsx('sr-only focus:not-sr-only active:not-sr-only', className)} {...delegated}>
       {children}
     </span>
   );

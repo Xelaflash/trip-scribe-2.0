@@ -7,7 +7,7 @@ import type { Trip } from '@prisma/generated';
 
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 
-function TripList({ userTrips }: { userTrips: Trip[] }) {
+const TripList = ({ userTrips }: { userTrips: Trip[] }) => {
   const router = useRouter();
   const [filterText, setFilterText] = useState('');
   // const [trips, setTrips] = useState<Trip[]>(userTrips);
@@ -57,6 +57,6 @@ function TripList({ userTrips }: { userTrips: Trip[] }) {
       </div>
     </div>
   );
-}
+};
 
 export { TripList };
