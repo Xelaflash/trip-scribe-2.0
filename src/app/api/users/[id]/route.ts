@@ -1,8 +1,12 @@
 import prisma from '@/lib/prisma';
 import { NextResponse } from 'next/server';
 
-export async function GET(request: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+type RouteContext = {
+  params: Promise<{ id: string }>;
+};
+
+export async function GET(_request: Request, context: RouteContext) {
+  const { id } = await context.params;
   const user = await prisma.user.findUnique({
     where: {
       id,
@@ -19,25 +23,25 @@ export async function GET(request: Request, { params }: { params: { id: string }
   return NextResponse.json(user);
 }
 
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
-  const id = params.id;
+export async function PATCH(request: Request, context: RouteContext) {
+  const { id } = await context.params;
   const json = await request.json();
 
-  const updated_user = await prisma.user.update({
+  const updatedUser = await prisma.user.update({
     where: { id },
     data: json,
   });
 
-  if (!updated_user) {
+  if (!updatedUser) {
     return new NextResponse('No user with ID found', { status: 404 });
   }
 
-  return NextResponse.json(updated_user);
+  return NextResponse.json(updatedUser);
 }
 
-export async function DELETE(request: Request, { params }: { params: { id: string } }) {
+export async function DELETE(_request: Request, context: RouteContext) {
   try {
-    const id = params.id;
+    const { id } = await context.params;
     await prisma.user.delete({
       where: { id },
     });

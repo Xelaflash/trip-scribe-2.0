@@ -12,17 +12,13 @@ import { Input } from '@/components/ui/input';
 
 // Hooks & types
 import { useCurrentUser } from '@/hooks/useCurrentUser';
-import { User } from '@prisma/client';
+import type { User } from '@prisma/generated';
 import { updateUser } from '@/queries/userQueries';
 
 const newUserFormSchema = z.object({
-  name: z
-    .string({
-      required_error: 'Name is required.',
-    })
-    .min(2, {
-      message: 'Name must be at least 2 characters.',
-    }),
+  name: z.string().min(2, {
+    message: 'Name must be at least 2 characters.',
+  }),
 });
 
 function NewUserForm() {
@@ -38,11 +34,13 @@ function NewUserForm() {
 
   const handleSubmit = async (values: z.infer<typeof newUserFormSchema>) => {
     const { name } = values;
-    if (!currentUser) return;
+    if (!currentUser) {
+      return;
+    }
     try {
-      await updateUser(currentUser.id, { name }).then(() => router.push(`/profile/${currentUser.id}`));
+      await updateUser(currentUser.id, { name }).then(() => router.push('/trips'));
     } catch (error) {
-      console.error(error);
+      form.setError('name', { message: error instanceof Error ? error.message : 'Could not update your profile.' });
     }
   };
 
