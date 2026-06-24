@@ -26,14 +26,17 @@ export default function SignInForm() {
   const handleSubmit = (data: z.infer<typeof formSchema>) => {
     signIn('email', {
       email: data.email,
-      // TODO find a way to redirect to user profile page
-      callbackUrl: '/',
+      callbackUrl: '/trips',
     });
   };
 
   return (
     <>
-      <button className="border border-gray-300 p-4 rounded-md w-full my-4 flex items-center gap-20 font-medium hover:bg-slate-100">
+      <button
+        type="button"
+        className="border border-gray-300 p-4 rounded-md w-full my-4 flex items-center gap-20 font-medium hover:bg-slate-100"
+        onClick={() => signIn('google', { callbackUrl: '/trips' })}
+      >
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
           <title>Google icon</title>
           <path

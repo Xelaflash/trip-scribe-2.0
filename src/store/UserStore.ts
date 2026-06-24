@@ -1,4 +1,4 @@
-import { UserWithTrips } from '../types/user';
+import type { UserWithTrips } from '../types/user';
 import { create } from 'zustand';
 
 interface UserState {

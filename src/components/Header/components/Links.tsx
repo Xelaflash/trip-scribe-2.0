@@ -6,6 +6,7 @@ import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 // libs
 import { motion } from 'framer-motion';
+import type { Variants } from 'framer-motion';
 
 // styles
 import styles from '../Header.module.css';
@@ -30,16 +31,12 @@ export default function Links() {
       href: '/',
     },
     {
-      name: 'About Us',
+      name: 'Features',
       href: '/',
     },
     {
-      name: 'TBD',
-      href: `/`,
-    },
-    {
-      name: 'TBD2',
-      href: '/',
+      name: 'Sign in',
+      href: '/auth/signin',
     },
   ];
 
@@ -47,26 +44,22 @@ export default function Links() {
 
   const userConnectedLinks = [
     {
+      name: 'Trips',
+      href: '/trips',
+    },
+    {
       name: 'How it works',
       href: '/',
     },
-    {
-      name: 'About Us',
-      href: '/',
-    },
-    {
-      name: 'Profile',
-      href: `profile/${session?.user.id}`,
-    },
   ];
 
-  const linkHoverVariants = {
+  const linkHoverVariants: Variants = {
     hover: {
       opacity: 1,
       scale: 1,
       transformOrigin: 'bottom left',
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 200,
         damping: 35,
       },
@@ -75,7 +68,7 @@ export default function Links() {
       opacity: 0,
       scale: 0,
       transition: {
-        type: 'spring',
+        type: 'spring' as const,
         stiffness: 600,
         damping: 10,
       },
@@ -96,10 +89,10 @@ export default function Links() {
           onMouseLeave={handleMouseLeave}
         >
           <Link
-            href={`/${link.href}`}
+            href={link.href}
             className={styles.headerLink}
             style={{
-              color: isHovering && hoveredIndex === index ? 'var(--color-secondary' : 'inherit',
+              color: isHovering && hoveredIndex === index ? 'var(--color-secondary)' : 'inherit',
               transition: 'color 0.3s ease-in-out',
             }}
           >

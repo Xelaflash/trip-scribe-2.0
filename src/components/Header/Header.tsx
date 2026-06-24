@@ -23,7 +23,7 @@ export default function Header() {
       <Logo />
       <Links />
       {!session ? (
-        <Link href="/api/auth/signin" className={styles.authLink}>
+        <Link href="/auth/signin" className={styles.authLink}>
           Log In
         </Link>
       ) : (

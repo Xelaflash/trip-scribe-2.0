@@ -1,5 +1,5 @@
 import { users } from './users';
-import { Visibility } from '@prisma/client';
+import { Visibility } from '@prisma/generated';
 import { v4 as uuidv4 } from 'uuid';
 
 export const trips = [

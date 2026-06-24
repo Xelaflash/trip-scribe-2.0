@@ -1,4 +1,4 @@
-import { Role } from '@prisma/client';
+import { Role } from '@prisma/generated';
 import { v4 as uuidv4 } from 'uuid';
 
 export const users = [

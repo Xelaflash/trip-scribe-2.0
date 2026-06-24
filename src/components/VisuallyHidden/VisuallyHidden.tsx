@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import styles from './VisuallyHidden.module.css';
-import { JSX, useState, useEffect } from 'react';
+import type { JSX } from 'react';
+import { useState, useEffect } from 'react';
 
 type VisuallyHiddenProps = {
   as?: keyof JSX.IntrinsicElements | React.ComponentType<unknown>;

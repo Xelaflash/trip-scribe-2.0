@@ -1,9 +1,9 @@
 'use client';
-import * as React from 'react';
+import type * as React from 'react';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { Trip } from '@prisma/client';
+import type { Trip } from '@prisma/generated';
 
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/table';
 
@@ -19,9 +19,7 @@ function TripList({ userTrips }: { userTrips: Trip[] }) {
   // const filteredTrips = trips?.filter((trip) => trip.title.toLowerCase().includes(filterText.toLowerCase()));
 
   const handleTripRowClick = (trip: Trip) => {
-    console.log('click');
-    // TODO: redirect to trip page
-    router.push(`/trip/${trip.slug}`);
+    router.push(`/trips/${trip.slug}`);
   };
 
   return (
