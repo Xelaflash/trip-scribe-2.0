@@ -32,7 +32,7 @@ Still outside this MVP:
 - Prisma 7 with PostgreSQL and `@prisma/adapter-pg`
 - NextAuth 4 with Prisma Adapter, Google auth, and email auth
 - TanStack Query 5 for client-side server state
-- Tailwind CSS 4, CSS modules, Radix UI, and shadcn/ui-style components
+- Tailwind CSS 4, Radix UI, and shadcn/ui-style components
 - React Hook Form and Zod 4 for forms
 - date-fns and React Day Picker for dates
 - pnpm for package management
@@ -61,3 +61,7 @@ pnpm prisma db seed
 ```
 
 The MVP plan is stored in `docs/mvp-plan.md`.
+
+## Styling
+
+Use Tailwind CSS utilities for application styling. Do not add new CSS modules or component-scoped stylesheet files; shared design tokens live in `src/app/globals.css`.

@@ -24,7 +24,7 @@ The implemented app has a public landing page, authentication, an authenticated 
 - Prisma 7 with PostgreSQL and `@prisma/adapter-pg`.
 - NextAuth 4 with `@auth/prisma-adapter`.
 - TanStack Query 5 and React Query Devtools.
-- Tailwind CSS 4, CSS modules, Radix UI primitives, and shadcn/ui-style local components.
+- Tailwind CSS 4, Radix UI primitives, and shadcn/ui-style local components.
 - React Hook Form, Zod 4, date-fns, React Day Picker, Framer Motion, Lucide React, Sonner.
 - pnpm is enforced by the `preinstall` script.
 
@@ -55,6 +55,7 @@ The implemented app has a public landing page, authentication, an authenticated 
 - Import Prisma runtime/types from `@prisma/generated`, not `@prisma/client`.
 - Use the existing `@/*` import alias.
 - Use local shadcn/Radix UI primitives from `src/components/ui` before adding new UI dependencies.
+- Use Tailwind utilities for app styling. Do not add CSS modules or component-scoped stylesheet files; keep shared theme tokens in `src/app/globals.css`.
 - Preserve strict TypeScript. Replace `any` with schema-derived or Prisma-backed types.
 - Prefer Zod validation at request and form boundaries before passing data to Prisma.
 - For TanStack Query, keep query keys stable and include route/user identifiers when data is scoped.

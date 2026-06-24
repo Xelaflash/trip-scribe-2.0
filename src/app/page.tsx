@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { CalendarDays, MapPin, NotebookPen, Share2 } from 'lucide-react';
 import { SITE_TITLE } from '@/constants';
 import { Button } from '@/components/ui/button';
-import styles from './Home.module.css';
 
 const highlights = [
   {
@@ -31,16 +30,20 @@ const highlights = [
 export default function Home() {
   return (
     <>
-      <section className={styles.hero}>
-        <div className={styles.heroOverlay}>
-          <div className={styles.heroContent}>
-            <p className={styles.kicker}>Travel planning, written clearly</p>
-            <h1>{SITE_TITLE}</h1>
-            <p className={styles.heroCopy}>
+      <section className="-mt-headerHeight min-h-[72vh] bg-[linear-gradient(90deg,hsl(171deg_60%_12%_/_0.86),hsl(171deg_60%_12%_/_0.44)),url('/homeBg.jpg')] bg-cover bg-center">
+        <div className="flex min-h-[72vh] items-center px-viewportPadding pt-[calc(var(--header-height)+3rem)] pb-12">
+          <div className="w-full max-w-[44rem] text-white">
+            <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
+              Travel planning, written clearly
+            </p>
+            <h1 className="mt-2.5 mb-0 text-[3.3rem] leading-[0.92] text-white min-[861px]:text-[clamp(3rem,8vw,6.5rem)]">
+              {SITE_TITLE}
+            </h1>
+            <p className="mt-5 max-w-xl text-xl text-white/90">
               A focused workspace for planning trips, collecting useful notes, and sharing a polished read-only
               itinerary.
             </p>
-            <div className={styles.heroActions}>
+            <div className="mt-8 flex flex-wrap gap-3">
               <Button asChild size="lg">
                 <Link href="/trips">Open trip workspace</Link>
               </Button>
@@ -52,20 +55,27 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.band}>
-        <div className={styles.bandContent}>
+      <section className="bg-surface px-viewportPadding py-16">
+        <div className="mx-auto grid w-full max-w-[1120px] gap-8">
           <div>
-            <p className={styles.kicker}>Built for the first useful version</p>
-            <h2>Everything needed to get from idea to shared trip</h2>
+            <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
+              Built for the first useful version
+            </p>
+            <h2 className="mt-1.5 mb-0 max-w-2xl text-[clamp(2rem,4vw,3rem)] leading-none">
+              Everything needed to get from idea to shared trip
+            </h2>
           </div>
-          <div className={styles.featureGrid}>
+          <div className="grid grid-cols-1 gap-4 min-[861px]:grid-cols-4">
             {highlights.map((item) => {
               const Icon = item.icon;
               return (
-                <article key={item.title} className={styles.feature}>
-                  <Icon className={styles.featureIcon} />
-                  <h3>{item.title}</h3>
-                  <p>{item.text}</p>
+                <article
+                  key={item.title}
+                  className="min-h-56 rounded-lg border border-border bg-white p-5 shadow-[var(--shadow-elevation-low)]"
+                >
+                  <Icon className="size-8 text-primary" />
+                  <h3 className="mt-5 text-lg">{item.title}</h3>
+                  <p className="mt-2 text-muted-foreground">{item.text}</p>
                 </article>
               );
             })}
@@ -73,16 +83,18 @@ export default function Home() {
         </div>
       </section>
 
-      <section className={styles.workflow}>
-        <div className={styles.workflowText}>
-          <p className={styles.kicker}>Simple workflow</p>
-          <h2>Create, organize, publish</h2>
-          <p>
+      <section className="mx-auto grid w-full max-w-[1120px] grid-cols-1 items-center gap-12 px-viewportPadding py-16 min-[861px]:grid-cols-[0.9fr_1fr]">
+        <div>
+          <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
+            Simple workflow
+          </p>
+          <h2 className="mt-1.5 mb-0 max-w-2xl text-[clamp(2rem,4vw,3rem)] leading-none">Create, organize, publish</h2>
+          <p className="mt-4 max-w-xl text-lg text-muted-foreground">
             Start with the trip basics, add itinerary items as plans firm up, keep notes and places close by, then
             switch the trip to public when it is ready to share.
           </p>
         </div>
-        <div className={styles.illustrationShell}>
+        <div className="flex justify-center">
           <Image src="/illusHome.svg" alt="Travelers reviewing a trip plan" width={520} height={520} priority />
         </div>
       </section>
