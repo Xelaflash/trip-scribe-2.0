@@ -1,7 +1,7 @@
 import { trips } from './data/trips';
 import { users } from './data/users';
 
-import { PrismaClient } from '@prisma/client';
+import { PrismaClient } from '@prisma/generated';
 
 const prisma = new PrismaClient();
 
@@ -23,7 +23,7 @@ async function main() {
 
 main()
   .catch((e) => {
-    console.error(e);
+    process.stderr.write(`${e instanceof Error ? (e.stack ?? e.message) : String(e)}\n`);
     process.exit(1);
   })
   .finally(async () => {
