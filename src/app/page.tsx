@@ -30,9 +30,9 @@ const highlights = [
 export default function Home() {
   return (
     <>
-      <section className="-mt-headerHeight min-h-[72vh] bg-[linear-gradient(90deg,hsl(171deg_60%_12%_/_0.86),hsl(171deg_60%_12%_/_0.44)),url('/homeBg.jpg')] bg-cover bg-center">
+      <section className="-mt-headerHeight min-h-[72vh] bg-[linear-gradient(90deg,hsl(171deg_60%_12%/0.86),hsl(171deg_60%_12%/0.44)),url('/homeBg.jpg')] bg-cover bg-center">
         <div className="flex min-h-[72vh] items-center px-viewportPadding pt-[calc(var(--header-height)+3rem)] pb-12">
-          <div className="w-full max-w-[44rem] text-white">
+          <div className="w-full max-w-176 text-white">
             <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
               Travel planning, written clearly
             </p>
@@ -56,7 +56,7 @@ export default function Home() {
       </section>
 
       <section className="bg-surface px-viewportPadding py-16">
-        <div className="mx-auto grid w-full max-w-[1120px] gap-8">
+        <div className="mx-auto grid w-full max-w-280 gap-8">
           <div>
             <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
               Built for the first useful version
@@ -71,7 +71,7 @@ export default function Home() {
               return (
                 <article
                   key={item.title}
-                  className="min-h-56 rounded-lg border border-border bg-white p-5 shadow-[var(--shadow-elevation-low)]"
+                  className="min-h-56 rounded-lg border border-border bg-white p-5 shadow-(--shadow-elevation-low)"
                 >
                   <Icon className="size-8 text-primary" />
                   <h3 className="mt-5 text-lg">{item.title}</h3>
@@ -83,7 +83,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="mx-auto grid w-full max-w-[1120px] grid-cols-1 items-center gap-12 px-viewportPadding py-16 min-[861px]:grid-cols-[0.9fr_1fr]">
+      <section className="mx-auto grid w-full max-w-280 grid-cols-1 items-center gap-12 px-viewportPadding py-16 min-[861px]:grid-cols-[0.9fr_1fr]">
         <div>
           <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
             Simple workflow
