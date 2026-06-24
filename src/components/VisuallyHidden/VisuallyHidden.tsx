@@ -35,7 +35,13 @@ const VisuallyHidden = ({ children, className, ...delegated }: VisuallyHiddenPro
     return children;
   }
   return (
-    <span className={clsx('sr-only focus:not-sr-only active:not-sr-only', className)} {...delegated}>
+    <span
+      className={clsx(
+        'not-focus:not-active:absolute not-focus:not-active:size-px not-focus:not-active:overflow-hidden not-focus:not-active:whitespace-nowrap not-focus:not-active:[clip-path:inset(50%)] not-focus:not-active:[clip:rect(0_0_0_0)]',
+        className,
+      )}
+      {...delegated}
+    >
       {children}
     </span>
   );

@@ -99,13 +99,7 @@ const Links = () => {
               variants={linkHoverVariants}
               style={{ transformOrigin: '0% 100%' }}
             >
-              <Image
-                src={`/handline${index + 1}.svg`}
-                fill
-                alt="Decorative Hand Drawn line"
-                className="object-contain"
-                sizes="120px"
-              />
+              <Image src={`/handline${index + 1}.svg`} fill alt="" aria-hidden="true" className="object-contain" />
             </motion.div>
           </Link>
         </motion.li>

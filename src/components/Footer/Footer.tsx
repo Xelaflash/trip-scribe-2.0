@@ -4,8 +4,6 @@ import Logo from '@/components/Logo/Logo';
 
 import DecorativeSwoops from './DecorativeSwoops';
 
-// import { useCurrentUser } from '@/hooks/useCurrentUser';
-
 const Footer = () => {
   const date = new Date().getFullYear();
 
@@ -20,7 +18,6 @@ const Footer = () => {
         <nav>
           <h2 className="text-xl">Links</h2>
           <ul className="mt-6 list-none space-y-2 p-0">
-            <li></li>
             <li>
               <Link href="/todo" className="text-base no-underline">
                 Terms of Use

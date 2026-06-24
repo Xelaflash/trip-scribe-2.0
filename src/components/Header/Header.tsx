@@ -8,25 +8,25 @@ import { useRouter } from 'next/navigation';
 import Logo from '../Logo/Logo';
 import Links from './components/Links';
 
-const authLinkClassName =
-  'inline-flex min-h-[2.65rem] items-center justify-center rounded-full border border-white/25 bg-primary/90 px-[1.15rem] text-[0.95rem] font-extrabold text-white no-underline transition-colors hover:bg-secondary';
-
 const Header = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
   return (
-    <header className="relative z-10 flex min-h-headerHeight w-full items-center justify-between bg-primary-950/70 px-viewportPadding text-white shadow-[var(--shadow-elevation-low)] backdrop-blur-2xl">
+    <header className="relative z-10 flex min-h-headerHeight w-full items-center justify-between bg-[hsl(171deg_74%_9%/0.72)]px-viewportPadding text-white shadow-elevationLow backdrop-blur-2xl">
       <Logo />
       <Links />
       {!session ? (
-        <Link href="/auth/signin" className={authLinkClassName}>
+        <Link
+          href="/auth/signin"
+          className="inline-flex min-h-[2.65rem] items-center justify-center rounded-full border border-white/25 bg-[hsl(168deg_74%_24%/0.88)] px-[1.15rem] text-[0.95rem] font-extrabold text-white no-underline hover:bg-secondary"
+        >
           Log In
         </Link>
       ) : (
         <button
           type="button"
-          className={authLinkClassName}
+          className="inline-flex min-h-[2.65rem] items-center justify-center rounded-full border border-white/25 bg-[hsl(168deg_74%_24%/0.88)] px-[1.15rem] text-[0.95rem] font-extrabold text-white no-underline hover:bg-secondary"
           onClick={() =>
             signOut({ redirect: false }).then(() => {
               router.push('/');

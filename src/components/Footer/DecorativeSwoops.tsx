@@ -1,6 +1,6 @@
 const DecorativeSwoops = () => {
   return (
-    <div className="absolute inset-0 size-full overflow-hidden bg-[repeating-linear-gradient(75deg,var(--color-primary-100)_0_var(--stroke-width),transparent_var(--stroke-width)_10px),var(--color-backdrop)] [--stroke-color:var(--color-primary-100)] [--stroke-width:3px]">
+    <div className="absolute inset-0 size-full overflow-hidden bg-[repeating-linear-gradient(75deg,var(--stroke-color)_0px_var(--stroke-width),transparent_var(--stroke-width)_10px),var(--color-backdrop)] [--stroke-color:var(--color-primary-100)] [--stroke-width:3px] dark:[--stroke-color:var(--color-decorative-300)]">
       <Blocker />
     </div>
   );
@@ -12,7 +12,7 @@ const Blocker = () => {
       xmlns="http://www.w3.org/2000/svg"
       fill="none"
       viewBox="0 0 1706 296"
-      className="absolute inset-[calc(var(--stroke-width)*-1)] h-4/5 w-[calc(100%+4px)] min-w-[800px] max-w-none"
+      className="absolute inset-[calc(var(--stroke-width)*-1)] h-4/5 w-[calc(100%+4px)] min-w-[800px] max-w-none [&_path]:fill-backdrop [&_path]:stroke-[length:var(--stroke-width)] [&_path]:stroke-[var(--stroke-color)]"
       preserveAspectRatio="none"
     >
       <path

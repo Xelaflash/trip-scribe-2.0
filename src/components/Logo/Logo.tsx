@@ -12,7 +12,7 @@ const Logo = ({ mobileAlignment = 'left' }: LogoProps) => {
     <Link
       href="/"
       className={cn(
-        'block text-xl font-semibold tracking-normal no-underline transition-[font-weight,transform] duration-[400ms] will-change-transform sm:text-2xl',
+        'block text-xl font-semibold tracking-normal no-underline transition-[font-weight,transform] duration-400 will-change-transform sm:text-2xl',
         mobileAlignment === 'center' && 'max-sm:text-center',
       )}
     >
