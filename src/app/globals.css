@@ -126,10 +126,6 @@
   box-sizing: border-box;
 }
 
-* {
-  margin: 0;
-}
-
 html {
   min-height: 100%;
   scrollbar-gutter: stable;

@@ -57,7 +57,6 @@ export default function Links() {
     hover: {
       opacity: 1,
       scale: 1,
-      transformOrigin: 'bottom left',
       transition: {
         type: 'spring' as const,
         stiffness: 200,
@@ -97,7 +96,11 @@ export default function Links() {
             }}
           >
             {link.name}
-            <motion.div className={styles.imageWrapper} variants={linkHoverVariants}>
+            <motion.div
+              className={styles.imageWrapper}
+              variants={linkHoverVariants}
+              style={{ transformOrigin: '0% 100%' }}
+            >
               <Image src={`/handline${index + 1}.svg`} fill alt="Decorative Hand Drawn line" className={styles.image} />
             </motion.div>
           </Link>

@@ -47,7 +47,7 @@ export default function Home() {
               <Button asChild size="lg">
                 <Link href="/trips">Open trip workspace</Link>
               </Button>
-              <Button asChild size="lg" variant="outline">
+              <Button asChild size="lg" variant="orange">
                 <Link href="/auth/signin">Sign in</Link>
               </Button>
             </div>
@@ -73,8 +73,8 @@ export default function Home() {
                   key={item.title}
                   className="min-h-56 rounded-lg border border-border bg-white p-5 shadow-(--shadow-elevation-low)"
                 >
-                  <Icon className="size-8 text-primary" />
-                  <h3 className="mt-5 text-lg">{item.title}</h3>
+                  <Icon className="size-8 text-primary " />
+                  <h3 className="mt-2 text-lg ">{item.title}</h3>
                   <p className="mt-2 text-muted-foreground">{item.text}</p>
                 </article>
               );
@@ -95,7 +95,16 @@ export default function Home() {
           </p>
         </div>
         <div className="flex justify-center">
-          <Image src="/illusHome.svg" alt="Travelers reviewing a trip plan" width={520} height={520} priority />
+          <div className="w-full max-w-sm">
+            <Image
+              src="/illusHome.svg"
+              alt="Travelers reviewing a trip plan"
+              width={520}
+              height={520}
+              priority
+              className="w-full h-auto"
+            />
+          </div>
         </div>
       </section>
     </>
