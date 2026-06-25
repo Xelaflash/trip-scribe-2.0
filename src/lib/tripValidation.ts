@@ -13,12 +13,17 @@ export const tripCreateSchema = z.object({
 
 export const tripUpdateSchema = tripCreateSchema.partial();
 
+const optionalDateSchema = z.preprocess(
+  (value) => (value === '' || value === null || value === undefined ? null : value),
+  z.coerce.date().nullable(),
+);
+
 export const itineraryCreateSchema = z.object({
   title: z.string().trim().min(2, 'Title must be at least 2 characters.'),
   description: z.string().trim().optional().or(z.literal('')),
   location: z.string().trim().optional().or(z.literal('')),
-  startsAt: z.coerce.date(),
-  endsAt: z.coerce.date().optional().nullable(),
+  startsAt: optionalDateSchema,
+  endsAt: optionalDateSchema,
   sortOrder: z.coerce.number().int().default(0),
 });
 

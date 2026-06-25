@@ -38,7 +38,9 @@ const PublicTripPage = async ({ params }: { params: Promise<{ slug: string }> })
             {trip.itineraryItems.map((item) => (
               <div key={item.id} className="rounded-md bg-muted p-3">
                 <h3 className="m-0 text-base font-semibold">{item.title}</h3>
-                <p className="text-sm text-muted-foreground">{new Date(item.startsAt).toLocaleString()}</p>
+                <p className="text-sm text-muted-foreground">
+                  {item.startsAt ? new Date(item.startsAt).toLocaleString() : 'No date set'}
+                </p>
                 {item.description ? <p className="mt-2 text-sm">{item.description}</p> : null}
               </div>
             ))}

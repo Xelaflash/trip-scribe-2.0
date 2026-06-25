@@ -48,7 +48,7 @@ model ItineraryItem {
   title       String
   description String?
   location    String?
-  startsAt    DateTime
+  startsAt    DateTime?
   endsAt      DateTime?
   sortOrder   Int       @default(0)
   createdAt   DateTime  @default(now())

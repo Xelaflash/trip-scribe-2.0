@@ -35,7 +35,7 @@ const itinerarySchema = z.object({
   title: z.string().min(2),
   description: z.string().optional(),
   location: z.string().optional(),
-  startsAt: z.string().min(1),
+  startsAt: z.string().optional(),
   endsAt: z.string().optional(),
 });
 
@@ -289,7 +289,7 @@ const ItinerarySection = ({
           onSubmit={form.handleSubmit(async (values) => {
             await createItineraryItem(trip.slug, {
               ...values,
-              startsAt: new Date(values.startsAt),
+              startsAt: values.startsAt ? new Date(values.startsAt) : null,
               endsAt: values.endsAt ? new Date(values.endsAt) : null,
               sortOrder: trip.itineraryItems.length,
             });
@@ -337,7 +337,7 @@ const ItinerarySection = ({
               <div>
                 <h3 className="m-0 text-base font-semibold">{item.title}</h3>
                 <p className="text-sm text-muted-foreground">
-                  {new Date(item.startsAt).toLocaleString()}
+                  {item.startsAt ? new Date(item.startsAt).toLocaleString() : 'No date set'}
                   {item.endsAt ? ` - ${new Date(item.endsAt).toLocaleString()}` : ''}
                 </p>
                 {item.location ? <p className="text-sm text-muted-foreground">{item.location}</p> : null}

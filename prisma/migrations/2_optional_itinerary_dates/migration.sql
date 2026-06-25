@@ -1,0 +1,1 @@
+ALTER TABLE "ItineraryItem" ALTER COLUMN "startsAt" DROP NOT NULL;
