@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { TripsDashboard } from '@/app/trips/trips-dashboard';
+import { TripsDashboard } from '@/app/trips/components/TripsDashboard';
 import { getServerSession } from 'next-auth';
 import { redirect } from 'next/navigation';
 

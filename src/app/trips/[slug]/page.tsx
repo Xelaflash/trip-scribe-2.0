@@ -1,5 +1,5 @@
 import { authOptions } from '@/app/api/auth/[...nextauth]/route';
-import { TripDetailClient } from '@/app/trips/[slug]/trip-detail-client';
+import { TripPlanner } from '@/app/trips/[slug]/TripPlanner';
 import prisma from '@/lib/prisma';
 import { tripInclude } from '@/lib/tripServer';
 import { getServerSession } from 'next-auth';
@@ -24,7 +24,7 @@ const TripDetailPage = async ({ params }: { params: Promise<{ slug: string }> })
     notFound();
   }
 
-  return <TripDetailClient trip={trip} />;
+  return <TripPlanner trip={trip} />;
 };
 
 export default TripDetailPage;
