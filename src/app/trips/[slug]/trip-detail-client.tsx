@@ -4,12 +4,14 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { ArrowLeft, ExternalLink, Globe2, Lock, MapPin, NotebookPen, Plus, Route, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useState } from 'react';
 import { useForm, type UseFormReturn } from 'react-hook-form';
 import { z } from 'zod';
 import { Button } from '@/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { tripPlaceholderSets, type TripPlaceholderSet } from '@/app/trips/data/placeholders';
 import {
   createItineraryItem,
   createNote,
@@ -61,8 +63,15 @@ type ItineraryForm = UseFormReturn<z.infer<typeof itinerarySchema>>;
 type NoteForm = UseFormReturn<z.infer<typeof noteSchema>>;
 type PlaceForm = UseFormReturn<z.infer<typeof placeSchema>>;
 
+function nextPlaceholderIndex(index: number) {
+  return (index + 1) % tripPlaceholderSets.length;
+}
+
 export const TripDetailClient = ({ trip }: { trip: TripWithDetails }) => {
   const router = useRouter();
+  const [overviewPlaceholderIndex, setOverviewPlaceholderIndex] = useState(0);
+  const [itineraryPlaceholderIndex, setItineraryPlaceholderIndex] = useState(1);
+  const [notePlaceholderIndex, setNotePlaceholderIndex] = useState(2);
 
   const overviewForm = useForm<z.infer<typeof overviewSchema>>({
     resolver: zodResolver(overviewSchema),
@@ -105,12 +114,30 @@ export const TripDetailClient = ({ trip }: { trip: TripWithDetails }) => {
       <TripHeader trip={trip} onDelete={() => deleteTrip(trip.slug).then(() => router.push('/trips'))} />
 
       <section className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
-        <OverviewSection form={overviewForm} trip={trip} onRefresh={refresh} />
-        <ItinerarySection form={itineraryForm} trip={trip} onRefresh={refresh} />
+        <OverviewSection
+          form={overviewForm}
+          placeholders={tripPlaceholderSets[overviewPlaceholderIndex]}
+          trip={trip}
+          onPlaceholderChange={() => setOverviewPlaceholderIndex(nextPlaceholderIndex)}
+          onRefresh={refresh}
+        />
+        <ItinerarySection
+          form={itineraryForm}
+          placeholders={tripPlaceholderSets[itineraryPlaceholderIndex]}
+          trip={trip}
+          onPlaceholderChange={() => setItineraryPlaceholderIndex(nextPlaceholderIndex)}
+          onRefresh={refresh}
+        />
       </section>
 
       <section className="grid gap-6 lg:grid-cols-2">
-        <NotesSection form={noteForm} trip={trip} onRefresh={refresh} />
+        <NotesSection
+          form={noteForm}
+          placeholders={tripPlaceholderSets[notePlaceholderIndex]}
+          trip={trip}
+          onPlaceholderChange={() => setNotePlaceholderIndex(nextPlaceholderIndex)}
+          onRefresh={refresh}
+        />
         <PlacesSection form={placeForm} trip={trip} onRefresh={refresh} />
       </section>
     </main>
@@ -152,11 +179,15 @@ const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete: () =>
 
 const OverviewSection = ({
   form,
+  placeholders,
   trip,
+  onPlaceholderChange,
   onRefresh,
 }: {
   form: OverviewForm;
+  placeholders: TripPlaceholderSet;
   trip: TripWithDetails;
+  onPlaceholderChange: () => void;
   onRefresh: () => void;
 }) => {
   return (
@@ -175,6 +206,7 @@ const OverviewSection = ({
                 return trimmedDestination ? [trimmedDestination] : [];
               }),
             });
+            onPlaceholderChange();
             onRefresh();
           })}
         >
@@ -185,7 +217,7 @@ const OverviewSection = ({
               <FormItem>
                 <FormLabel>Title</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder={placeholders.tripTitle} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -198,7 +230,7 @@ const OverviewSection = ({
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea {...field} />
+                  <Textarea placeholder={placeholders.tripDescription} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -211,7 +243,7 @@ const OverviewSection = ({
               <FormItem>
                 <FormLabel>Destinations</FormLabel>
                 <FormControl>
-                  <Input {...field} />
+                  <Input placeholder={placeholders.tripDestinations} {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -270,11 +302,15 @@ const OverviewSection = ({
 
 const ItinerarySection = ({
   form,
+  placeholders,
   trip,
+  onPlaceholderChange,
   onRefresh,
 }: {
   form: ItineraryForm;
+  placeholders: TripPlaceholderSet;
   trip: TripWithDetails;
+  onPlaceholderChange: () => void;
   onRefresh: () => void;
 }) => {
   return (
@@ -294,6 +330,7 @@ const ItinerarySection = ({
               sortOrder: trip.itineraryItems.length,
             });
             form.reset();
+            onPlaceholderChange();
             onRefresh();
           })}
         >
@@ -301,12 +338,12 @@ const ItinerarySection = ({
             <FormField
               control={form.control}
               name="title"
-              render={({ field }) => <Input placeholder="Morning market walk" {...field} />}
+              render={({ field }) => <Input placeholder={placeholders.itineraryTitle} {...field} />}
             />
             <FormField
               control={form.control}
               name="location"
-              render={({ field }) => <Input placeholder="Location" {...field} />}
+              render={({ field }) => <Input placeholder={placeholders.itineraryLocation} {...field} />}
             />
             <FormField
               control={form.control}
@@ -322,7 +359,7 @@ const ItinerarySection = ({
           <FormField
             control={form.control}
             name="description"
-            render={({ field }) => <Textarea placeholder="Notes for this stop" {...field} />}
+            render={({ field }) => <Textarea placeholder={placeholders.itineraryDescription} {...field} />}
           />
           <Button type="submit" size="sm">
             <Plus />
@@ -360,7 +397,19 @@ const ItinerarySection = ({
   );
 };
 
-const NotesSection = ({ form, trip, onRefresh }: { form: NoteForm; trip: TripWithDetails; onRefresh: () => void }) => {
+const NotesSection = ({
+  form,
+  placeholders,
+  trip,
+  onPlaceholderChange,
+  onRefresh,
+}: {
+  form: NoteForm;
+  placeholders: TripPlaceholderSet;
+  trip: TripWithDetails;
+  onPlaceholderChange: () => void;
+  onRefresh: () => void;
+}) => {
   return (
     <article className="rounded-lg border bg-card p-6 shadow-sm">
       <h2 className="m-0 flex items-center gap-2 text-xl font-semibold">
@@ -373,18 +422,19 @@ const NotesSection = ({ form, trip, onRefresh }: { form: NoteForm; trip: TripWit
           onSubmit={form.handleSubmit(async (values) => {
             await createNote(trip.slug, values);
             form.reset();
+            onPlaceholderChange();
             onRefresh();
           })}
         >
           <FormField
             control={form.control}
             name="title"
-            render={({ field }) => <Input placeholder="Packing reminders" {...field} />}
+            render={({ field }) => <Input placeholder={placeholders.noteTitle} {...field} />}
           />
           <FormField
             control={form.control}
             name="content"
-            render={({ field }) => <Textarea placeholder="Write a note..." {...field} />}
+            render={({ field }) => <Textarea placeholder={placeholders.noteContent} {...field} />}
           />
           <Button type="submit" size="sm">
             <Plus />
