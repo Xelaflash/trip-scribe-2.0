@@ -24,11 +24,12 @@
 
   --color-text: hsl(175 34% 12%);
   --color-backdrop: hsl(42 33% 97%);
-  --color-surface: hsl(40 38% 94%);
+  --color-surface: hsl(40 45% 94%);
+  --color-surface-strong: hsl(38 44% 90%);
+  --color-sand: hsl(38 44% 88%);
+  --color-map-line: hsl(168 31% 76%);
   --color-white: hsl(0 0% 97%);
   --color-transparent: transparent;
-  --color-tahiti: #3ab7bf;
-  --color-bermuda: #78dcca;
 
   --color-border: hsl(36 22% 84%);
   --color-input: hsl(36 22% 84%);
@@ -55,6 +56,9 @@
   --spacing-viewportPadding: var(--viewport-padding);
   --spacing-headerHeight: var(--header-height);
   --spacing-trimmedContentWidth: var(--trimmed-content-width);
+
+  --shadow-elevationLow: var(--shadow-elevation-low);
+  --shadow-elevationMedium: var(--shadow-elevation-medium);
 
   --animate-accordion-down: accordion-down 0.2s ease-out;
   --animate-accordion-up: accordion-up 0.2s ease-out;
@@ -83,7 +87,7 @@
 :root {
   --font-main: var(--font-work-sans), sans-serif;
   --font-heading: var(--font-work-sans), sans-serif;
-  --radius: 0.625rem;
+  --radius: 0.5rem;
   --header-height: 5rem;
   --content-width: 55rem;
   --outer-content-width: 80rem;
@@ -98,8 +102,8 @@
   --popover-foreground: 175 34% 12%;
   --primary: 168 74% 24%;
   --primary-foreground: 42 33% 97%;
-  --secondary: 39 44% 90%;
-  --secondary-foreground: 175 34% 12%;
+  --secondary: 22 88% 55%;
+  --secondary-foreground: 42 33% 97%;
   --muted: 39 38% 92%;
   --muted-foreground: 174 11% 40%;
   --accent: 22 88% 55%;
@@ -109,9 +113,9 @@
   --border: 36 22% 84%;
   --input: 36 22% 84%;
   --ring: 168 74% 24%;
-  --shadow-color: 170deg 18% 45%;
-  --shadow-elevation-low: 0 1px 2px hsl(var(--shadow-color) / 0.18), 0 4px 12px hsl(var(--shadow-color) / 0.1);
-  --shadow-elevation-medium: 0 2px 4px hsl(var(--shadow-color) / 0.16), 0 14px 32px hsl(var(--shadow-color) / 0.16);
+  --shadow-color: 170deg 18% 35%;
+  --shadow-elevation-low: 0 1px 2px hsl(var(--shadow-color) / 0.08), 0 8px 22px hsl(var(--shadow-color) / 0.08);
+  --shadow-elevation-medium: 0 3px 6px hsl(var(--shadow-color) / 0.12), 0 18px 44px hsl(var(--shadow-color) / 0.14);
 }
 
 @media (min-width: 35rem) {
@@ -139,7 +143,9 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
-  background: hsl(var(--background));
+  background:
+    radial-gradient(circle at 16px 16px, hsl(168 31% 76% / 0.18) 1px, transparent 1px) 0 0 / 32px 32px,
+    linear-gradient(180deg, hsl(42 33% 97%) 0%, hsl(40 45% 94%) 100%);
   color: hsl(var(--foreground));
   font-family: var(--font-main);
   line-height: 1.5;
@@ -202,6 +208,11 @@ button {
 
 button:disabled {
   cursor: not-allowed;
+}
+
+::selection {
+  background: var(--color-primary-200);
+  color: var(--color-primary-950);
 }
 
 body > main {

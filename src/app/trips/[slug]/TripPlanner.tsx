@@ -24,13 +24,13 @@ import {
 import { tripPlaceholderSets } from '@/app/trips/[slug]/data/placeholders';
 import { deleteTrip, type TripWithDetails } from '@/queries/tripQueries';
 
-function dateInputValue(value: Date | string) {
+const dateInputValue = (value: Date | string) => {
   return new Date(value).toISOString().slice(0, 10);
-}
+};
 
-function nextPlaceholderIndex(index: number) {
+const nextPlaceholderIndex = (index: number) => {
   return (index + 1) % tripPlaceholderSets.length;
-}
+};
 
 export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
   const router = useRouter();
@@ -62,15 +62,15 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
     defaultValues: { name: '', category: '', address: '', url: '', notes: '' },
   });
 
-  async function refresh() {
+  const refresh = async () => {
     router.refresh();
-  }
+  };
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-6 py-10">
+    <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-viewportPadding py-10">
       <Link
         href="/trips"
-        className="inline-flex w-fit items-center gap-2 text-sm font-semibold text-primary no-underline"
+        className="inline-flex w-fit items-center gap-2 text-sm font-bold text-primary no-underline transition hover:text-secondary"
       >
         <ArrowLeft className="size-4" />
         Back to trips
@@ -78,7 +78,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
 
       <TripHeader trip={trip} onDelete={() => deleteTrip(trip.slug).then(() => router.push('/trips'))} />
 
-      <section className="grid gap-6 lg:grid-cols-[1fr_1.2fr]">
+      <section className="grid gap-6 lg:grid-cols-[0.95fr_1.25fr]">
         <TripOverviewSection
           form={overviewForm}
           placeholders={tripPlaceholderSets[overviewPlaceholderIndex]}

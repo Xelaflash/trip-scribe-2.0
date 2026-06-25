@@ -22,8 +22,8 @@ export const TripNotesSection = ({
   onRefresh: () => void;
 }) => {
   return (
-    <article className="rounded-lg border bg-card p-6 shadow-sm">
-      <h2 className="m-0 flex items-center gap-2 text-xl font-semibold">
+    <article className="rounded-lg border border-border bg-card p-6 shadow-elevationLow">
+      <h2 className="m-0 flex items-center gap-2 text-xl font-bold text-primary-950">
         <NotebookPen className="size-5 text-primary" />
         Notes
       </h2>
@@ -54,11 +54,16 @@ export const TripNotesSection = ({
         </form>
       </Form>
       <div className="mt-5 grid gap-3">
+        {trip.notes.length === 0 ? (
+          <p className="rounded-md border border-dashed border-border bg-muted p-4 text-sm text-muted-foreground">
+            No notes yet.
+          </p>
+        ) : null}
         {trip.notes.map((note) => (
-          <div key={note.id} className="rounded-md border p-3">
+          <div key={note.id} className="rounded-md border border-border bg-white p-3">
             <div className="flex justify-between gap-3">
               <div>
-                <h3 className="m-0 text-base font-semibold">{note.title}</h3>
+                <h3 className="m-0 text-base font-bold text-primary-950">{note.title}</h3>
                 <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{note.content}</p>
               </div>
               <Button
