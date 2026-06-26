@@ -10,19 +10,16 @@ const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  // Clear existing data first
-  await prisma.trip.deleteMany();
-  await prisma.user.deleteMany();
-
-  // Create users
-  await prisma.user.createMany({
-    data: users,
-  });
-
-  // Create trips
-  await prisma.trip.createMany({
-    data: trips,
-  });
+  await prisma.$transaction([
+    prisma.trip.deleteMany(),
+    prisma.user.deleteMany(),
+    prisma.user.createMany({
+      data: users,
+    }),
+    prisma.trip.createMany({
+      data: trips,
+    }),
+  ]);
 }
 
 main()

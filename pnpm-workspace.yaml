@@ -5,3 +5,10 @@ allowBuilds:
   prisma: true
   sharp: true
   unrs-resolver: true
+# minimumReleaseAge: 10080 # 7 days
+minimumReleaseAge: 2880 # 2 days
+minimumReleaseAgeExclude:
+  - '@typescript-eslint/*'
+  - '@playwright/*'
+  - '@tanstack/*'
+  - '@types/node'

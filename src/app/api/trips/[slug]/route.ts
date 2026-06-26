@@ -8,8 +8,7 @@ type RouteContext = {
 };
 
 export async function GET(_request: Request, context: RouteContext) {
-  const { slug } = await context.params;
-  const session = await requireUserSession();
+  const [{ slug }, session] = await Promise.all([context.params, requireUserSession()]);
 
   const trip = await prisma.trip.findUnique({
     where: { slug },

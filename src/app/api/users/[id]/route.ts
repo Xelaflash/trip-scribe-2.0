@@ -24,8 +24,7 @@ export async function GET(_request: Request, context: RouteContext) {
 }
 
 export async function PATCH(request: Request, context: RouteContext) {
-  const { id } = await context.params;
-  const json = await request.json();
+  const [{ id }, json] = await Promise.all([context.params, request.json()]);
 
   const updatedUser = await prisma.user.update({
     where: { id },
