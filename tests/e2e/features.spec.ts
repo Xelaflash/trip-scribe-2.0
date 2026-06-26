@@ -1,14 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { Visibility } from '../../generated/prisma';
-import { cleanupTestData, createTestTrip, createTestUser, expectForbiddenMutation, signInAs } from './helpers';
-
-test.beforeEach(async () => {
-  await cleanupTestData();
-});
-
-test.afterAll(async () => {
-  await cleanupTestData();
-});
+import { createTestTrip, createTestUser, expectForbiddenMutation, signInAs, uniqueId } from './helpers';
 
 test('owner can create, update, and delete trips', async ({ browser }) => {
   const owner = await createTestUser('owner-trip-crud');
@@ -51,7 +43,7 @@ test('owner can create, update, and delete trips', async ({ browser }) => {
 test('non-owner cannot mutate another user trip', async ({ browser }) => {
   const owner = await createTestUser('owner-protected');
   const nonOwner = await createTestUser('non-owner-protected');
-  const trip = await createTestTrip({ userId: owner.id, slug: `test-protected-${Date.now()}` });
+  const trip = await createTestTrip({ userId: owner.id, slug: `test-protected-${uniqueId()}` });
   const context = await signInAs(browser, nonOwner.email);
   const api = context.request;
 
@@ -70,7 +62,7 @@ test('non-owner cannot mutate another user trip', async ({ browser }) => {
 
 test('itinerary, notes, and places support CRUD', async ({ browser }) => {
   const owner = await createTestUser('owner-items-crud');
-  const trip = await createTestTrip({ userId: owner.id, slug: `test-items-${Date.now()}` });
+  const trip = await createTestTrip({ userId: owner.id, slug: `test-items-${uniqueId()}` });
   const context = await signInAs(browser, owner.email);
   const api = context.request;
 
@@ -131,12 +123,12 @@ test('private share URL is inaccessible and public share URL is read-only', asyn
   const privateTrip = await createTestTrip({
     userId: owner.id,
     visibility: Visibility.PRIVATE,
-    slug: `test-private-share-${Date.now()}`,
+    slug: `test-private-share-${uniqueId()}`,
   });
   const publicTrip = await createTestTrip({
     userId: owner.id,
     visibility: Visibility.PUBLIC,
-    slug: `test-public-share-${Date.now()}`,
+    slug: `test-public-share-${uniqueId()}`,
   });
 
   const privateResponse = await page.request.get(`/share/${privateTrip.slug}`);

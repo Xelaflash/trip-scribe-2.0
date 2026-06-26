@@ -1,5 +1,5 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-import { expect, request, type APIRequestContext, type Browser } from '@playwright/test';
+import { expect, request, test, type APIRequestContext, type Browser } from '@playwright/test';
 import { config } from 'dotenv';
 import { PrismaClient, Role, Visibility } from '../../generated/prisma';
 
@@ -15,7 +15,7 @@ if (!databaseUrl) {
 const adapter = new PrismaPg({ connectionString: databaseUrl });
 export const prisma = new PrismaClient({ adapter });
 
-export const uniqueId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+export const uniqueId = () => `${test.info().workerIndex}-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
 
 export const createTestUser = async (label: string) => {
   const id = uniqueId();

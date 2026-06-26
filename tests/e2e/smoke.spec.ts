@@ -1,14 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { Visibility } from '../../generated/prisma';
-import { cleanupTestData, createTestTrip, createTestUser, signInAs } from './helpers';
-
-test.beforeEach(async () => {
-  await cleanupTestData();
-});
-
-test.afterAll(async () => {
-  await cleanupTestData();
-});
+import { createTestTrip, createTestUser, signInAs, uniqueId } from './helpers';
 
 test('landing page renders MVP copy', async ({ page }) => {
   await page.goto('/');
@@ -35,7 +27,7 @@ test('protected dashboard redirects anonymous users to sign-in', async ({ page }
 
 test('owner trip detail renders planning sections', async ({ browser }) => {
   const owner = await createTestUser('owner-smoke');
-  const trip = await createTestTrip({ userId: owner.id, slug: `test-owner-smoke-${Date.now()}` });
+  const trip = await createTestTrip({ userId: owner.id, slug: `test-owner-smoke-${uniqueId()}` });
   const context = await signInAs(browser, owner.email);
   const page = await context.newPage();
 
@@ -55,7 +47,7 @@ test('public trip page renders read-only content', async ({ page }) => {
   const trip = await createTestTrip({
     userId: owner.id,
     visibility: Visibility.PUBLIC,
-    slug: `test-public-smoke-${Date.now()}`,
+    slug: `test-public-smoke-${uniqueId()}`,
   });
 
   await page.goto(`/share/${trip.slug}`);

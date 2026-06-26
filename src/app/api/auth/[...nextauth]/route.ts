@@ -11,6 +11,7 @@ const isE2eTestAuthEnabled = process.env.E2E_TEST_AUTH === '1';
 export const authOptions: NextAuthOptions = {
   secret: process.env.NEXTAUTH_SECRET as string,
   adapter: PrismaAdapter(prisma) as NextAuthOptions['adapter'],
+  ...(isE2eTestAuthEnabled ? { session: { strategy: 'jwt' } as const } : {}),
   providers: [
     ...(isE2eTestAuthEnabled
       ? [
@@ -65,9 +66,9 @@ export const authOptions: NextAuthOptions = {
     newUser: '/auth/new-user',
   },
   callbacks: {
-    session: async ({ session, user }) => {
+    session: async ({ session, token, user }) => {
       if (session?.user) {
-        session.user.id = user.id;
+        session.user.id = user?.id ?? token.sub ?? '';
       }
       return session;
     },
