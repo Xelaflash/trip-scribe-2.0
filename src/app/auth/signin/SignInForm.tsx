@@ -16,6 +16,13 @@ const formSchema = z.object({
   }),
 });
 
+const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+  await signIn('email', {
+    email: data.email,
+    callbackUrl: '/trips',
+  });
+};
+
 const SignInForm = () => {
   const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
@@ -25,13 +32,6 @@ const SignInForm = () => {
     },
   });
   const isEmailSubmitting = form.formState.isSubmitting;
-
-  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
-    await signIn('email', {
-      email: data.email,
-      callbackUrl: '/trips',
-    });
-  };
 
   const handleGoogleSignIn = async () => {
     setIsGoogleSubmitting(true);
