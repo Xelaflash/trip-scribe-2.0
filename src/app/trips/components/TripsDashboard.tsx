@@ -107,7 +107,12 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
-              <form className="grid gap-4" onSubmit={form.handleSubmit((values) => createMutation.mutate(values))}>
+              <form
+                className="grid gap-4"
+                onSubmit={form.handleSubmit(async (values) => {
+                  await createMutation.mutateAsync(values);
+                })}
+              >
                 <FormField
                   control={form.control}
                   name="title"
@@ -192,7 +197,7 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
                   />
                 </div>
                 <Button type="submit" disabled={createMutation.isPending}>
-                  Create trip
+                  {createMutation.isPending ? 'Creating trip...' : 'Create trip'}
                 </Button>
               </form>
             </Form>

@@ -1,6 +1,7 @@
 'use client';
 import { signIn } from 'next-auth/react';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
@@ -16,18 +17,25 @@ const formSchema = z.object({
 });
 
 const SignInForm = () => {
+  const [isGoogleSubmitting, setIsGoogleSubmitting] = useState(false);
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
     },
   });
+  const isEmailSubmitting = form.formState.isSubmitting;
 
-  const handleSubmit = (data: z.infer<typeof formSchema>) => {
-    signIn('email', {
+  const handleSubmit = async (data: z.infer<typeof formSchema>) => {
+    await signIn('email', {
       email: data.email,
       callbackUrl: '/trips',
     });
+  };
+
+  const handleGoogleSignIn = async () => {
+    setIsGoogleSubmitting(true);
+    await signIn('google', { callbackUrl: '/trips' });
   };
 
   return (
@@ -35,7 +43,8 @@ const SignInForm = () => {
       <button
         type="button"
         className="my-4 flex w-full items-center justify-center gap-3 rounded-md border border-border bg-white p-4 font-bold text-foreground shadow-xs transition hover:bg-primary-50"
-        onClick={() => signIn('google', { callbackUrl: '/trips' })}
+        disabled={isGoogleSubmitting || isEmailSubmitting}
+        onClick={handleGoogleSignIn}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
           <title>Google icon</title>
@@ -56,7 +65,7 @@ const SignInForm = () => {
             d="M5.27698177,14.2678769 C5.03832634,13.556323 4.90909091,12.7937589 4.90909091,12 C4.90909091,11.2182781 5.03443647,10.4668121 5.26620003,9.76452941 L1.23999023,6.65002441 C0.43658717,8.26043162 0,10.0753848 0,12 C0,13.9195484 0.444780743,15.7301709 1.23746264,17.3349879 L5.27698177,14.2678769 Z"
           />
         </svg>
-        Sign in with Google
+        {isGoogleSubmitting ? 'Opening Google...' : 'Sign in with Google'}
       </button>
       <div className="my-5 flex items-center gap-3 text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase">
         <span className="h-px flex-1 bg-border" />
@@ -78,8 +87,8 @@ const SignInForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full">
-            Sign In
+          <Button type="submit" className="w-full" disabled={isEmailSubmitting || isGoogleSubmitting}>
+            {isEmailSubmitting ? 'Sending link...' : 'Sign In'}
           </Button>
         </form>
       </Form>

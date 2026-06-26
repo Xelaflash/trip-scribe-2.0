@@ -29,6 +29,8 @@ export const TripPlacesSection = ({
   });
 
   const editingPlace = trip.places.find((place) => place.id === editingPlaceId);
+  const isCreating = form.formState.isSubmitting;
+  const isUpdating = editForm.formState.isSubmitting;
 
   const openEditDialog = (place: TripWithDetails['places'][number]) => {
     editForm.reset({
@@ -83,9 +85,9 @@ export const TripPlacesSection = ({
             name="notes"
             render={({ field }) => <Textarea placeholder="Why save this place?" {...field} />}
           />
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" disabled={isCreating}>
             <Plus />
-            Add place
+            {isCreating ? 'Adding place...' : 'Add place'}
           </Button>
         </form>
       </Form>
@@ -177,7 +179,9 @@ export const TripPlacesSection = ({
                 name="notes"
                 render={({ field }) => <Textarea placeholder="Why save this place?" {...field} />}
               />
-              <Button type="submit">Save place</Button>
+              <Button type="submit" disabled={isUpdating}>
+                {isUpdating ? 'Saving place...' : 'Save place'}
+              </Button>
             </form>
           </Form>
         </DialogContent>

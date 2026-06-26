@@ -46,6 +46,8 @@ export const TripItinerarySection = ({
   });
 
   const editingItem = trip.itineraryItems.find((item) => item.id === editingItemId);
+  const isCreating = form.formState.isSubmitting;
+  const isUpdating = editForm.formState.isSubmitting;
 
   const openEditDialog = (item: TripWithDetails['itineraryItems'][number]) => {
     editForm.reset({
@@ -106,9 +108,9 @@ export const TripItinerarySection = ({
             name="description"
             render={({ field }) => <Textarea placeholder={placeholders.itineraryDescription} {...field} />}
           />
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" disabled={isCreating}>
             <Plus />
-            Add itinerary item
+            {isCreating ? 'Adding item...' : 'Add itinerary item'}
           </Button>
         </form>
       </Form>
@@ -201,7 +203,9 @@ export const TripItinerarySection = ({
                 name="description"
                 render={({ field }) => <Textarea placeholder={placeholders.itineraryDescription} {...field} />}
               />
-              <Button type="submit">Save itinerary item</Button>
+              <Button type="submit" disabled={isUpdating}>
+                {isUpdating ? 'Saving item...' : 'Save itinerary item'}
+              </Button>
             </form>
           </Form>
         </DialogContent>

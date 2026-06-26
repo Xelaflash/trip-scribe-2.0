@@ -34,6 +34,8 @@ export const TripNotesSection = ({
   });
 
   const editingNote = trip.notes.find((note) => note.id === editingNoteId);
+  const isCreating = form.formState.isSubmitting;
+  const isUpdating = editForm.formState.isSubmitting;
 
   const openEditDialog = (note: TripWithDetails['notes'][number]) => {
     editForm.reset({
@@ -69,9 +71,9 @@ export const TripNotesSection = ({
             name="content"
             render={({ field }) => <Textarea placeholder={placeholders.noteContent} {...field} />}
           />
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" disabled={isCreating}>
             <Plus />
-            Add note
+            {isCreating ? 'Adding note...' : 'Add note'}
           </Button>
         </form>
       </Form>
@@ -139,7 +141,9 @@ export const TripNotesSection = ({
                 name="content"
                 render={({ field }) => <Textarea placeholder={placeholders.noteContent} {...field} />}
               />
-              <Button type="submit">Save note</Button>
+              <Button type="submit" disabled={isUpdating}>
+                {isUpdating ? 'Saving note...' : 'Save note'}
+              </Button>
             </form>
           </Form>
         </DialogContent>
