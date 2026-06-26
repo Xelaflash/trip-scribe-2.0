@@ -12,7 +12,6 @@ As a user,
 8. ✅ I want to be able to delete my trip, itinerary items, notes, and places so that I can remove information that is no longer relevant.
 9. ✅ I want to be able to sign in and manage my trips securely so that my personal travel information is protected.
 10. ✅ I want to be able to view a list of all my trips so that I can easily access and manage them.
-
 11. I want to be able to search and filter my trips, itinerary items, notes, and places so that I can quickly find specific information.
 12. I want to be able to to change visibility settings for my trips so that I can control who can view them.
 
