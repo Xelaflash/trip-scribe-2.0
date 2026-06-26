@@ -30,13 +30,13 @@ const highlights = [
 const Home = () => {
   return (
     <>
-      <section className="-mt-headerHeight min-h-[72vh] bg-[linear-gradient(90deg,hsl(171deg_60%_12%/0.86),hsl(171deg_60%_12%/0.44)),url('/homeBg.jpg')] bg-cover bg-center">
-        <div className="flex min-h-[72vh] items-center px-viewportPadding pt-[calc(var(--header-height)+3rem)] pb-12">
+      <section className="-mt-headerHeight min-h-[78vh] bg-[linear-gradient(90deg,hsl(171deg_68%_8%/0.9),hsl(171deg_60%_12%/0.58),hsl(22deg_88%_55%/0.18)),url('/homeBg.jpg')] bg-cover bg-center">
+        <div className="flex min-h-[78vh] items-center px-viewportPadding pt-[calc(var(--header-height)+3rem)] pb-16">
           <div className="w-full max-w-176 text-white">
-            <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
+            <p className="m-0 text-xs font-extrabold tracking-[0.12em] text-secondary uppercase">
               Travel planning, written clearly
             </p>
-            <h1 className="mt-2.5 mb-0 text-[3.3rem] leading-[0.92] text-white min-[861px]:text-[clamp(3rem,8vw,6.5rem)]">
+            <h1 className="mt-3 mb-0 text-[3.3rem] leading-[0.92] text-white min-[861px]:text-[clamp(3rem,8vw,6.5rem)]">
               {SITE_TITLE}
             </h1>
             <p className="mt-5 max-w-xl text-xl text-white/90">
@@ -55,13 +55,13 @@ const Home = () => {
         </div>
       </section>
 
-      <section className="bg-surface px-viewportPadding py-16">
+      <section className="border-y border-border bg-surface px-viewportPadding py-16">
         <div className="mx-auto grid w-full max-w-280 gap-8">
           <div>
-            <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
+            <p className="m-0 text-xs font-extrabold tracking-[0.12em] text-secondary uppercase">
               Built for the first useful version
             </p>
-            <h2 className="mt-1.5 mb-0 max-w-2xl text-[clamp(2rem,4vw,3rem)] leading-none">
+            <h2 className="mt-2 mb-0 max-w-2xl text-[clamp(2rem,4vw,3rem)] leading-none text-primary-950">
               Everything needed to get from idea to shared trip
             </h2>
           </div>
@@ -71,10 +71,12 @@ const Home = () => {
               return (
                 <article
                   key={item.title}
-                  className="min-h-56 rounded-lg border border-border bg-white p-5 shadow-(--shadow-elevation-low)"
+                  className="min-h-56 rounded-lg border border-border bg-white p-5 shadow-elevationLow"
                 >
-                  <Icon className="size-8 text-primary " />
-                  <h3 className="mt-2 text-lg ">{item.title}</h3>
+                  <div className="flex size-11 items-center justify-center rounded-md bg-primary-50 text-primary">
+                    <Icon className="size-6" />
+                  </div>
+                  <h3 className="mt-4 text-lg text-primary-950">{item.title}</h3>
                   <p className="mt-2 text-muted-foreground">{item.text}</p>
                 </article>
               );
@@ -85,10 +87,10 @@ const Home = () => {
 
       <section className="mx-auto grid w-full max-w-280 grid-cols-1 items-center gap-12 px-viewportPadding py-16 min-[861px]:grid-cols-[0.9fr_1fr]">
         <div>
-          <p className="m-0 text-[0.78rem] font-extrabold tracking-[0.12em] text-secondary uppercase">
-            Simple workflow
-          </p>
-          <h2 className="mt-1.5 mb-0 max-w-2xl text-[clamp(2rem,4vw,3rem)] leading-none">Create, organize, publish</h2>
+          <p className="m-0 text-xs font-extrabold tracking-[0.12em] text-secondary uppercase">Simple workflow</p>
+          <h2 className="mt-2 mb-0 max-w-2xl text-[clamp(2rem,4vw,3rem)] leading-none text-primary-950">
+            Create, organize, publish
+          </h2>
           <p className="mt-4 max-w-xl text-lg text-muted-foreground">
             Start with the trip basics, add itinerary items as plans firm up, keep notes and places close by, then
             switch the trip to public when it is ready to share.

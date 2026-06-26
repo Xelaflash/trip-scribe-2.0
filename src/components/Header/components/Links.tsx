@@ -75,7 +75,6 @@ const Links = () => {
 
   return (
     <ul className="hidden list-none items-center gap-[clamp(1rem,4vw,2.75rem)] p-0 min-[761px]:flex">
-      {}
       {links.map((link, index) => (
         <motion.li
           key={link.name}
@@ -87,7 +86,7 @@ const Links = () => {
         >
           <Link
             href={link.href}
-            className="text-[0.98rem] font-bold no-underline"
+            className="text-sm font-bold no-underline"
             style={{
               color: isHovering && hoveredIndex === index ? 'var(--color-secondary)' : 'inherit',
               transition: 'color 0.3s ease-in-out',

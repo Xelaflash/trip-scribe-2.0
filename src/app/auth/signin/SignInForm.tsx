@@ -31,10 +31,10 @@ const SignInForm = () => {
   };
 
   return (
-    <>
+    <div className="mt-6">
       <button
         type="button"
-        className="border border-gray-300 p-4 rounded-md w-full my-4 flex items-center gap-20 font-medium hover:bg-slate-100"
+        className="my-4 flex w-full items-center justify-center gap-3 rounded-md border border-border bg-white p-4 font-bold text-foreground shadow-xs transition hover:bg-primary-50"
         onClick={() => signIn('google', { callbackUrl: '/trips' })}
       >
         <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
@@ -58,7 +58,11 @@ const SignInForm = () => {
         </svg>
         Sign in with Google
       </button>
-      <p className="divider">or</p>
+      <div className="my-5 flex items-center gap-3 text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase">
+        <span className="h-px flex-1 bg-border" />
+        or
+        <span className="h-px flex-1 bg-border" />
+      </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
           <FormField
@@ -74,12 +78,12 @@ const SignInForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full text-lg py-7 hover:opacity-95">
+          <Button type="submit" className="w-full">
             Sign In
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 };
 
