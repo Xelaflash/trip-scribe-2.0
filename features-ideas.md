@@ -15,3 +15,8 @@ As a user,
 
 11. I want to be able to search and filter my trips, itinerary items, notes, and places so that I can quickly find specific information.
 12. I want to be able to to change visibility settings for my trips so that I can control who can view them.
+
+## TODO:
+
+[ ] create a new logo
+[ ] redesign landing page and trips view
