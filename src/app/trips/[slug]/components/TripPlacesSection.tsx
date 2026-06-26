@@ -1,11 +1,17 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Edit3, MapPin, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormField } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import type { PlaceForm } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
+import { placeSchema, type PlaceForm, type PlaceFormValues } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import type { TripWithDetails } from '@/queries/tripQueries';
-import { createPlace, deletePlace } from '@/queries/tripQueries';
-import { MapPin, Plus, Trash2 } from 'lucide-react';
+import { createPlace, deletePlace, updatePlace } from '@/queries/tripQueries';
 
 export const TripPlacesSection = ({
   form,
@@ -16,6 +22,25 @@ export const TripPlacesSection = ({
   trip: TripWithDetails;
   onRefresh: () => void;
 }) => {
+  const [editingPlaceId, setEditingPlaceId] = useState<string | null>(null);
+  const editForm = useForm<PlaceFormValues>({
+    resolver: zodResolver(placeSchema),
+    defaultValues: { name: '', category: '', address: '', url: '', notes: '' },
+  });
+
+  const editingPlace = trip.places.find((place) => place.id === editingPlaceId);
+
+  const openEditDialog = (place: TripWithDetails['places'][number]) => {
+    editForm.reset({
+      name: place.name,
+      category: place.category ?? '',
+      address: place.address ?? '',
+      url: place.url ?? '',
+      notes: place.notes ?? '',
+    });
+    setEditingPlaceId(place.id);
+  };
+
   return (
     <article className="rounded-lg border border-border bg-card p-6 shadow-elevationLow">
       <h2 className="m-0 flex items-center gap-2 text-xl font-bold text-primary-950">
@@ -87,6 +112,15 @@ export const TripPlacesSection = ({
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label={`Edit ${place.name}`}
+                onClick={() => openEditDialog(place)}
+              >
+                <Edit3 />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Delete ${place.name}`}
                 onClick={async () => {
                   await deletePlace(trip.slug, place.id);
                   onRefresh();
@@ -98,6 +132,56 @@ export const TripPlacesSection = ({
           </div>
         ))}
       </div>
+      <Dialog open={!!editingPlace} onOpenChange={(open) => !open && setEditingPlaceId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit place</DialogTitle>
+          </DialogHeader>
+          <Form {...editForm}>
+            <form
+              className="grid gap-3"
+              onSubmit={editForm.handleSubmit(async (values) => {
+                if (!editingPlace) {
+                  return;
+                }
+
+                await updatePlace(trip.slug, editingPlace.id, values);
+                setEditingPlaceId(null);
+                onRefresh();
+              })}
+            >
+              <div className="grid gap-3 md:grid-cols-2">
+                <FormField
+                  control={editForm.control}
+                  name="name"
+                  render={({ field }) => <Input placeholder="Cafe name" {...field} />}
+                />
+                <FormField
+                  control={editForm.control}
+                  name="category"
+                  render={({ field }) => <Input placeholder="Cafe, landmark, hotel..." {...field} />}
+                />
+              </div>
+              <FormField
+                control={editForm.control}
+                name="address"
+                render={({ field }) => <Input placeholder="Address" {...field} />}
+              />
+              <FormField
+                control={editForm.control}
+                name="url"
+                render={({ field }) => <Input placeholder="https://..." {...field} />}
+              />
+              <FormField
+                control={editForm.control}
+                name="notes"
+                render={({ field }) => <Textarea placeholder="Why save this place?" {...field} />}
+              />
+              <Button type="submit">Save place</Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </article>
   );
 };

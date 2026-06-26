@@ -12,7 +12,7 @@ Implemented:
 - Owner trip detail pages at `/trips/[slug]`.
 - Read-only public sharing at `/share/[slug]` for public trips.
 - Trip CRUD with server-side slug generation and Zod validation.
-- Itinerary item, note, and place create/delete flows.
+- Itinerary item, note, and place CRUD flows.
 - Prisma 7 schema with PostgreSQL driver adapter.
 - ESLint, Prettier, Husky, and lint-staged quality gates.
 
