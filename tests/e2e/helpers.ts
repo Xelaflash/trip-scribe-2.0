@@ -66,7 +66,7 @@ export const cleanupTestData = async () => {
 };
 
 export const signInAs = async (browser: Browser, email: string) => {
-  const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3000';
+  const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3100';
   const authRequest = await request.newContext({ baseURL });
   const csrfResponse = await authRequest.get('/api/auth/csrf');
   expect(csrfResponse.ok()).toBe(true);

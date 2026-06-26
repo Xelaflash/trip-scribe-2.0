@@ -1,7 +1,8 @@
 import { defineConfig, devices } from '@playwright/test';
 
 const e2eDatabaseUrl = process.env.E2E_DATABASE_URL;
-const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3000';
+const baseURL = process.env.PLAYWRIGHT_BASE_URL ?? 'http://127.0.0.1:3100';
+const appUrl = new URL(baseURL);
 
 if (!e2eDatabaseUrl) {
   throw new Error('E2E_DATABASE_URL is required for Playwright tests. Use a disposable test database.');
@@ -20,9 +21,9 @@ export default defineConfig({
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'pnpm dev',
+    command: `./node_modules/.bin/next dev --turbopack --hostname ${appUrl.hostname} --port ${appUrl.port || '3100'}`,
     url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    reuseExistingServer: false,
     env: {
       E2E_TEST_AUTH: '1',
       NEXTAUTH_URL: baseURL,
