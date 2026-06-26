@@ -45,6 +45,8 @@ const eslintConfig = [
       'dist/**',
       'build/**',
       'coverage/**',
+      'playwright-report/**',
+      'test-results/**',
       'generated/**',
       'next-env.d.ts',
       'payload-types.ts',

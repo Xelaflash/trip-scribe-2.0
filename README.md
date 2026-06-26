@@ -54,6 +54,12 @@ pnpm typecheck
 pnpm build
 ```
 
+Run Playwright against a disposable database only:
+
+```bash
+E2E_DATABASE_URL="postgresql://postgres:postgres@localhost:5432/trip_scribe_e2e" pnpm test:e2e
+```
+
 Seed the database:
 
 ```bash
