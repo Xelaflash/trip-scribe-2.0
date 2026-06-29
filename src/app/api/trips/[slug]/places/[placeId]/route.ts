@@ -15,19 +15,26 @@ export async function PATCH(request: Request, context: RouteContext) {
     return new NextResponse('Not found', { status: 404 });
   }
 
-  const payload = placeUpdateSchema.parse(await request.json());
-  const place = await prisma.tripPlace.update({
-    where: { id_tripId: { id: placeId, tripId: trip.id } },
-    data: {
-      ...payload,
-      category: payload.category === undefined ? undefined : payload.category || null,
-      address: payload.address === undefined ? undefined : payload.address || null,
-      url: payload.url === undefined ? undefined : payload.url || null,
-      notes: payload.notes === undefined ? undefined : payload.notes || null,
-    },
-  });
+  try {
+    const payload = placeUpdateSchema.parse(await request.json());
+    const place = await prisma.tripPlace.update({
+      where: { id_tripId: { id: placeId, tripId: trip.id } },
+      data: {
+        ...payload,
+        category: payload.category === undefined ? undefined : payload.category || null,
+        address: payload.address === undefined ? undefined : payload.address || null,
+        url: payload.url === undefined ? undefined : payload.url || null,
+        notes: payload.notes === undefined ? undefined : payload.notes || null,
+      },
+    });
 
-  return NextResponse.json(place);
+    return NextResponse.json(place);
+  } catch (error) {
+    if (error instanceof Error) {
+      return new NextResponse(error.message, { status: 400 });
+    }
+    return new NextResponse('Internal server error', { status: 500 });
+  }
 }
 
 export async function DELETE(_request: Request, context: RouteContext) {
@@ -38,7 +45,11 @@ export async function DELETE(_request: Request, context: RouteContext) {
     return new NextResponse('Not found', { status: 404 });
   }
 
-  await prisma.tripPlace.delete({ where: { id_tripId: { id: placeId, tripId: trip.id } } });
+  try {
+    await prisma.tripPlace.delete({ where: { id_tripId: { id: placeId, tripId: trip.id } } });
+  } catch {
+    return new NextResponse('Not found', { status: 404 });
+  }
 
   return new NextResponse(null, { status: 204 });
 }

@@ -33,6 +33,7 @@ const tripFormSchema = z.object({
 
 type TripFormValues = z.infer<typeof tripFormSchema>;
 
+/** Renders the authenticated trip dashboard and handles create/delete trip mutations. */
 export const TripsDashboard = ({ userName }: { userName: string }) => {
   const router = useRouter();
   const queryClient = useQueryClient();
@@ -68,6 +69,11 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
       setOpen(false);
       form.reset();
       router.push(`/trips/${trip.slug}`);
+    },
+    onError: (error) => {
+      form.setError('title', {
+        message: error instanceof Error && error.message ? error.message : 'Could not create trip.',
+      });
     },
   });
 
@@ -107,7 +113,17 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
-              <form className="grid gap-4" onSubmit={form.handleSubmit((values) => createMutation.mutate(values))}>
+              <form
+                className="grid gap-4"
+                onSubmit={form.handleSubmit(async (values) => {
+                  form.clearErrors();
+                  try {
+                    await createMutation.mutateAsync(values);
+                  } catch {
+                    // createMutation.onError surfaces the failure in the form.
+                  }
+                })}
+              >
                 <FormField
                   control={form.control}
                   name="title"
@@ -192,7 +208,7 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
                   />
                 </div>
                 <Button type="submit" disabled={createMutation.isPending}>
-                  Create trip
+                  {createMutation.isPending ? 'Creating trip...' : 'Create trip'}
                 </Button>
               </form>
             </Form>

@@ -20,6 +20,8 @@ export const TripOverviewSection = ({
   onPlaceholderChange: () => void;
   onRefresh: () => void;
 }) => {
+  const isSubmitting = form.formState.isSubmitting;
+
   return (
     <article className="rounded-lg border border-border bg-card p-6 shadow-elevationLow">
       <h2 className="m-0 text-xl font-bold text-primary-950">Overview</h2>
@@ -123,7 +125,9 @@ export const TripOverviewSection = ({
               )}
             />
           </div>
-          <Button type="submit">Save overview</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving overview...' : 'Save overview'}
+          </Button>
         </form>
       </Form>
     </article>

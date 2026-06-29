@@ -31,6 +31,7 @@ const NewUserForm = () => {
       name: '',
     },
   });
+  const isSubmitting = form.formState.isSubmitting;
 
   const handleSubmit = async (values: z.infer<typeof newUserFormSchema>) => {
     const { name } = values;
@@ -62,7 +63,9 @@ const NewUserForm = () => {
               </FormItem>
             )}
           />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? 'Saving...' : 'Submit'}
+          </Button>
         </form>
       </Form>
     </>

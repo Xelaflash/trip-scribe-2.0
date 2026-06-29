@@ -1,12 +1,18 @@
+'use client';
+
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Edit3, NotebookPen, Plus, Trash2 } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Form, FormField } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import type { NoteForm } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
+import { noteSchema, type NoteForm, type NoteFormValues } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import type { TripPlaceholderSet } from '@/app/trips/[slug]/data/placeholders';
 import type { TripWithDetails } from '@/queries/tripQueries';
-import { createNote, deleteNote } from '@/queries/tripQueries';
-import { NotebookPen, Plus, Trash2 } from 'lucide-react';
+import { createNote, deleteNote, updateNote } from '@/queries/tripQueries';
 
 export const TripNotesSection = ({
   form,
@@ -21,6 +27,24 @@ export const TripNotesSection = ({
   onPlaceholderChange: () => void;
   onRefresh: () => void;
 }) => {
+  const [editingNoteId, setEditingNoteId] = useState<string | null>(null);
+  const editForm = useForm<NoteFormValues>({
+    resolver: zodResolver(noteSchema),
+    defaultValues: { title: '', content: '' },
+  });
+
+  const editingNote = trip.notes.find((note) => note.id === editingNoteId);
+  const isCreating = form.formState.isSubmitting;
+  const isUpdating = editForm.formState.isSubmitting;
+
+  const openEditDialog = (note: TripWithDetails['notes'][number]) => {
+    editForm.reset({
+      title: note.title,
+      content: note.content,
+    });
+    setEditingNoteId(note.id);
+  };
+
   return (
     <article className="rounded-lg border border-border bg-card p-6 shadow-elevationLow">
       <h2 className="m-0 flex items-center gap-2 text-xl font-bold text-primary-950">
@@ -47,9 +71,9 @@ export const TripNotesSection = ({
             name="content"
             render={({ field }) => <Textarea placeholder={placeholders.noteContent} {...field} />}
           />
-          <Button type="submit" size="sm">
+          <Button type="submit" size="sm" disabled={isCreating}>
             <Plus />
-            Add note
+            {isCreating ? 'Adding note...' : 'Add note'}
           </Button>
         </form>
       </Form>
@@ -69,6 +93,15 @@ export const TripNotesSection = ({
               <Button
                 variant="ghost"
                 size="icon"
+                aria-label={`Edit ${note.title}`}
+                onClick={() => openEditDialog(note)}
+              >
+                <Edit3 />
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label={`Delete ${note.title}`}
                 onClick={async () => {
                   await deleteNote(trip.slug, note.id);
                   onRefresh();
@@ -80,6 +113,41 @@ export const TripNotesSection = ({
           </div>
         ))}
       </div>
+      <Dialog open={!!editingNote} onOpenChange={(open) => !open && setEditingNoteId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit note</DialogTitle>
+          </DialogHeader>
+          <Form {...editForm}>
+            <form
+              className="grid gap-3"
+              onSubmit={editForm.handleSubmit(async (values) => {
+                if (!editingNote) {
+                  return;
+                }
+
+                await updateNote(trip.slug, editingNote.id, values);
+                setEditingNoteId(null);
+                onRefresh();
+              })}
+            >
+              <FormField
+                control={editForm.control}
+                name="title"
+                render={({ field }) => <Input placeholder={placeholders.noteTitle} {...field} />}
+              />
+              <FormField
+                control={editForm.control}
+                name="content"
+                render={({ field }) => <Textarea placeholder={placeholders.noteContent} {...field} />}
+              />
+              <Button type="submit" disabled={isUpdating}>
+                {isUpdating ? 'Saving note...' : 'Save note'}
+              </Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </article>
   );
 };
