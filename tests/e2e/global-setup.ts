@@ -34,6 +34,18 @@ const runPsqlQuiet = (databaseUrl: string, args: string[]) => {
   }
 };
 
+/** Runs psql with password auth from the connection URL and returns stdout for assertions. */
+const runPsqlOutput = (databaseUrl: string, args: string[]) => {
+  const url = new URL(databaseUrl);
+
+  return execFileSync('psql', args, {
+    env: {
+      ...process.env,
+      PGPASSWORD: decodeURIComponent(url.password),
+    },
+  });
+};
+
 const commandExists = (command: string) => {
   try {
     execFileSync('sh', ['-c', `command -v ${command}`], { stdio: 'ignore' });
@@ -211,7 +223,7 @@ const ensureDatabase = (databaseUrl: string) => {
 
   const databaseName = databaseNameFromUrl(databaseUrl);
   const maintenanceUrl = maintenanceDatabaseUrl(databaseUrl);
-  const databaseExists = execFileSync('psql', [
+  const databaseExists = runPsqlOutput(maintenanceUrl, [
     ...connectionArgsFor(maintenanceUrl),
     '--tuples-only',
     '--no-align',

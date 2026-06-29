@@ -33,9 +33,14 @@ const SignInForm = () => {
   });
   const isEmailSubmitting = form.formState.isSubmitting;
 
+  /** Starts Google sign-in while ensuring the loading state resets if redirect does not happen. */
   const handleGoogleSignIn = async () => {
     setIsGoogleSubmitting(true);
-    await signIn('google', { callbackUrl: '/trips' });
+    try {
+      await signIn('google', { callbackUrl: '/trips' });
+    } finally {
+      setIsGoogleSubmitting(false);
+    }
   };
 
   return (

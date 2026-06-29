@@ -18,12 +18,18 @@ import type { TripPlaceholderSet } from '@/app/trips/[slug]/data/placeholders';
 import type { TripWithDetails } from '@/queries/tripQueries';
 import { createItineraryItem, deleteItineraryItem, updateItineraryItem } from '@/queries/tripQueries';
 
+/** Formats a stored date for a datetime-local input without shifting the local wall-clock time. */
 const dateTimeInputValue = (value: Date | string | null) => {
   if (!value) {
     return '';
   }
 
-  return new Date(value).toISOString().slice(0, 16);
+  const date = new Date(value);
+  const pad = (part: number) => part.toString().padStart(2, '0');
+
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
+    date.getHours(),
+  )}:${pad(date.getMinutes())}`;
 };
 
 export const TripItinerarySection = ({
