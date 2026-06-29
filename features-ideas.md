@@ -15,6 +15,23 @@ As a user,
 11. I want to be able to search and filter my trips, itinerary items, notes, and places so that I can quickly find specific information.
 12. I want to be able to to change visibility settings for my trips so that I can control who can view them.
 
+I want to be able to drag/drop / reorganize itinerary items and places so that I can customize the order of my trip activities.
+I want ot toggle light/dark mode so that I can choose the visual theme that suits my preference.
+
+## NOT MVP Features
+
+13. I want to be able to add images and media to my trips, itinerary items, notes, and places so that I can enhance my travel documentation.
+14. I want to be able to receive notifications and reminders for upcoming trips and itinerary items so that I can stay organized and on schedule.
+15. I want to be able to collaborate with others on trip planning so that we can coordinate our travel plans effectively.
+16. I want to be able to integrate with external travel services and APIs (TO BE DEFINED WHICH) so that I can access additional travel information and resources.
+17. I want to be able to customize the appearance and layout (calendar view, timeline view, etc.) of my trip details so that I can personalize my travel documentation.
+
+Add a map for places and itinerary items so that I can visualize my travel route and locations.
+
+## TO CONFIRM
+
+17. I want to be able to customize the appearance and layout of my trip details so that I can personalize my travel documentation.
+
 ## TODO:
 
 [ ] create a new logo
