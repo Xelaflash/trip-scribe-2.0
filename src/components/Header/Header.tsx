@@ -14,7 +14,7 @@ const Header = () => {
 
   return (
     <header className="relative z-10 flex min-h-headerHeight w-full items-center justify-between border-b border-white/10 bg-primary-950/85 px-viewportPadding text-white shadow-elevationLow backdrop-blur-2xl">
-      <Logo />
+      <Logo withText={false} size="sm" />
       <Links />
       {!session ? (
         <Link

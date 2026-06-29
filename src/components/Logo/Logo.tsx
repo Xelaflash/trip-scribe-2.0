@@ -5,18 +5,38 @@ import { cn } from '@/lib/utils';
 
 type LogoProps = {
   mobileAlignment?: 'left' | 'center';
+  withText?: boolean;
+  size?: 'sm' | 'md' | 'lg';
 };
 
-const Logo = ({ mobileAlignment = 'left' }: LogoProps) => {
+const Logo = ({ mobileAlignment = 'left', withText = true, size = 'md' }: LogoProps) => {
+  const sizeClasses = {
+    sm: 'w-18',
+    md: 'w-48',
+    lg: 'w-64',
+  };
+
   return (
-    <Link
-      href="/"
-      className={cn(
-        'block text-xl font-semibold tracking-normal no-underline transition-[font-weight,transform] duration-300 will-change-transform sm:text-2xl',
-        mobileAlignment === 'center' && 'max-sm:text-center',
+    <Link href="/" className={cn(mobileAlignment === 'center' && 'max-sm:text-center')}>
+      {withText ? (
+        <Image
+          src="/logo_full.svg"
+          width={450}
+          height={300}
+          alt="Trip Scribe logo"
+          className={cn('size-auto', sizeClasses[size])}
+          loading="eager"
+        />
+      ) : (
+        <Image
+          src="/logo.svg"
+          width={200}
+          height={200}
+          alt="Trip Scribe logo"
+          className={cn('size-auto', sizeClasses[size])}
+          loading="eager"
+        />
       )}
-    >
-      <Image src="/logo.svg" width={150} height={100} alt="Trip Scribe logo" className="size-auto" loading="eager" />
     </Link>
   );
 };
