@@ -12,6 +12,7 @@ import './globals.css';
 // providers
 import TanStackProviders from '@/lib/tanStackProvider';
 import { AuthProvider } from '@/lib/authProvider';
+import { ThemeProvider } from '@/lib/themeProvider';
 
 // components
 import RespectMotionPreference from '@/components/RespectMotionPreference/RespectMotionPreference';
@@ -39,15 +40,17 @@ export const metadata: Metadata = {
 const RootLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <RespectMotionPreference>
-      <html lang="en">
+      <html lang="en" suppressHydrationWarning>
         <body className={clsx(mainFont.variable)}>
-          <AuthProvider>
-            <TanStackProviders>
-              <Header />
-              <main>{children}</main>
-              <Footer />
-            </TanStackProviders>
-          </AuthProvider>
+          <ThemeProvider>
+            <AuthProvider>
+              <TanStackProviders>
+                <Header />
+                <main>{children}</main>
+                <Footer />
+              </TanStackProviders>
+            </AuthProvider>
+          </ThemeProvider>
         </body>
       </html>
     </RespectMotionPreference>
