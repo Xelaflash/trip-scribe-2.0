@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 // libs
-import { Work_Sans } from 'next/font/google';
+import { Inter } from 'next/font/google';
 import clsx from 'clsx';
 
 // constants
@@ -19,18 +19,12 @@ import RespectMotionPreference from '@/components/RespectMotionPreference/Respec
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
 
-const mainFont = Work_Sans({
+export const mainFont = Inter({
   subsets: ['latin'],
-  display: 'fallback',
   weight: 'variable',
-  variable: '--font-work-sans',
+  variable: '--font-main',
+  display: 'swap',
 });
-// const mainFont = Raleway({
-//   subsets: ['latin'],
-//   display: 'fallback',
-//   weight: 'variable',
-//   variable: '--font-main',
-// });
 
 export const metadata: Metadata = {
   title: SITE_TITLE,

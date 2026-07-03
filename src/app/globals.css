@@ -81,8 +81,6 @@
 
 :root {
   color-scheme: light;
-  --font-main: var(--font-work-sans), sans-serif;
-  --font-heading: var(--font-work-sans), sans-serif;
   --radius: 0.5rem;
   --header-height: 5rem;
   --content-width: 55rem;
@@ -182,7 +180,14 @@ body {
   flex-direction: column;
   background: var(--body-background);
   color: hsl(var(--foreground));
-  font-family: var(--font-main);
+  font-family:
+    var(--font-main),
+    ui-sans-serif,
+    system-ui,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    sans-serif;
   line-height: 1.5;
   -webkit-font-smoothing: antialiased;
 }
@@ -216,7 +221,7 @@ h6 {
 h1,
 h2,
 h3 {
-  font-family: var(--font-heading), sans-serif;
+  font-family: var(--font-main), ui-sans-serif, system-ui, sans-serif;
   font-weight: 700;
   letter-spacing: 0;
 }
