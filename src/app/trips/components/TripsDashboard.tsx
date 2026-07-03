@@ -92,7 +92,7 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
       <section className="flex flex-col gap-5 rounded-lg border border-border bg-card p-6 shadow-elevationLow md:flex-row md:items-end md:justify-between">
         <div>
           <p className="text-xs font-extrabold tracking-[0.14em] text-secondary uppercase">Trip workspace</p>
-          <h1 className="mt-2 text-3xl font-bold text-primary-950">{userName}&apos;s trips</h1>
+          <h1 className="mt-2 text-3xl font-bold text-card-foreground">{userName}&apos;s trips</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             Plan upcoming travel, keep your itinerary organized, and publish a read-only trip page when it is ready to
             share.
@@ -197,7 +197,10 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
                       <FormItem>
                         <FormLabel>Visibility</FormLabel>
                         <FormControl>
-                          <select className="h-10 rounded-md border border-input bg-white px-3 text-sm" {...field}>
+                          <select
+                            className="h-10 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+                            {...field}
+                          >
                             <option value="PRIVATE">Private</option>
                             <option value="PUBLIC">Public</option>
                           </select>
@@ -218,7 +221,7 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
 
       <section className="rounded-lg border border-border bg-card p-4 shadow-elevationLow">
         <div className="mb-4 flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          <h2 className="m-0 text-xl font-bold text-primary-950">Your trips</h2>
+          <h2 className="m-0 text-xl font-bold text-card-foreground">Your trips</h2>
           <Input
             className="md:max-w-xs"
             placeholder="Filter trips..."
@@ -236,14 +239,14 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
           {filteredTrips.map((trip) => (
             <article
               key={trip.id}
-              className="flex flex-col gap-4 rounded-md border border-border bg-white p-4 transition hover:border-primary-200 hover:bg-primary-50/40 md:flex-row md:items-center md:justify-between"
+              className="flex flex-col gap-4 rounded-md border border-border bg-background p-4 transition hover:border-ring hover:bg-muted md:flex-row md:items-center md:justify-between"
             >
               <Link href={`/trips/${trip.slug}`} className="min-w-0 flex-1 no-underline">
                 <div className="flex items-center gap-2 text-sm text-muted-foreground">
                   {trip.visibility === 'PUBLIC' ? <Globe2 className="size-4" /> : <Lock className="size-4" />}
                   {trip.visibility.toLowerCase()}
                 </div>
-                <h3 className="m-0 mt-1 text-xl font-bold text-primary-950">{trip.title}</h3>
+                <h3 className="m-0 mt-1 text-xl font-bold text-foreground">{trip.title}</h3>
                 <p className="mt-1 text-sm text-muted-foreground">{trip.destinations.join(', ')}</p>
                 <p className="mt-2 flex items-center gap-2 text-sm text-muted-foreground">
                   <CalendarDays className="size-4" />

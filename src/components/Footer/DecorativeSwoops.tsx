@@ -1,6 +1,6 @@
 const DecorativeSwoops = () => {
   return (
-    <div className="absolute inset-0 size-full overflow-hidden bg-[repeating-linear-gradient(75deg,var(--stroke-color)_0px_var(--stroke-width),transparent_var(--stroke-width)_10px),var(--color-surface)] [--stroke-color:var(--color-map-line)] [--stroke-width:2px]">
+    <div className="absolute inset-0 size-full overflow-hidden bg-[repeating-linear-gradient(75deg,var(--stroke-color)_0px_var(--stroke-width),transparent_var(--stroke-width)_10px),var(--color-surface)] [--stroke-color:var(--color-route-line)] [--stroke-width:2px]">
       <Blocker />
     </div>
   );

@@ -12,7 +12,7 @@ export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete
             {trip.visibility === 'PUBLIC' ? <Globe2 className="size-4" /> : <Lock className="size-4" />}
             {trip.visibility === 'PUBLIC' ? 'Public share page enabled' : 'Private planning trip'}
           </div>
-          <h1 className="mt-2 text-3xl font-bold text-primary-950">{trip.title}</h1>
+          <h1 className="mt-2 text-3xl font-bold text-card-foreground">{trip.title}</h1>
           <p className="mt-2 max-w-2xl text-muted-foreground">
             {trip.description || 'Add a description to frame this trip.'}
           </p>

@@ -2,7 +2,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
 
-import { useState } from 'react';
 import { useSession } from 'next-auth/react';
 // libs
 import { motion } from 'framer-motion';
@@ -56,19 +55,6 @@ const linkHoverVariants: Variants = {
 };
 
 const Links = () => {
-  const [isHovering, setIsHovering] = useState(false);
-  const [hoveredIndex, setHoveredIndex] = useState(-1);
-
-  const handleMouseEnter = (index: number) => {
-    setIsHovering(true);
-    setHoveredIndex(index);
-  };
-
-  const handleMouseLeave = () => {
-    setIsHovering(false);
-    setHoveredIndex(-1);
-  };
-
   const { data: session } = useSession();
 
   const links = session ? userConnectedLinks : noUserLinks;
@@ -76,22 +62,8 @@ const Links = () => {
   return (
     <ul className="hidden list-none items-center gap-[clamp(1rem,4vw,2.75rem)] p-0 min-[761px]:flex">
       {links.map((link, index) => (
-        <motion.li
-          key={link.name}
-          className="cursor-pointer"
-          whileHover="hover"
-          initial="hidden"
-          onMouseEnter={() => handleMouseEnter(index)}
-          onMouseLeave={handleMouseLeave}
-        >
-          <Link
-            href={link.href}
-            className="text-sm font-bold no-underline"
-            style={{
-              color: isHovering && hoveredIndex === index ? 'var(--color-secondary)' : 'inherit',
-              transition: 'color 0.3s ease-in-out',
-            }}
-          >
+        <motion.li key={link.name} className="cursor-pointer" whileHover="hover" initial="hidden">
+          <Link href={link.href} className="text-sm font-bold no-underline transition-colors hover:text-secondary">
             {link.name}
             <motion.div
               className="relative mt-[0.1rem] h-[0.8rem]"

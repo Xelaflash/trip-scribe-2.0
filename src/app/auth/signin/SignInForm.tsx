@@ -47,7 +47,7 @@ const SignInForm = () => {
     <div className="mt-6">
       <button
         type="button"
-        className="my-4 flex w-full items-center justify-center gap-3 rounded-md border border-border bg-white p-4 font-bold text-foreground shadow-xs transition hover:bg-primary-50"
+        className="my-4 flex w-full items-center justify-center gap-3 rounded-md border border-border bg-background p-4 font-bold text-foreground shadow-xs transition hover:bg-muted"
         disabled={isGoogleSubmitting || isEmailSubmitting}
         onClick={handleGoogleSignIn}
       >

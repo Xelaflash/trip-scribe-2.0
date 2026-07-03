@@ -9,16 +9,16 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-primary text-primary-foreground shadow-elevationLow hover:bg-primary-800',
+        default: 'bg-primary text-primary-foreground shadow-elevationLow hover:bg-primary/90',
         destructive:
-          'bg-destructive text-white shadow-elevationLow hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40',
+          'bg-destructive text-destructive-foreground shadow-elevationLow hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40',
         outline:
-          'border border-border bg-white text-foreground shadow-xs hover:border-primary-200 hover:bg-primary-50 hover:text-primary-900 dark:border-input dark:bg-input/30 dark:hover:bg-input/50',
-        secondary: 'bg-surface-strong text-primary-950 shadow-xs hover:bg-sand',
-        ghost: 'hover:bg-primary-50 hover:text-primary-900 dark:hover:bg-accent/50',
+          'border border-border bg-card text-card-foreground shadow-xs hover:border-ring hover:bg-muted hover:text-foreground',
+        secondary: 'bg-surface-strong text-foreground shadow-xs hover:bg-muted',
+        ghost: 'hover:bg-muted hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
         orange:
-          'bg-secondary text-secondary-foreground shadow-elevationLow hover:bg-secondary-orange-dark focus-visible:ring-secondary/50',
+          'bg-secondary text-secondary-foreground shadow-elevationLow hover:bg-secondary/90 focus-visible:ring-secondary/50',
       },
       size: {
         default: 'h-10 px-4 py-2 has-[>svg]:px-3',

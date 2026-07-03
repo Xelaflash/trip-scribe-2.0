@@ -16,7 +16,7 @@ const Footer = () => {
             <Logo mobileAlignment="center" size="lg" />
           </div>
           <nav className="mt-10">
-            <h2 className="text-base font-extrabold text-primary-950">Links</h2>
+            <h2 className="text-base font-extrabold text-foreground">Links</h2>
             <ul className="mt-6 list-none space-y-2 p-0">
               <li>
                 <Link href="/todo" className="text-base no-underline">

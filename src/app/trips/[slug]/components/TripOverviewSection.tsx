@@ -24,7 +24,7 @@ export const TripOverviewSection = ({
 
   return (
     <article className="rounded-lg border border-border bg-card p-6 shadow-elevationLow">
-      <h2 className="m-0 text-xl font-bold text-primary-950">Overview</h2>
+      <h2 className="m-0 text-xl font-bold text-card-foreground">Overview</h2>
       <Form {...form}>
         <form
           className="mt-4 grid gap-4"
@@ -115,7 +115,10 @@ export const TripOverviewSection = ({
                 <FormItem>
                   <FormLabel>Visibility</FormLabel>
                   <FormControl>
-                    <select className="h-10 rounded-md border border-input bg-white px-3 text-sm" {...field}>
+                    <select
+                      className="h-10 rounded-md border border-input bg-background px-3 text-sm text-foreground"
+                      {...field}
+                    >
                       <option value="PRIVATE">Private</option>
                       <option value="PUBLIC">Public</option>
                     </select>

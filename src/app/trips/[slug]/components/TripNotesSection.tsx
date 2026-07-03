@@ -47,7 +47,7 @@ export const TripNotesSection = ({
 
   return (
     <article className="rounded-lg border border-border bg-card p-6 shadow-elevationLow">
-      <h2 className="m-0 flex items-center gap-2 text-xl font-bold text-primary-950">
+      <h2 className="m-0 flex items-center gap-2 text-xl font-bold text-card-foreground">
         <NotebookPen className="size-5 text-primary" />
         Notes
       </h2>
@@ -84,10 +84,10 @@ export const TripNotesSection = ({
           </p>
         ) : null}
         {trip.notes.map((note) => (
-          <div key={note.id} className="rounded-md border border-border bg-white p-3">
+          <div key={note.id} className="rounded-md border border-border bg-background p-3">
             <div className="flex justify-between gap-3">
               <div>
-                <h3 className="m-0 text-base font-bold text-primary-950">{note.title}</h3>
+                <h3 className="m-0 text-base font-bold text-foreground">{note.title}</h3>
                 <p className="mt-1 whitespace-pre-wrap text-sm text-muted-foreground">{note.content}</p>
               </div>
               <Button
