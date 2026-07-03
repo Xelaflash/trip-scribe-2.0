@@ -1,45 +1,36 @@
 'use client';
 
-import { Monitor, Moon, Sun } from 'lucide-react';
+import { Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useSyncExternalStore } from 'react';
 
-import { Toggle } from '@/components/ui/toggle';
-
-const themeModes = [
-  { value: 'system', label: 'Use system theme', icon: Monitor },
-  { value: 'light', label: 'Use light theme', icon: Sun },
-  { value: 'dark', label: 'Use dark theme', icon: Moon },
-] as const;
+const subscribeToMount = () => {
+  return () => {};
+};
 
 const ThemeModeToggle = () => {
-  const { setTheme, theme = 'system' } = useTheme();
+  const isMounted = useSyncExternalStore(
+    subscribeToMount,
+    () => true,
+    () => false,
+  );
+  const { resolvedTheme, setTheme } = useTheme();
+
+  const currentTheme = isMounted ? resolvedTheme : undefined;
+  const nextTheme = currentTheme === 'dark' ? 'light' : 'dark';
+  const Icon = nextTheme === 'dark' ? Moon : Sun;
+  const label = nextTheme === 'dark' ? 'Switch to dark theme' : 'Switch to light theme';
 
   return (
-    <div
-      className="flex items-center gap-1 rounded-md border border-border bg-card/70 p-1 text-card-foreground shadow-xs"
-      role="group"
-      aria-label="Theme mode"
+    <button
+      type="button"
+      className="inline-flex size-10 items-center justify-center rounded-full border border-border bg-card/70 shadow-xs transition hover:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-60 dark:hover:bg-ink-700"
+      aria-label={label}
+      disabled={!isMounted}
+      onClick={() => setTheme(nextTheme)}
     >
-      {themeModes.map((mode) => {
-        const Icon = mode.icon;
-
-        return (
-          <Toggle
-            key={mode.value}
-            size="sm"
-            aria-label={mode.label}
-            pressed={theme === mode.value}
-            onPressedChange={(isPressed) => {
-              if (isPressed) {
-                setTheme(mode.value);
-              }
-            }}
-          >
-            <Icon className="size-4" />
-          </Toggle>
-        );
-      })}
-    </div>
+      <Icon className="size-4" aria-hidden="true" color="var(--color-foreground)" />
+    </button>
   );
 };
 

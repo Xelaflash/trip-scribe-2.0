@@ -231,7 +231,6 @@ p {
 }
 
 a {
-  color: currentColor;
   text-underline-offset: 0.14em;
   transition:
     color 180ms ease,
