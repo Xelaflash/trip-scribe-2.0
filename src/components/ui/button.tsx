@@ -17,6 +17,10 @@ const buttonVariants = cva(
         secondary: 'bg-surface-strong text-foreground shadow-xs hover:bg-muted',
         ghost: 'hover:bg-muted hover:text-foreground',
         link: 'text-primary underline-offset-4 hover:underline',
+        gradient:
+          'rounded-full bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] text-[var(--button-primary-foreground)] shadow-[0_14px_30px_var(--button-primary-shadow)] hover:brightness-95',
+        orangeGradient:
+          'rounded-full bg-[linear-gradient(135deg,var(--button-orange-gradient-from),var(--button-orange-gradient-to))] text-[var(--button-orange-foreground)] shadow-elevationLow hover:brightness-95',
         orange:
           'bg-secondary text-secondary-foreground shadow-elevationLow hover:bg-secondary/90 focus-visible:ring-secondary/50',
       },
@@ -24,6 +28,7 @@ const buttonVariants = cva(
         default: 'h-10 px-4 py-2 has-[>svg]:px-3',
         sm: 'h-9 gap-1.5 px-3 has-[>svg]:px-2.5',
         lg: 'h-11 px-6 has-[>svg]:px-4',
+        pill: 'h-auto px-6 py-3 text-base font-extrabold',
         icon: 'size-10',
       },
     },

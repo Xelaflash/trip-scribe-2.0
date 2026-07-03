@@ -111,6 +111,17 @@
   --surface-strong: 34 45% 83%;
   --route-line: 160 64% 54%;
   --hero-foreground: 0 0% 100%;
+  --button-primary-gradient-from: #0d8067;
+  --button-primary-gradient-to: #14a982;
+  --button-primary-foreground: #ffffff;
+  --button-primary-shadow: rgb(18 121 99 / 0.26);
+  --button-orange-gradient-from: #ff7a3d;
+  --button-orange-gradient-to: #ffb35b;
+  --button-orange-foreground: #321000;
+  --landing-radial-mint: rgb(63 213 164 / 0.18);
+  --landing-radial-sky: rgb(53 168 255 / 0.12);
+  --landing-background-start: #fffaf2;
+  --landing-background-end: #f8efe0;
   --body-background:
     radial-gradient(circle at 6% 7%, hsl(160 64% 54% / 0.18), transparent 26%),
     radial-gradient(circle at 90% 12%, hsl(206 100% 60% / 0.12), transparent 23%),
@@ -144,6 +155,10 @@
   --surface: 175 66% 10%;
   --surface-strong: 174 71% 11%;
   --route-line: 160 64% 54%;
+  --landing-radial-mint: hsl(160 64% 54% / 0.14);
+  --landing-radial-sky: hsl(206 100% 60% / 0.1);
+  --landing-background-start: hsl(175 65% 7%);
+  --landing-background-end: hsl(175 66% 10%);
   --body-background:
     radial-gradient(circle at 15% 12%, hsl(160 64% 54% / 0.14), transparent 30%),
     radial-gradient(circle at 88% 20%, hsl(19 100% 62% / 0.1), transparent 24%),
@@ -222,8 +237,6 @@ h1,
 h2,
 h3 {
   font-family: var(--font-main), ui-sans-serif, system-ui, sans-serif;
-  font-weight: 700;
-  letter-spacing: 0;
 }
 
 p {
