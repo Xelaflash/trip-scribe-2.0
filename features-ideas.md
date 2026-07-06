@@ -34,5 +34,5 @@ Add a map for places and itinerary items so that I can visualize my travel route
 
 ## TODO:
 
-[ ] create a new logo
-[ ] redesign landing page and trips view
+[ ] Fix logo footer for darkmode
+[ ] change navbar hover pill color (use same as btns gradient green)
