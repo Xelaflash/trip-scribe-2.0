@@ -20,7 +20,7 @@ const authenticatedLinks = [
 ];
 
 const navLinkClass =
-  'rounded-full md:text-base px-6 py-3 text-sm lg:text-base font-[750] text-ink-700 no-underline transition hover:bg-ink-700 hover:text-primary-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:text-muted-foreground dark:hover:text-foreground';
+  'rounded-full md:text-base px-6 py-3 text-sm lg:text-base font-[750] text-ink-700 no-underline transition hover:bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] hover:text-[var(--button-primary-foreground)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:text-muted-foreground dark:hover:text-[var(--button-primary-foreground)]';
 
 const actionClass =
   'inline-flex min-h-12 items-center justify-center rounded-full border border-sand-100  px-6 py-3 text-sm lg:text-base font-bold text-ink-950 no-underline transition hover:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:border-sand-50 dark:text-muted-foreground dark:hover:text-foreground dark:hover:bg-ink-700';
@@ -82,7 +82,9 @@ const Header = () => {
             priority
           />
 
-          <span className="truncate text-lg lg:text-2xl font-black tracking-normal ml-2 text-ink-950">Trip Scribe</span>
+          <span className="truncate text-lg lg:text-2xl font-black tracking-normal ml-2 text-ink-950 dark:text-muted-foreground">
+            Trip Scribe
+          </span>
         </Link>
 
         <div className="flex min-w-0 items-center justify-end gap-2">
