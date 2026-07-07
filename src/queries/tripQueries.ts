@@ -25,6 +25,17 @@ export type TripWithDetails = Prisma.TripGetPayload<{
   };
 }>;
 
+export type TripSummary = Prisma.TripGetPayload<{
+  include: {
+    _count: {
+      select: {
+        itineraryItems: true;
+        notes: true;
+      };
+    };
+  };
+}>;
+
 async function requestJson<T>(input: RequestInfo | URL, init?: RequestInit) {
   const res = await fetch(input, {
     ...init,
@@ -46,7 +57,7 @@ async function requestJson<T>(input: RequestInfo | URL, init?: RequestInit) {
 }
 
 export async function getTrips() {
-  return requestJson<Trip[]>('/api/trips');
+  return requestJson<TripSummary[]>('/api/trips');
 }
 
 export async function getTrip(slug: string) {
