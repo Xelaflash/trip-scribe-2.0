@@ -31,6 +31,7 @@ export type TripSummary = Prisma.TripGetPayload<{
       select: {
         itineraryItems: true;
         notes: true;
+        places: true;
       };
     };
   };

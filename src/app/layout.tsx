@@ -18,6 +18,7 @@ import { ThemeProvider } from '@/lib/themeProvider';
 import RespectMotionPreference from '@/components/RespectMotionPreference/RespectMotionPreference';
 import Header from '@/components/Header/Header';
 import Footer from '@/components/Footer/Footer';
+import { Toaster } from '@/components/ui/sonner';
 
 export const mainFont = Inter({
   subsets: ['latin'],
@@ -42,6 +43,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
                 <Header />
                 <main>{children}</main>
                 <Footer />
+                <Toaster richColors position="bottom-right" />
               </TanStackProviders>
             </AuthProvider>
           </ThemeProvider>

@@ -3,11 +3,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { signOut, useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { Menu, X } from 'lucide-react';
 import { useState, useSyncExternalStore } from 'react';
 
 import ThemeModeToggle from '@/components/ThemeModeToggle/ThemeModeToggle';
+import { cn } from '@/lib/utils';
 
 const unauthenticatedLinks = [
   { name: 'How it works', href: '/#how-it-works' },
@@ -20,10 +21,15 @@ const authenticatedLinks = [
 ];
 
 const navLinkClass =
-  'rounded-full md:text-base px-6 py-3 text-sm lg:text-base font-[750] text-ink-700 no-underline transition hover:bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] hover:text-[var(--button-primary-foreground)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:text-muted-foreground dark:hover:text-[var(--button-primary-foreground)]';
+  'rounded-full md:text-base px-6 py-3 text-sm lg:text-base font-[750] text-ink-700 no-underline transition-colors duration-200 ease-out hover:bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] hover:text-[var(--button-primary-foreground)] focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:text-muted-foreground dark:hover:text-[var(--button-primary-foreground)]';
+
+const activeNavLinkClass =
+  'bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] text-[var(--button-primary-foreground)] dark:text-[var(--button-primary-foreground)]';
 
 const actionClass =
-  'inline-flex min-h-12 items-center justify-center rounded-full border border-sand-100  px-6 py-3 text-sm lg:text-base font-bold text-ink-950 no-underline transition hover:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:border-sand-50 dark:text-muted-foreground dark:hover:text-foreground dark:hover:bg-ink-700';
+  'inline-flex min-h-12 items-center justify-center rounded-full border border-sand-100 px-6 py-3 text-sm lg:text-base font-bold text-ink-950 no-underline transition-colors duration-200 ease-out hover:bg-muted focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none dark:border-sand-50 dark:text-muted-foreground dark:hover:bg-ink-700 dark:hover:text-foreground';
+
+const activeActionClass = 'bg-muted dark:bg-ink-700 dark:text-foreground';
 
 const desktopMediaQuery = '(min-width: 768px)';
 
@@ -46,8 +52,11 @@ const getDesktopViewportSnapshot = () => {
 
 const getDesktopViewportServerSnapshot = () => false;
 
+const getPageHref = (href: string) => href.split('#')[0] || '/';
+
 const Header = () => {
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session } = useSession();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isDesktop = useSyncExternalStore(
@@ -58,6 +67,12 @@ const Header = () => {
   const links = session ? authenticatedLinks : unauthenticatedLinks;
 
   const closeMenu = () => setIsMenuOpen(false);
+
+  const isActivePage = (href: string) => {
+    const pageHref = getPageHref(href);
+
+    return pageHref !== '/' && pageHref === pathname;
+  };
 
   const handleSignOut = async () => {
     closeMenu();
@@ -89,11 +104,20 @@ const Header = () => {
 
         <div className="flex min-w-0 items-center justify-end gap-2">
           <nav className="hidden items-center gap-2 md:flex" aria-label="Primary navigation">
-            {links.map((link) => (
-              <Link key={link.name} href={link.href} className={navLinkClass}>
-                {link.name}
-              </Link>
-            ))}
+            {links.map((link) => {
+              const isActive = isActivePage(link.href);
+
+              return (
+                <Link
+                  key={link.name}
+                  href={link.href}
+                  className={cn(navLinkClass, isActive && activeNavLinkClass)}
+                  aria-current={isActive ? 'page' : undefined}
+                >
+                  {link.name}
+                </Link>
+              );
+            })}
           </nav>
           <ThemeModeToggle />
 
@@ -104,7 +128,11 @@ const Header = () => {
                 Log out
               </button>
             ) : (
-              <Link href="/auth/signin" className={actionClass}>
+              <Link
+                href="/auth/signin"
+                className={cn(actionClass, isActivePage('/auth/signin') && activeActionClass)}
+                aria-current={isActivePage('/auth/signin') ? 'page' : undefined}
+              >
                 Log in
               </Link>
             ))}
@@ -128,17 +156,32 @@ const Header = () => {
           aria-label="Mobile navigation"
           className="mx-auto mt-3 grid w-full max-w-outerContentWidth gap-2 rounded-3xl border border-[rgba(8,47,43,0.10)] bg-card/95 p-3 shadow-elevationMedium backdrop-blur-2xl md:hidden dark:border-white/15"
         >
-          {links.map((link) => (
-            <Link key={link.name} href={link.href} className={navLinkClass} onClick={closeMenu}>
-              {link.name}
-            </Link>
-          ))}
+          {links.map((link) => {
+            const isActive = isActivePage(link.href);
+
+            return (
+              <Link
+                key={link.name}
+                href={link.href}
+                className={cn(navLinkClass, isActive && activeNavLinkClass)}
+                aria-current={isActive ? 'page' : undefined}
+                onClick={closeMenu}
+              >
+                {link.name}
+              </Link>
+            );
+          })}
           {session ? (
-            <button type="button" className={`${actionClass} w-full`} onClick={handleSignOut}>
+            <button type="button" className={cn(actionClass, 'w-full')} onClick={handleSignOut}>
               Log out
             </button>
           ) : (
-            <Link href="/auth/signin" className={`${actionClass} w-full`} onClick={closeMenu}>
+            <Link
+              href="/auth/signin"
+              className={cn(actionClass, 'w-full', isActivePage('/auth/signin') && activeActionClass)}
+              aria-current={isActivePage('/auth/signin') ? 'page' : undefined}
+              onClick={closeMenu}
+            >
               Log in
             </Link>
           )}

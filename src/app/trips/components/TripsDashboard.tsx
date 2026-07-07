@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { TripsListSection } from '@/app/trips/components/TripsListSection';
 import { TripsWorkspaceSection } from '@/app/trips/components/TripsWorkspaceSection';
 import { deleteTrip, getTrips } from '@/queries/tripQueries';
+import type { TripSummary } from '@/queries/tripQueries';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 
 /** Renders the authenticated trip dashboard and handles create/delete trip mutations. */
@@ -13,8 +15,18 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
   const { data: trips = [], isLoading } = useQuery({ queryKey: ['trips'], queryFn: getTrips });
 
   const deleteMutation = useMutation({
-    mutationFn: deleteTrip,
-    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['trips'] }),
+    mutationFn: (trip: Pick<TripSummary, 'slug' | 'title'>) => deleteTrip(trip.slug),
+    onSuccess: async (_data, trip) => {
+      await queryClient.invalidateQueries({ queryKey: ['trips'] });
+      toast.success('Trip deleted', {
+        description: `${trip.title} has left the itinerary board.`,
+      });
+    },
+    onError: () => {
+      toast.error('Could not delete trip', {
+        description: 'The trip dodged the delete button. Try again in a moment.',
+      });
+    },
   });
 
   const filteredTrips = trips.filter((trip) => {

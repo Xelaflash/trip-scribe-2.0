@@ -17,6 +17,7 @@ export async function GET() {
         select: {
           itineraryItems: true,
           notes: true,
+          places: true,
         },
       },
     },
