@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
@@ -89,7 +90,7 @@ export const TripOverviewSection = ({
                 <FormItem>
                   <FormLabel>Start</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <DatePicker className="h-10 rounded-md" placeholder="Start date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -102,7 +103,7 @@ export const TripOverviewSection = ({
                 <FormItem>
                   <FormLabel>End</FormLabel>
                   <FormControl>
-                    <Input type="date" {...field} />
+                    <DatePicker className="h-10 rounded-md" placeholder="End date" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

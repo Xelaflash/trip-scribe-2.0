@@ -1,13 +1,14 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { CalendarDays, Globe2, Lock, Plus, Route } from 'lucide-react';
+import { Globe2, Lock, Plus, Route } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
+import { DatePicker } from '@/components/ui/date-picker';
 import {
   Dialog,
   DialogContent,
@@ -38,9 +39,6 @@ type TripFormValues = z.infer<typeof tripFormSchema>;
 interface CreateTripDialogProps {
   triggerClassName?: string;
 }
-
-const dateInputClassName =
-  'h-12 rounded-2xl border-border/80 bg-card/80 px-4 pl-11 font-semibold shadow-xs [color-scheme:light] [&::-webkit-calendar-picker-indicator]:absolute [&::-webkit-calendar-picker-indicator]:inset-0 [&::-webkit-calendar-picker-indicator]:h-full [&::-webkit-calendar-picker-indicator]:w-full [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-0 dark:[color-scheme:dark]';
 
 export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) => {
   const router = useRouter();
@@ -178,13 +176,7 @@ export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) =>
                     <FormItem>
                       <FormLabel className="font-black text-card-foreground">Start date</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <CalendarDays
-                            className="pointer-events-none absolute top-1/2 left-4 z-10 size-5 -translate-y-1/2 text-primary"
-                            aria-hidden="true"
-                          />
-                          <Input className={dateInputClassName} type="date" {...field} />
-                        </div>
+                        <DatePicker placeholder="Select start date" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -197,13 +189,7 @@ export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) =>
                     <FormItem>
                       <FormLabel className="font-black text-card-foreground">End date</FormLabel>
                       <FormControl>
-                        <div className="relative">
-                          <CalendarDays
-                            className="pointer-events-none absolute top-1/2 left-4 z-10 size-5 -translate-y-1/2 text-primary"
-                            aria-hidden="true"
-                          />
-                          <Input className={dateInputClassName} type="date" {...field} />
-                        </div>
+                        <DatePicker placeholder="Select end date" {...field} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
