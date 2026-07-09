@@ -44,15 +44,16 @@ const SignInForm = () => {
   };
 
   return (
-    <div className="mt-6">
-      <button
+    <div className="mt-8">
+      <Button
         type="button"
-        className="my-4 flex w-full items-center justify-center gap-3 rounded-md border border-border bg-background p-4 font-bold text-foreground shadow-xs transition hover:bg-muted"
+        variant="gradient"
+        size="pill"
+        className="min-h-14 w-full"
         disabled={isGoogleSubmitting || isEmailSubmitting}
         onClick={handleGoogleSignIn}
       >
-        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24">
-          <title>Google icon</title>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" className="size-5" aria-hidden="true">
           <path
             fill="#EA4335 "
             d="M5.26620003,9.76452941 C6.19878754,6.93863203 8.85444915,4.90909091 12,4.90909091 C13.6909091,4.90909091 15.2181818,5.50909091 16.4181818,6.49090909 L19.9090909,3 C17.7818182,1.14545455 15.0545455,0 12,0 C7.27006974,0 3.1977497,2.69829785 1.23999023,6.65002441 L5.26620003,9.76452941 Z"
@@ -70,8 +71,8 @@ const SignInForm = () => {
             d="M5.27698177,14.2678769 C5.03832634,13.556323 4.90909091,12.7937589 4.90909091,12 C4.90909091,11.2182781 5.03443647,10.4668121 5.26620003,9.76452941 L1.23999023,6.65002441 C0.43658717,8.26043162 0,10.0753848 0,12 C0,13.9195484 0.444780743,15.7301709 1.23746264,17.3349879 L5.27698177,14.2678769 Z"
           />
         </svg>
-        {isGoogleSubmitting ? 'Opening Google...' : 'Sign in with Google'}
-      </button>
+        {isGoogleSubmitting ? 'Opening Google...' : 'Continue with Google'}
+      </Button>
       <div className="my-5 flex items-center gap-3 text-xs font-bold tracking-[0.12em] text-muted-foreground uppercase">
         <span className="h-px flex-1 bg-border" />
         or
@@ -86,14 +87,26 @@ const SignInForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="myemail@email.com" {...field} />
+                  <Input
+                    type="email"
+                    autoComplete="email"
+                    placeholder="name@example.com"
+                    className="h-12 rounded-full bg-background px-5 font-semibold"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" className="w-full" disabled={isEmailSubmitting || isGoogleSubmitting}>
-            {isEmailSubmitting ? 'Sending link...' : 'Sign In'}
+          <Button
+            type="submit"
+            variant="gradient"
+            size="pill"
+            className="min-h-14 w-full"
+            disabled={isEmailSubmitting || isGoogleSubmitting}
+          >
+            {isEmailSubmitting ? 'Sending link...' : 'Email me a sign-in link'}
           </Button>
         </form>
       </Form>

@@ -10,14 +10,11 @@ import { useState, useSyncExternalStore } from 'react';
 import ThemeModeToggle from '@/components/ThemeModeToggle/ThemeModeToggle';
 import { cn } from '@/lib/utils';
 
-const unauthenticatedLinks = [
-  { name: 'How it works', href: '/#how-it-works' },
-  { name: 'Features', href: '/#features' },
-];
+const unauthenticatedLinks = [{ name: 'How it works', href: '/how-it-works' }];
 
 const authenticatedLinks = [
   { name: 'Trips', href: '/trips' },
-  { name: 'How it works', href: '/#how-it-works' },
+  { name: 'How it works', href: '/how-it-works' },
 ];
 
 const navLinkClass =

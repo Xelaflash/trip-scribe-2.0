@@ -5,7 +5,7 @@ const Footer = () => {
   const date = new Date().getFullYear();
 
   return (
-    <footer className="mx-auto w-outerContentWidth overflow-hidden border-t border-border pt-10 pb-6 text-foreground">
+    <footer className="mx-auto w-full max-w-outerContentWidth overflow-hidden border-t border-border px-viewportPadding pt-10 pb-6 text-foreground">
       <div className="flex w-full flex-col items-center justify-between gap-8 md:items-end lg:flex-row">
         <div className="max-w-md">
           <Logo mobileAlignment="center" size="lg" />
@@ -16,6 +16,14 @@ const Footer = () => {
           </p>
           <nav aria-label="Footer navigation">
             <ul className="flex list-none flex-wrap gap-4 p-0 text-sm font-bold text-muted-foreground">
+              <li>
+                <Link
+                  href="/how-it-works"
+                  className="rounded-md no-underline transition hover:text-foreground focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-none"
+                >
+                  How it works
+                </Link>
+              </li>
               <li>
                 <Link
                   href="/todo"

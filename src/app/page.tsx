@@ -12,7 +12,10 @@ import {
   Route,
   Share2,
 } from 'lucide-react';
+import { getServerSession } from 'next-auth';
 
+import { authOptions } from '@/app/api/auth/[...nextauth]/route';
+import { CreateTripDialog } from '@/app/trips/components/CreateTripDialog';
 import { Button } from '@/components/ui/button';
 
 const features = [
@@ -56,7 +59,14 @@ const workflowSteps = [
   },
 ];
 
-const Home = () => {
+const Home = async () => {
+  const session = await getServerSession(authOptions);
+  const isSignedIn = Boolean(session?.user?.id);
+  const workspaceCta = {
+    href: isSignedIn ? '/trips' : '/auth/signin?callbackUrl=/trips',
+    label: isSignedIn ? 'Open trip workspace' : 'Sign in to start planning',
+  };
+
   return (
     <main className="bg-[radial-gradient(circle_at_6%_7%,var(--landing-radial-mint),transparent_50%),radial-gradient(circle_at_90%_12%,var(--landing-radial-sky),transparent_26%),linear-gradient(180deg,var(--landing-background-start)_0%,var(--landing-background-end)_100%)]">
       <section className="px-viewportPadding py-10 md:py-16">
@@ -75,11 +85,15 @@ const Home = () => {
             </p>
             <div className="flex flex-wrap items-center gap-7">
               <Button asChild variant="gradient" size="pill">
-                <Link href="/trips">Open trip workspace</Link>
+                <Link href={workspaceCta.href}>{workspaceCta.label}</Link>
               </Button>
-              <Button asChild variant="orangeGradient" size="pill">
-                <Link href="#how-it-works">Create a trip</Link>
-              </Button>
+              {isSignedIn && (
+                <CreateTripDialog
+                  triggerLabel="Create a trip"
+                  triggerVariant="orangeGradient"
+                  triggerClassName="w-auto"
+                />
+              )}
             </div>
           </div>
 
@@ -167,6 +181,14 @@ const Home = () => {
               );
             })}
           </div>
+          <div className="mt-8 flex flex-wrap items-center justify-between gap-4 rounded-3xl border border-border bg-card/85 p-5 shadow-elevationLow">
+            <p className="max-w-2xl text-base leading-7 font-semibold text-card-foreground">
+              New to Trip Scribe? See the full workflow from first idea to shareable trip page.
+            </p>
+            <Button asChild variant="gradient" size="pill">
+              <Link href="/how-it-works">Explore the product tour</Link>
+            </Button>
+          </div>
         </div>
       </section>
 
@@ -214,10 +236,7 @@ const Home = () => {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Button asChild variant="gradient" size="pill">
-                <Link href="/trips">Open trip workspace</Link>
-              </Button>
-              <Button asChild variant="orangeGradient" size="pill">
-                <Link href="/auth/signin">Sign in</Link>
+                <Link href={workspaceCta.href}>{workspaceCta.label}</Link>
               </Button>
             </div>
           </div>
