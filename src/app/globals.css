@@ -1,4 +1,5 @@
 @import 'tailwindcss';
+@import 'maplibre-gl/dist/maplibre-gl.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -258,6 +259,53 @@ button:disabled {
 ::selection {
   background: hsl(var(--primary));
   color: hsl(var(--primary-foreground));
+}
+
+.trip-map-marker {
+  display: block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 0.2rem solid hsl(var(--card));
+  border-radius: 999px 999px 999px 0;
+  background: hsl(var(--accent));
+  box-shadow:
+    0 0 0 0.55rem hsl(var(--accent) / 0.16),
+    0 0.75rem 1.5rem hsl(var(--shadow-color) / 0.22);
+  transform: rotate(-45deg);
+}
+
+.trip-map-marker::after {
+  content: '';
+  position: absolute;
+  inset: 0.3rem;
+  border-radius: 999px;
+  background: hsl(var(--card));
+}
+
+.maplibregl-popup-content {
+  border: 1px solid hsl(var(--border));
+  border-radius: 1rem;
+  background: hsl(var(--card));
+  color: hsl(var(--card-foreground));
+  box-shadow: var(--shadow-elevation-low);
+}
+
+.maplibregl-popup-content strong,
+.maplibregl-popup-content span,
+.maplibregl-popup-content em {
+  display: block;
+}
+
+.maplibregl-popup-content strong {
+  font-weight: 900;
+}
+
+.maplibregl-popup-content span,
+.maplibregl-popup-content em {
+  margin-top: 0.25rem;
+  color: hsl(var(--muted-foreground));
+  font-size: 0.75rem;
+  font-style: normal;
 }
 
 body > main {

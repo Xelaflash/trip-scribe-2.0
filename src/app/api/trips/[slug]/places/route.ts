@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { geocodeAddress } from '@/lib/geocoding';
 import prisma from '@/lib/prisma';
 import { requireOwnedTrip } from '@/lib/tripServer';
 import { placeCreateSchema } from '@/lib/tripValidation';
@@ -17,6 +18,10 @@ export async function POST(request: Request, context: RouteContext) {
 
   try {
     const payload = placeCreateSchema.parse(await request.json());
+    const geocodedPlace = await geocodeAddress({
+      address: payload.address,
+      destinations: trip.destinations,
+    });
     const place = await prisma.tripPlace.create({
       data: {
         ...payload,
@@ -24,6 +29,8 @@ export async function POST(request: Request, context: RouteContext) {
         address: payload.address || null,
         url: payload.url || null,
         notes: payload.notes || null,
+        latitude: geocodedPlace?.latitude ?? null,
+        longitude: geocodedPlace?.longitude ?? null,
         tripId: trip.id,
       },
     });
