@@ -37,6 +37,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
   const [overviewPlaceholderIndex, setOverviewPlaceholderIndex] = useState(0);
   const [itineraryPlaceholderIndex, setItineraryPlaceholderIndex] = useState(1);
   const [notePlaceholderIndex, setNotePlaceholderIndex] = useState(2);
+  const [isDeletingTrip, setIsDeletingTrip] = useState(false);
 
   const overviewForm = useForm<OverviewFormValues>({
     resolver: zodResolver(overviewSchema),
@@ -67,6 +68,17 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
     router.refresh();
   };
 
+  const handleDeleteTrip = async () => {
+    setIsDeletingTrip(true);
+
+    try {
+      await deleteTrip(trip.slug);
+      router.push('/trips');
+    } finally {
+      setIsDeletingTrip(false);
+    }
+  };
+
   return (
     <main className="mx-auto flex w-full max-w-295 flex-col gap-8 px-viewportPadding py-10 lg:py-12">
       <Link
@@ -77,7 +89,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
         Back to trips
       </Link>
 
-      <TripHeader trip={trip} onDelete={() => deleteTrip(trip.slug).then(() => router.push('/trips'))} />
+      <TripHeader trip={trip} isDeletingTrip={isDeletingTrip} onDeleteTrip={handleDeleteTrip} />
 
       <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <TripOverviewSection

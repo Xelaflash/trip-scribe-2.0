@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
-import { Calendar as CalendarIcon, Clock, Edit3, Plus, Route, Trash2 } from 'lucide-react';
+import { Calendar as CalendarIcon, Clock, Edit3, Plus, Route } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -12,6 +12,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
+import { DeleteTripDetailItemAlertDialog } from '@/app/trips/[slug]/components/DeleteTripDetailItemAlertDialog';
 import { TripDialogHeader } from '@/app/trips/[slug]/components/TripDialogHeader';
 import {
   itinerarySchema,
@@ -376,18 +377,22 @@ export const TripItinerarySection = ({
               >
                 <Edit3 />
               </Button>
-              <Button
-                variant="ghost"
-                size="icon"
-                className="text-muted-foreground hover:text-destructive"
-                aria-label={`Delete ${item.title}`}
-                onClick={async () => {
+              <DeleteTripDetailItemAlertDialog
+                itemName={item.title}
+                title="Remove this itinerary stop?"
+                description={
+                  <>
+                    This deletes <span className="font-black text-card-foreground">{item.title}</span> from the trip
+                    timeline. The rest of your itinerary stays intact.
+                  </>
+                }
+                icon={<Route className="size-6" aria-hidden="true" />}
+                confirmLabel="Delete stop"
+                onDelete={async () => {
                   await deleteItineraryItem(trip.slug, item.id);
                   onRefresh();
                 }}
-              >
-                <Trash2 />
-              </Button>
+              />
             </div>
           </article>
         ))}

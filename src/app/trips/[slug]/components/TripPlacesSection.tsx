@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Edit3, ExternalLink, MapPin, Plus, Trash2 } from 'lucide-react';
+import { Edit3, ExternalLink, MapPin, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@/components
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { DeleteTripDetailItemAlertDialog } from '@/app/trips/[slug]/components/DeleteTripDetailItemAlertDialog';
 import { TripDialogHeader } from '@/app/trips/[slug]/components/TripDialogHeader';
 import { TripPlacesMap } from '@/app/trips/[slug]/components/TripPlacesMap';
 import { placeSchema, type PlaceForm, type PlaceFormValues } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
@@ -266,18 +267,22 @@ export const TripPlacesSection = ({
                   >
                     <Edit3 />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="text-muted-foreground hover:text-destructive"
-                    aria-label={`Delete ${place.name}`}
-                    onClick={async () => {
+                  <DeleteTripDetailItemAlertDialog
+                    itemName={place.name}
+                    title="Remove this saved place?"
+                    description={
+                      <>
+                        This deletes <span className="font-black text-card-foreground">{place.name}</span> from your
+                        saved places and removes its map pin from this trip.
+                      </>
+                    }
+                    icon={<MapPin className="size-6" aria-hidden="true" />}
+                    confirmLabel="Delete place"
+                    onDelete={async () => {
                       await deletePlace(trip.slug, place.id);
                       onRefresh();
                     }}
-                  >
-                    <Trash2 />
-                  </Button>
+                  />
                 </div>
               </div>
             </article>

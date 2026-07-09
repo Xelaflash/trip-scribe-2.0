@@ -1,6 +1,7 @@
 'use client';
 
 import { Trash2 } from 'lucide-react';
+import type { ComponentProps } from 'react';
 import {
   AlertDialog,
   AlertDialogCancel,
@@ -18,21 +19,33 @@ interface DeleteTripAlertDialogProps {
   trip: Pick<TripSummary, 'slug' | 'title'>;
   isDeletingTrip: boolean;
   onDeleteTrip: (trip: Pick<TripSummary, 'slug' | 'title'>) => void;
+  triggerClassName?: string;
+  triggerLabel?: string;
+  triggerSize?: ComponentProps<typeof Button>['size'];
+  triggerVariant?: ComponentProps<typeof Button>['variant'];
 }
 
-export const DeleteTripAlertDialog = ({ trip, isDeletingTrip, onDeleteTrip }: DeleteTripAlertDialogProps) => {
+export const DeleteTripAlertDialog = ({
+  trip,
+  isDeletingTrip,
+  onDeleteTrip,
+  triggerClassName = 'rounded-full bg-card/70',
+  triggerLabel = 'Delete',
+  triggerSize = 'sm',
+  triggerVariant = 'quietOutline',
+}: DeleteTripAlertDialogProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
         <Button
-          variant="quietOutline"
-          size="sm"
-          className="rounded-full bg-card/70"
+          variant={triggerVariant}
+          size={triggerSize}
+          className={triggerClassName}
           disabled={isDeletingTrip}
           aria-label={`Delete ${trip.title}`}
         >
-          <Trash2 />
-          Delete
+          <Trash2 aria-hidden="true" />
+          {triggerLabel}
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent className="overflow-hidden p-0">
@@ -60,7 +73,7 @@ export const DeleteTripAlertDialog = ({ trip, isDeletingTrip, onDeleteTrip }: De
             onClick={() => onDeleteTrip({ slug: trip.slug, title: trip.title })}
             disabled={isDeletingTrip}
           >
-            <Trash2 />
+            <Trash2 aria-hidden="true" />
             Delete forever
           </Button>
         </AlertDialogFooter>

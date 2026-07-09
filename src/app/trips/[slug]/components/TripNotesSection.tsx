@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Edit3, NotebookPen, Plus, Trash2 } from 'lucide-react';
+import { Edit3, NotebookPen, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
@@ -9,6 +9,7 @@ import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@/components
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { DeleteTripDetailItemAlertDialog } from '@/app/trips/[slug]/components/DeleteTripDetailItemAlertDialog';
 import { TripDialogHeader } from '@/app/trips/[slug]/components/TripDialogHeader';
 import { noteSchema, type NoteForm, type NoteFormValues } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import type { TripPlaceholderSet } from '@/app/trips/[slug]/data/placeholders';
@@ -169,18 +170,22 @@ export const TripNotesSection = ({
                 >
                   <Edit3 />
                 </Button>
-                <Button
-                  variant="ghost"
-                  size="icon"
-                  className="text-muted-foreground hover:text-destructive"
-                  aria-label={`Delete ${note.title}`}
-                  onClick={async () => {
+                <DeleteTripDetailItemAlertDialog
+                  itemName={note.title}
+                  title="Delete this note?"
+                  description={
+                    <>
+                      This removes <span className="font-black text-card-foreground">{note.title}</span> from your trip
+                      notes. Saved note content cannot be restored from here.
+                    </>
+                  }
+                  icon={<NotebookPen className="size-6" aria-hidden="true" />}
+                  confirmLabel="Delete note"
+                  onDelete={async () => {
                     await deleteNote(trip.slug, note.id);
                     onRefresh();
                   }}
-                >
-                  <Trash2 />
-                </Button>
+                />
               </div>
             </div>
           </article>
