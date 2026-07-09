@@ -91,6 +91,24 @@ export const TripNotesSection = ({
     setEditingNoteId(note.id);
   };
 
+  const handleCreateNoteSubmit = form.handleSubmit(async (values) => {
+    await createNote(trip.slug, values);
+    form.reset();
+    setIsCreateDialogOpen(false);
+    onPlaceholderChange();
+    onRefresh();
+  });
+
+  const handleEditNoteSubmit = editForm.handleSubmit(async (values) => {
+    if (!editingNote) {
+      return;
+    }
+
+    await updateNote(trip.slug, editingNote.id, values);
+    setEditingNoteId(null);
+    onRefresh();
+  });
+
   return (
     <article className="rounded-4xl border border-border/80 bg-card/85 p-6 shadow-elevationLow backdrop-blur-xl">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -113,15 +131,7 @@ export const TripNotesSection = ({
               title="Add note"
             />
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(async (values) => {
-                  await createNote(trip.slug, values);
-                  form.reset();
-                  setIsCreateDialogOpen(false);
-                  onPlaceholderChange();
-                  onRefresh();
-                })}
-              >
+              <form onSubmit={handleCreateNoteSubmit}>
                 <div className="p-6">
                   <NoteFormFields form={form} placeholders={placeholders} />
                 </div>
@@ -185,17 +195,7 @@ export const TripNotesSection = ({
             title="Edit note"
           />
           <Form {...editForm}>
-            <form
-              onSubmit={editForm.handleSubmit(async (values) => {
-                if (!editingNote) {
-                  return;
-                }
-
-                await updateNote(trip.slug, editingNote.id, values);
-                setEditingNoteId(null);
-                onRefresh();
-              })}
-            >
+            <form onSubmit={handleEditNoteSubmit}>
               <div className="p-6">
                 <NoteFormFields form={editForm} placeholders={placeholders} />
               </div>

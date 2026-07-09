@@ -43,6 +43,8 @@ const SignInForm = () => {
     }
   };
 
+  const handleEmailSignInSubmit = form.handleSubmit(handleSubmit);
+
   return (
     <div className="mt-8">
       <Button
@@ -79,7 +81,7 @@ const SignInForm = () => {
         <span className="h-px flex-1 bg-border" />
       </div>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-5">
+        <form onSubmit={handleEmailSignInSubmit} className="space-y-5">
           <FormField
             control={form.control}
             name="email"

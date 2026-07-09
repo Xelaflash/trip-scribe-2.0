@@ -45,11 +45,13 @@ const NewUserForm = () => {
     }
   };
 
+  const handleNewUserSubmit = form.handleSubmit(handleSubmit);
+
   return (
     <>
       <h3>Please Enter your name</h3>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form onSubmit={handleNewUserSubmit} className="space-y-6">
           <FormField
             control={form.control}
             name="name"

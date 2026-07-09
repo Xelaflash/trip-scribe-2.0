@@ -153,6 +153,23 @@ export const TripPlacesSection = ({
     setEditingPlaceId(place.id);
   };
 
+  const handleCreatePlaceSubmit = form.handleSubmit(async (values) => {
+    await createPlace(trip.slug, placePayload(values) as PlaceCreateInput);
+    form.reset();
+    setIsCreateDialogOpen(false);
+    onRefresh();
+  });
+
+  const handleEditPlaceSubmit = editForm.handleSubmit(async (values) => {
+    if (!editingPlace) {
+      return;
+    }
+
+    await updatePlace(trip.slug, editingPlace.id, placePayload(values) as PlaceUpdateInput);
+    setEditingPlaceId(null);
+    onRefresh();
+  });
+
   return (
     <article className="rounded-4xl border border-border/80 bg-card/85 p-6 shadow-elevationLow backdrop-blur-xl">
       <div className="flex flex-wrap items-center justify-between gap-4">
@@ -175,14 +192,7 @@ export const TripPlacesSection = ({
               title="Add place"
             />
             <Form {...form}>
-              <form
-                onSubmit={form.handleSubmit(async (values) => {
-                  await createPlace(trip.slug, placePayload(values) as PlaceCreateInput);
-                  form.reset();
-                  setIsCreateDialogOpen(false);
-                  onRefresh();
-                })}
-              >
+              <form onSubmit={handleCreatePlaceSubmit}>
                 <div className="max-h-[calc(100svh-16rem)] overflow-y-auto p-6">
                   <PlaceFormFields form={form} />
                 </div>
@@ -283,17 +293,7 @@ export const TripPlacesSection = ({
             title="Edit place"
           />
           <Form {...editForm}>
-            <form
-              onSubmit={editForm.handleSubmit(async (values) => {
-                if (!editingPlace) {
-                  return;
-                }
-
-                await updatePlace(trip.slug, editingPlace.id, placePayload(values) as PlaceUpdateInput);
-                setEditingPlaceId(null);
-                onRefresh();
-              })}
-            >
+            <form onSubmit={handleEditPlaceSubmit}>
               <div className="max-h-[calc(100svh-16rem)] overflow-y-auto p-6">
                 <PlaceFormFields form={editForm} />
               </div>
