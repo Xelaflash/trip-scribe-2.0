@@ -12,6 +12,7 @@ Trip Scribe 2.0 is a Next.js travel-planning MVP for authenticated trip planning
 - Do not add new libraries unless requested or clearly justified by the existing project shape.
 - Do not commit generated `.next` output. Treat `generated/prisma` as Prisma client output and avoid manual edits there.
 - Do not claim checks or tests were run unless they were actually run.
+- Do not create commits unless explicitly instructed. When a change is finished, provide a clean Conventional Commits v1.0.0 commit message and the exact files that should be staged.
 
 ## Project Guidance
 
