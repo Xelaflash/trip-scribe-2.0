@@ -1,13 +1,16 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Edit3, Plus, Route, Trash2 } from 'lucide-react';
+import { format } from 'date-fns';
+import { Calendar as CalendarIcon, Clock, Edit3, Plus, Route, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { Button } from '@/components/ui/button';
+import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { TripDialogHeader } from '@/app/trips/[slug]/components/TripDialogHeader';
 import {
@@ -16,11 +19,12 @@ import {
   type ItineraryFormValues,
 } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import type { TripPlaceholderSet } from '@/app/trips/[slug]/data/placeholders';
+import { cn } from '@/lib/utils';
 import type { TripWithDetails } from '@/queries/tripQueries';
 import { createItineraryItem, deleteItineraryItem, updateItineraryItem } from '@/queries/tripQueries';
 
-/** Formats a stored date for a text date/time field without shifting the local wall-clock time. */
-const dateTimeTextInputValue = (value: Date | string | null) => {
+/** Formats a stored date for form fields without shifting the local wall-clock time. */
+const dateTimeInputValue = (value: Date | string | null) => {
   if (!value) {
     return '';
   }
@@ -28,9 +32,35 @@ const dateTimeTextInputValue = (value: Date | string | null) => {
   const date = new Date(value);
   const pad = (part: number) => part.toString().padStart(2, '0');
 
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())} ${pad(
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}T${pad(
     date.getHours(),
   )}:${pad(date.getMinutes())}`;
+};
+
+const datePartValue = (value: string | undefined) => value?.split(/[T\s]/)[0] ?? '';
+
+const timePartValue = (value: string | undefined) => {
+  const timePart = value?.split(/[T\s]/)[1];
+
+  return timePart?.slice(0, 5) ?? '';
+};
+
+const combineDateTimeValue = (datePart: string, timePart: string) => {
+  if (!datePart) {
+    return timePart ? `T${timePart}` : '';
+  }
+
+  return timePart ? `${datePart}T${timePart}` : datePart;
+};
+
+const parseDateValue = (value: string) => {
+  const [year, month, day] = value.split('-').map(Number);
+
+  if (!year || !month || !day) {
+    return undefined;
+  }
+
+  return new Date(year, month - 1, day);
 };
 
 const dateTimePayloadValue = (value: string | undefined) => {
@@ -78,12 +108,86 @@ const formatTimeRange = (startsAt: Date | string | null, endsAt: Date | string |
 };
 
 interface ItineraryFormFieldsProps {
-  dateInputType?: 'datetime-local' | 'text';
   form: ItineraryForm;
   placeholders: TripPlaceholderSet;
 }
 
-const ItineraryFormFields = ({ dateInputType = 'datetime-local', form, placeholders }: ItineraryFormFieldsProps) => (
+const ItineraryDateTimeField = ({
+  field,
+  label,
+  placeholder,
+}: {
+  field: {
+    name: string;
+    value?: string;
+    onBlur: () => void;
+    onChange: (value: string) => void;
+  };
+  label: string;
+  placeholder: string;
+}) => {
+  const datePart = datePartValue(field.value);
+  const timePart = timePartValue(field.value);
+  const selectedDate = datePart ? parseDateValue(datePart) : undefined;
+
+  return (
+    <FormItem>
+      <FormLabel>{label}</FormLabel>
+      <FormControl>
+        <div className="grid gap-2 sm:grid-cols-[minmax(0,1fr)_8.5rem]">
+          <Popover>
+            <PopoverTrigger asChild>
+              <Button
+                variant="outline"
+                name={field.name}
+                type="button"
+                data-empty={!selectedDate}
+                className={cn(
+                  'h-12 w-full justify-start rounded-2xl border-border/80 bg-card/80 px-4 text-left font-semibold shadow-xs transition-colors hover:bg-muted/70 data-[empty=true]:text-muted-foreground dark:hover:bg-ink-700',
+                )}
+                onBlur={field.onBlur}
+              >
+                <CalendarIcon className="mr-2 size-5 shrink-0 text-primary" aria-hidden="true" />
+                {selectedDate ? format(selectedDate, 'PPP') : <span>{placeholder}</span>}
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent
+              align="start"
+              className="w-auto rounded-2xl border-border/80 bg-card p-0 shadow-elevationMedium"
+            >
+              <Calendar
+                mode="single"
+                selected={selectedDate}
+                onSelect={(date) =>
+                  field.onChange(combineDateTimeValue(date ? format(date, 'yyyy-MM-dd') : '', timePart))
+                }
+                autoFocus
+              />
+            </PopoverContent>
+          </Popover>
+          <div className="relative">
+            <Clock
+              className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-primary"
+              aria-hidden="true"
+            />
+            <Input
+              aria-label={`${label} time`}
+              className="h-12 w-full rounded-2xl border-border/80 bg-card/80 px-4 pl-11 text-left font-semibold shadow-xs transition-colors hover:bg-muted/70 data-[empty=true]:text-muted-foreground dark:hover:bg-ink-700 [&::-webkit-calendar-picker-indicator]:opacity-0"
+              data-empty={!timePart}
+              type="time"
+              value={timePart}
+              onBlur={field.onBlur}
+              onChange={(event) => field.onChange(combineDateTimeValue(datePart, event.target.value))}
+            />
+          </div>
+        </div>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  );
+};
+
+const ItineraryFormFields = ({ form, placeholders }: ItineraryFormFieldsProps) => (
   <div className="grid gap-4">
     <div className="grid gap-4 md:grid-cols-2">
       <FormField
@@ -123,38 +227,12 @@ const ItineraryFormFields = ({ dateInputType = 'datetime-local', form, placehold
       <FormField
         control={form.control}
         name="startsAt"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Starts</FormLabel>
-            <FormControl>
-              <Input
-                className="h-12 rounded-2xl border-border/80 bg-card/80 px-4 font-semibold shadow-xs"
-                placeholder={dateInputType === 'text' ? 'YYYY-MM-DD HH:MM' : undefined}
-                type={dateInputType}
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        render={({ field }) => <ItineraryDateTimeField field={field} label="Starts" placeholder="Start date" />}
       />
       <FormField
         control={form.control}
         name="endsAt"
-        render={({ field }) => (
-          <FormItem>
-            <FormLabel>Ends</FormLabel>
-            <FormControl>
-              <Input
-                className="h-12 rounded-2xl border-border/80 bg-card/80 px-4 font-semibold shadow-xs"
-                placeholder={dateInputType === 'text' ? 'YYYY-MM-DD HH:MM' : undefined}
-                type={dateInputType}
-                {...field}
-              />
-            </FormControl>
-            <FormMessage />
-          </FormItem>
-        )}
+        render={({ field }) => <ItineraryDateTimeField field={field} label="Ends" placeholder="End date" />}
       />
     </div>
     <FormField
@@ -206,8 +284,8 @@ export const TripItinerarySection = ({
       title: item.title,
       description: item.description ?? '',
       location: item.location ?? '',
-      startsAt: dateTimeTextInputValue(item.startsAt),
-      endsAt: dateTimeTextInputValue(item.endsAt),
+      startsAt: dateTimeInputValue(item.startsAt),
+      endsAt: dateTimeInputValue(item.endsAt),
     });
     setEditingItemId(item.id);
   };
@@ -339,7 +417,7 @@ export const TripItinerarySection = ({
               })}
             >
               <div className="p-6">
-                <ItineraryFormFields dateInputType="text" form={editForm} placeholders={placeholders} />
+                <ItineraryFormFields form={editForm} placeholders={placeholders} />
               </div>
               <DialogFooter className="border-t border-border/70 bg-card/95 px-6 py-4">
                 <Button type="submit" variant="gradient" size="pill" disabled={isUpdating}>
