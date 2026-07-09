@@ -1,0 +1,3 @@
+CREATE TYPE "PlanningStatus" AS ENUM ('DRAFT', 'PLANNING', 'READY', 'ONGOING', 'TRAVELED', 'ARCHIVED');
+
+ALTER TABLE "Trip" ADD COLUMN "planningStatus" "PlanningStatus" NOT NULL DEFAULT 'DRAFT';

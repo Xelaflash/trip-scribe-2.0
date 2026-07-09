@@ -10,16 +10,30 @@ const adapter = new PrismaPg({ connectionString: databaseUrl });
 const prisma = new PrismaClient({ adapter });
 
 async function main() {
-  await prisma.$transaction([
-    prisma.trip.deleteMany(),
-    prisma.user.deleteMany(),
-    prisma.user.createMany({
+  await prisma.$transaction(async (tx) => {
+    await tx.trip.deleteMany();
+    await tx.user.deleteMany();
+    await tx.user.createMany({
       data: users,
-    }),
-    prisma.trip.createMany({
-      data: trips,
-    }),
-  ]);
+    });
+
+    for (const { itineraryItems, notes, places, ...trip } of trips) {
+      await tx.trip.create({
+        data: {
+          ...trip,
+          itineraryItems: {
+            create: itineraryItems,
+          },
+          notes: {
+            create: notes,
+          },
+          places: {
+            create: places,
+          },
+        },
+      });
+    }
+  });
 }
 
 main()

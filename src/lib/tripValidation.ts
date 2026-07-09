@@ -1,12 +1,14 @@
 import { z } from 'zod';
 
 export const visibilitySchema = z.enum(['PRIVATE', 'PUBLIC']);
+export const planningStatusSchema = z.enum(['DRAFT', 'PLANNING', 'READY', 'ONGOING', 'TRAVELED', 'ARCHIVED']);
 
 export const tripCreateSchema = z.object({
   title: z.string().trim().min(2, 'Title must be at least 2 characters.'),
   description: z.string().trim().optional().or(z.literal('')),
   destinations: z.array(z.string().trim().min(1)).min(1, 'Add at least one destination.'),
   visibility: visibilitySchema.default('PRIVATE'),
+  planningStatus: planningStatusSchema.default('DRAFT'),
   startDate: z.coerce.date(),
   endDate: z.coerce.date(),
 });
