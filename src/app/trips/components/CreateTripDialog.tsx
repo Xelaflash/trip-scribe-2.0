@@ -3,6 +3,7 @@
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Globe2, Lock, Plus, Route } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import type { ComponentProps } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -37,10 +38,16 @@ const tripFormSchema = z.object({
 type TripFormValues = z.infer<typeof tripFormSchema>;
 
 interface CreateTripDialogProps {
+  triggerLabel?: string;
+  triggerVariant?: ComponentProps<typeof Button>['variant'];
   triggerClassName?: string;
 }
 
-export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) => {
+export const CreateTripDialog = ({
+  triggerLabel = 'New trip',
+  triggerVariant = 'gradient',
+  triggerClassName,
+}: CreateTripDialogProps) => {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [open, setOpen] = useState(false);
@@ -61,6 +68,7 @@ export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) =>
     mutationFn: (values: TripFormValues) =>
       createTrip({
         ...values,
+        planningStatus: 'DRAFT',
         startDate: new Date(values.startDate),
         endDate: new Date(values.endDate),
         destinations: values.destinations.split(',').flatMap((destination) => {
@@ -87,12 +95,17 @@ export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) =>
     },
   });
 
+  const handleSubmit = form.handleSubmit((values) => {
+    form.clearErrors();
+    createMutation.mutate(values);
+  });
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button variant="gradient" size="pill" className={cn('w-full md:w-auto', triggerClassName)}>
+        <Button variant={triggerVariant} size="pill" className={cn('w-full md:w-auto', triggerClassName)}>
           <Plus />
-          New trip
+          {triggerLabel}
         </Button>
       </DialogTrigger>
       <DialogContent className="grid-rows-[auto_minmax(0,1fr)] gap-0 overflow-hidden p-0 sm:max-w-4xl">
@@ -119,17 +132,7 @@ export const CreateTripDialog = ({ triggerClassName }: CreateTripDialogProps) =>
           </div>
         </DialogHeader>
         <Form {...form}>
-          <form
-            className="flex min-h-0 flex-col"
-            onSubmit={form.handleSubmit(async (values) => {
-              form.clearErrors();
-              try {
-                await createMutation.mutateAsync(values);
-              } catch {
-                // createMutation.onError surfaces the failure in the form.
-              }
-            })}
-          >
+          <form className="flex min-h-0 flex-col" onSubmit={handleSubmit}>
             <div className="grid gap-5 overflow-y-auto p-6 md:p-8">
               <div className="grid gap-5">
                 <FormField

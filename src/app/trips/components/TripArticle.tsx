@@ -1,25 +1,12 @@
 'use client';
 
-import { CalendarDays, Globe2, Lock, MapPin, PencilLine, Sun } from 'lucide-react';
+import { CalendarDays, ClipboardCheck, Globe2, Lock, MapPin, PencilLine, Sun } from 'lucide-react';
 import Link from 'next/link';
 import { DeleteTripAlertDialog } from '@/app/trips/components/DeleteTripAlertDialog';
+import { getPlanningStatusOption } from '@/lib/tripPlanningStatus';
 import type { TripSummary } from '@/queries/tripQueries';
 
 const formatTripDate = (date: Date | string) => new Date(date).toLocaleDateString();
-
-// TODO: review that for a better metric
-const getTripProgress = (trip: TripSummary) => {
-  const completedSections = [
-    trip.title,
-    trip.description,
-    trip.destinations.length > 0,
-    trip.startDate,
-    trip.endDate,
-    trip.visibility,
-  ].filter(Boolean).length;
-
-  return Math.max(20, Math.round((completedSections / 6) * 100));
-};
 
 interface TripArticleProps {
   trip: TripSummary;
@@ -28,7 +15,7 @@ interface TripArticleProps {
 }
 
 export const TripArticle = ({ trip, isDeletingTrip, onDeleteTrip }: TripArticleProps) => {
-  const tripProgress = getTripProgress(trip);
+  const planningStatus = getPlanningStatusOption(trip.planningStatus);
   const placeCount = trip._count.places ?? 0;
 
   return (
@@ -60,15 +47,9 @@ export const TripArticle = ({ trip, isDeletingTrip, onDeleteTrip }: TripArticleP
           {formatTripDate(trip.startDate)} - {formatTripDate(trip.endDate)}
         </p>
       </div>
-      {/* TODO; review */}
-      <div className="pointer-events-none  h-2.5 overflow-hidden rounded-full bg-ink-950/10 dark:bg-white/10">
-        <span
-          className="block h-full rounded-full bg-[linear-gradient(90deg,hsl(var(--ring)),hsl(160_64%_54%))]"
-          style={{ width: `${tripProgress}%` }}
-        />
-      </div>
-      <span className="text-xs font-extrabold text-ink-700 dark:text-muted-foreground">
-        Plan {tripProgress}% complete!
+      <span className="pointer-events-none inline-flex w-fit items-center gap-1.5 rounded-full border border-border/80 bg-background px-3 py-1.5 text-xs font-extrabold text-ink-700 dark:text-muted-foreground">
+        <ClipboardCheck className="size-3.5" />
+        {planningStatus.label}: {planningStatus.description}
       </span>
 
       <div className="pointer-events-none flex flex-wrap gap-3 text-xs font-extrabold text-ink-700 dark:text-muted-foreground">

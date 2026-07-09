@@ -45,6 +45,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
       description: trip.description ?? '',
       destinations: trip.destinations.join(', '),
       visibility: trip.visibility,
+      planningStatus: trip.planningStatus,
       startDate: dateInputValue(trip.startDate),
       endDate: dateInputValue(trip.endDate),
     },
@@ -67,10 +68,10 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-6xl flex-col gap-8 px-viewportPadding py-10">
+    <main className="mx-auto flex w-full max-w-295 flex-col gap-8 px-viewportPadding py-10 lg:py-12">
       <Link
         href="/trips"
-        className="inline-flex w-fit items-center gap-2 text-sm font-bold text-primary no-underline transition hover:text-secondary"
+        className="inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-card/80 px-4 py-2 text-sm font-black text-primary no-underline shadow-xs transition hover:border-ring hover:bg-muted"
       >
         <ArrowLeft className="size-4" />
         Back to trips
@@ -78,7 +79,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
 
       <TripHeader trip={trip} onDelete={() => deleteTrip(trip.slug).then(() => router.push('/trips'))} />
 
-      <section className="grid gap-6 lg:grid-cols-[0.95fr_1.25fr]">
+      <section className="grid gap-6 lg:grid-cols-[0.9fr_1.1fr]">
         <TripOverviewSection
           form={overviewForm}
           placeholders={tripPlaceholderSets[overviewPlaceholderIndex]}

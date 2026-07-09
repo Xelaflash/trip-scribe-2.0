@@ -6,16 +6,30 @@ export const overviewSchema = z.object({
   description: z.string().optional(),
   destinations: z.string().min(2),
   visibility: z.enum(['PRIVATE', 'PUBLIC']),
+  planningStatus: z.enum(['DRAFT', 'PLANNING', 'READY', 'ONGOING', 'TRAVELED', 'ARCHIVED']),
   startDate: z.string().min(1),
   endDate: z.string().min(1),
 });
+
+const dateTimeInputSchema = z
+  .string()
+  .trim()
+  .optional()
+  .refine((value) => {
+    if (!value) {
+      return true;
+    }
+
+    const normalizedValue = value.includes('T') ? value : value.replace(/\s+/, 'T');
+    return !Number.isNaN(new Date(normalizedValue).getTime());
+  }, 'Use YYYY-MM-DD HH:MM.');
 
 export const itinerarySchema = z.object({
   title: z.string().min(2),
   description: z.string().optional(),
   location: z.string().optional(),
-  startsAt: z.string().optional(),
-  endsAt: z.string().optional(),
+  startsAt: dateTimeInputSchema,
+  endsAt: dateTimeInputSchema,
 });
 
 export const noteSchema = z.object({
