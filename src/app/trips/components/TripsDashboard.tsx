@@ -39,7 +39,7 @@ export const TripsDashboard = ({ userName }: { userName: string }) => {
   const destinationCount = new Set(trips.flatMap((trip) => trip.destinations)).size;
 
   return (
-    <main className="mx-auto flex w-full max-w-295 flex-col gap-8 px-viewportPadding py-10 lg:py-12">
+    <main className="mx-auto flex w-fullmax-w-outerContentWidth flex-col gap-8 px-viewportPadding py-10 lg:py-12">
       <TripsWorkspaceSection
         userName={userName}
         activeTripCount={activeTripCount}

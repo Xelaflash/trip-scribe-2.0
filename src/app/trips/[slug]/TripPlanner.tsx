@@ -80,7 +80,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
   };
 
   return (
-    <main className="mx-auto flex w-full max-w-295 flex-col gap-8 px-viewportPadding py-10 lg:py-12">
+    <main className="mx-auto flex w-full max-w-outerContentWidth flex-col gap-8 px-viewportPadding py-10 lg:py-12">
       <Link
         href="/trips"
         className="inline-flex w-fit items-center gap-2 rounded-full border border-border/70 bg-card/80 px-4 py-2 text-sm font-black text-primary no-underline shadow-xs transition hover:border-ring hover:bg-muted"
