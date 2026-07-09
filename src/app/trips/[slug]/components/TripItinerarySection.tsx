@@ -306,6 +306,7 @@ export const TripItinerarySection = ({
           </DialogTrigger>
           <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-3xl">
             <TripDialogHeader
+              backgroundImageSrc="/pics/pexels-tadeu-gabriel-arcieri-1160052-9209218.jpg"
               description="Place an idea, booking, or timed stop on this trip timeline."
               emoji="🧭"
               eyebrow="Timeline"
@@ -395,6 +396,7 @@ export const TripItinerarySection = ({
       <Dialog open={!!editingItem} onOpenChange={(open) => !open && setEditingItemId(null)}>
         <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-3xl">
           <TripDialogHeader
+            backgroundImageSrc="/pics/pexels-tomas-malik-793526-3408354.jpg"
             description="Update the timing, place, or notes for this timeline item."
             emoji="🗓️"
             eyebrow="Timeline"

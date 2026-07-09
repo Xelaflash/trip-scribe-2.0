@@ -186,6 +186,7 @@ export const TripPlacesSection = ({
           </DialogTrigger>
           <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-4xl">
             <TripDialogHeader
+              backgroundImageSrc="/pics/pexels-karlsolano-7282788.jpg"
               description="Save a place with an address. Trip Scribe will derive the map pin when you save."
               emoji="📍"
               eyebrow="Places"
@@ -287,6 +288,7 @@ export const TripPlacesSection = ({
       <Dialog open={!!editingPlace} onOpenChange={(open) => !open && setEditingPlaceId(null)}>
         <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-4xl">
           <TripDialogHeader
+            backgroundImageSrc="/pics/pexels-morais-90633.jpg"
             description="Update the address to refresh the derived map pin."
             emoji="🗺️"
             eyebrow="Places"

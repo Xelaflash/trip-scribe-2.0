@@ -1,11 +1,18 @@
+import { DeleteTripAlertDialog } from '@/app/trips/components/DeleteTripAlertDialog';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { getPlanningStatusOption } from '@/lib/tripPlanningStatus';
 import type { TripWithDetails } from '@/queries/tripQueries';
-import { CalendarDays, ExternalLink, Globe2, Lock, Trash2 } from 'lucide-react';
+import { CalendarDays, ExternalLink, Globe2, Lock } from 'lucide-react';
 import Link from 'next/link';
 
-export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete: () => Promise<void> }) => {
+interface TripHeaderProps {
+  trip: TripWithDetails;
+  isDeletingTrip: boolean;
+  onDeleteTrip: (trip: Pick<TripWithDetails, 'slug' | 'title'>) => void;
+}
+
+export const TripHeader = ({ trip, isDeletingTrip, onDeleteTrip }: TripHeaderProps) => {
   const planningStatus = getPlanningStatusOption(trip.planningStatus);
   const StatusIcon = planningStatus.Icon;
   const dateRange = `${new Date(trip.startDate).toLocaleDateString()} - ${new Date(trip.endDate).toLocaleDateString()}`;
@@ -58,10 +65,15 @@ export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete
             </Link>
           </Button>
         )}
-        <Button variant="destructive" className="text-destructive-foreground " onClick={onDelete} size="pill">
-          <Trash2 />
-          Delete trip
-        </Button>
+        <DeleteTripAlertDialog
+          trip={trip}
+          isDeletingTrip={isDeletingTrip}
+          onDeleteTrip={onDeleteTrip}
+          triggerClassName="text-destructive-foreground"
+          triggerLabel="Delete trip"
+          triggerSize="pill"
+          triggerVariant="destructive"
+        />
       </div>
     </section>
   );

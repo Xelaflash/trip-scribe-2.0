@@ -125,6 +125,7 @@ export const TripNotesSection = ({
           </DialogTrigger>
           <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-2xl">
             <TripDialogHeader
+              backgroundImageSrc="/pics/pexels-martin-alargent-1165956-2224561.jpg"
               description="Save a reminder, idea, or practical detail for this trip."
               emoji="📝"
               eyebrow="Notes"
@@ -189,6 +190,7 @@ export const TripNotesSection = ({
       <Dialog open={!!editingNote} onOpenChange={(open) => !open && setEditingNoteId(null)}>
         <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-2xl">
           <TripDialogHeader
+            backgroundImageSrc="/pics/pexels-belle-co-99483-342005.jpg"
             description="Update the saved context for this trip note."
             emoji="✍️"
             eyebrow="Notes"
