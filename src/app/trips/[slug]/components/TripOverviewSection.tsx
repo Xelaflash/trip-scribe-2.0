@@ -26,6 +26,20 @@ export const TripOverviewSection = ({
 }) => {
   const isSubmitting = form.formState.isSubmitting;
 
+  const handleSubmit = form.handleSubmit(async (values) => {
+    await updateTrip(trip.slug, {
+      ...values,
+      startDate: new Date(values.startDate),
+      endDate: new Date(values.endDate),
+      destinations: values.destinations.split(',').flatMap((destination) => {
+        const trimmedDestination = destination.trim();
+        return trimmedDestination ? [trimmedDestination] : [];
+      }),
+    });
+    onPlaceholderChange();
+    onRefresh();
+  });
+
   return (
     <article className="rounded-4xl border border-border/80 bg-card/85 p-6 shadow-elevationLow backdrop-blur-xl">
       <div className="flex items-center justify-between gap-4">
@@ -35,22 +49,7 @@ export const TripOverviewSection = ({
         </span>
       </div>
       <Form {...form}>
-        <form
-          className="mt-5 grid gap-4"
-          onSubmit={form.handleSubmit(async (values) => {
-            await updateTrip(trip.slug, {
-              ...values,
-              startDate: new Date(values.startDate),
-              endDate: new Date(values.endDate),
-              destinations: values.destinations.split(',').flatMap((destination) => {
-                const trimmedDestination = destination.trim();
-                return trimmedDestination ? [trimmedDestination] : [];
-              }),
-            });
-            onPlaceholderChange();
-            onRefresh();
-          })}
-        >
+        <form className="mt-5 grid gap-4" onSubmit={handleSubmit}>
           <FormField
             control={form.control}
             name="title"
