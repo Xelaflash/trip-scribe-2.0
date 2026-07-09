@@ -5,11 +5,11 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import type { OverviewForm } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import type { TripPlaceholderSet } from '@/app/trips/[slug]/data/placeholders';
-import { planningStatusOptions } from '@/lib/tripPlanningStatus';
+import { getPlanningStatusOption, planningStatusOptions } from '@/lib/tripPlanningStatus';
 import { cn } from '@/lib/utils';
 import type { TripWithDetails } from '@/queries/tripQueries';
 import { updateTrip } from '@/queries/tripQueries';
-import { ClipboardCheck, Globe2, Lock, Save } from 'lucide-react';
+import { Globe2, Lock, Save } from 'lucide-react';
 
 export const TripOverviewSection = ({
   form,
@@ -190,30 +190,38 @@ export const TripOverviewSection = ({
           <FormField
             control={form.control}
             name="planningStatus"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Plan status</FormLabel>
-                <FormControl>
-                  <div className="relative">
-                    <ClipboardCheck
-                      className="pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2 text-primary"
-                      aria-hidden="true"
-                    />
-                    <select
-                      className="h-12 w-full appearance-none rounded-2xl border border-input bg-card/80 px-12 text-sm font-black text-foreground shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
-                      {...field}
-                    >
-                      {planningStatusOptions.map((status) => (
-                        <option key={status.value} value={status.value}>
-                          {status.label}: {status.description}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
+            render={({ field }) => {
+              const selectedStatus = getPlanningStatusOption(field.value);
+              const SelectedStatusIcon = selectedStatus.Icon;
+
+              return (
+                <FormItem>
+                  <FormLabel>Plan status</FormLabel>
+                  <FormControl>
+                    <div className="relative">
+                      <SelectedStatusIcon
+                        className={cn(
+                          'pointer-events-none absolute top-1/2 left-4 size-5 -translate-y-1/2',
+                          selectedStatus.iconClassName,
+                        )}
+                        aria-hidden="true"
+                      />
+                      <select
+                        className="h-12 w-full appearance-none rounded-2xl border border-input bg-card/80 px-12 text-sm font-black text-foreground shadow-xs outline-none transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50"
+                        {...field}
+                      >
+                        {planningStatusOptions.map((status) => (
+                          <option key={status.value} value={status.value}>
+                            {status.label}: {status.description}
+                          </option>
+                        ))}
+                      </select>
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              );
+            }}
           />
           <Button type="submit" variant="gradient" size="pill" className="w-full" disabled={isSubmitting}>
             <Save />

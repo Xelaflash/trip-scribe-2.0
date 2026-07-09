@@ -1,8 +1,9 @@
 'use client';
 
-import { CalendarDays, ClipboardCheck, Globe2, Lock, MapPin, PencilLine, Sun } from 'lucide-react';
+import { CalendarDays, Globe2, Lock, MapPin, PencilLine, Sun } from 'lucide-react';
 import Link from 'next/link';
 import { DeleteTripAlertDialog } from '@/app/trips/components/DeleteTripAlertDialog';
+import { cn } from '@/lib/utils';
 import { getPlanningStatusOption } from '@/lib/tripPlanningStatus';
 import type { TripSummary } from '@/queries/tripQueries';
 
@@ -16,6 +17,7 @@ interface TripArticleProps {
 
 export const TripArticle = ({ trip, isDeletingTrip, onDeleteTrip }: TripArticleProps) => {
   const planningStatus = getPlanningStatusOption(trip.planningStatus);
+  const StatusIcon = planningStatus.Icon;
   const placeCount = trip._count.places ?? 0;
 
   return (
@@ -47,8 +49,13 @@ export const TripArticle = ({ trip, isDeletingTrip, onDeleteTrip }: TripArticleP
           {formatTripDate(trip.startDate)} - {formatTripDate(trip.endDate)}
         </p>
       </div>
-      <span className="pointer-events-none inline-flex w-fit items-center gap-1.5 rounded-full border border-border/80 bg-background px-3 py-1.5 text-xs font-extrabold text-ink-700 dark:text-muted-foreground">
-        <ClipboardCheck className="size-3.5" />
+      <span
+        className={cn(
+          'pointer-events-none inline-flex w-fit items-center gap-1.5 rounded-full border px-3 py-1.5 text-xs font-extrabold',
+          planningStatus.badgeClassName,
+        )}
+      >
+        <StatusIcon className="size-3.5" aria-hidden="true" />
         {planningStatus.label}: {planningStatus.description}
       </span>
 

@@ -1,11 +1,13 @@
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import { getPlanningStatusOption } from '@/lib/tripPlanningStatus';
 import type { TripWithDetails } from '@/queries/tripQueries';
-import { CalendarDays, ClipboardCheck, ExternalLink, Globe2, Lock, Trash2 } from 'lucide-react';
+import { CalendarDays, ExternalLink, Globe2, Lock, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 
 export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete: () => Promise<void> }) => {
   const planningStatus = getPlanningStatusOption(trip.planningStatus);
+  const StatusIcon = planningStatus.Icon;
   const dateRange = `${new Date(trip.startDate).toLocaleDateString()} - ${new Date(trip.endDate).toLocaleDateString()}`;
   const visibilityLabel = trip.visibility === 'PUBLIC' ? 'Public trip' : 'Private planning trip';
 
@@ -21,8 +23,13 @@ export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete
             )}
             {visibilityLabel}
           </span>
-          <span className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/80 px-3 py-1 text-xs font-black text-primary shadow-xs">
-            <ClipboardCheck className="size-4" aria-hidden="true" />
+          <span
+            className={cn(
+              'inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs font-black shadow-xs',
+              planningStatus.badgeClassName,
+            )}
+          >
+            <StatusIcon className="size-4" aria-hidden="true" />
             {planningStatus.label}
           </span>
         </div>
