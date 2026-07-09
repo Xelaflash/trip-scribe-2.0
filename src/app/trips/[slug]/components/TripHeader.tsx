@@ -12,9 +12,9 @@ export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete
   const visibilityLabel = trip.visibility === 'PUBLIC' ? 'Public trip' : 'Private planning trip';
 
   return (
-    <section className="grid gap-6 rounded-4xl border border-border/80 bg-card/85 p-6 shadow-elevationMedium backdrop-blur-xl md:grid-cols-[1fr_auto] md:items-end md:p-8 lg:p-10">
+    <section className="rounded-4xl border border-border/80 bg-card/85 p-6 shadow-elevationMedium backdrop-blur-xl md:items-end md:p-8 lg:p-10">
       <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-3">
+        <div className="flex flex-wrap items-center gap-2">
           <span className="inline-flex items-center gap-2 text-xs font-black tracking-[0.2em] text-secondary uppercase">
             {trip.visibility === 'PUBLIC' ? (
               <Globe2 className="size-4" aria-hidden="true" />
@@ -33,6 +33,7 @@ export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete
             {planningStatus.label}
           </span>
         </div>
+
         <h1 className="mt-4 text-4xl leading-none font-black tracking-normal text-card-foreground md:text-6xl">
           {trip.title}
         </h1>
@@ -43,33 +44,24 @@ export const TripHeader = ({ trip, onDelete }: { trip: TripWithDetails; onDelete
             <CalendarDays className="size-5 text-primary" aria-hidden="true" />
             {dateRange}
           </span>
-          <span aria-hidden="true">·</span>
-          <span>{planningStatus.description}</span>
         </div>
         {trip.description ? (
           <p className="mt-4 max-w-3xl text-base leading-7 text-muted-foreground">{trip.description}</p>
         ) : null}
       </div>
-      <div className="flex flex-col gap-4 md:items-end">
-        <div className="flex w-fit gap-1 rounded-full bg-muted/80 p-1.5 shadow-inner">
-          <span className="rounded-full bg-card px-5 py-2 text-sm font-black text-primary shadow-xs">Plan</span>
-          <span className="px-5 py-2 text-sm font-black text-muted-foreground">Preview</span>
-          <span className="px-5 py-2 text-sm font-black text-muted-foreground">Public</span>
-        </div>
-        <div className="flex flex-wrap gap-2 md:justify-end">
-          {trip.visibility === 'PUBLIC' ? (
-            <Button asChild variant="quietOutline" size="pill">
-              <Link href={`/share/${trip.slug}`}>
-                <ExternalLink />
-                Public page
-              </Link>
-            </Button>
-          ) : null}
-          <Button variant="ghost" className="text-muted-foreground hover:text-destructive" onClick={onDelete}>
-            <Trash2 />
-            Delete trip
+      <div className="flex flex-col md:flex-row gap-4 md:items-end mt-8">
+        {trip.visibility === 'PUBLIC' && (
+          <Button asChild variant="quietOutline" size="pill">
+            <Link href={`/share/${trip.slug}`} target="_blank" rel="noopener noreferrer">
+              <ExternalLink />
+              Public page
+            </Link>
           </Button>
-        </div>
+        )}
+        <Button variant="destructive" className="text-destructive-foreground " onClick={onDelete} size="pill">
+          <Trash2 />
+          Delete trip
+        </Button>
       </div>
     </section>
   );
