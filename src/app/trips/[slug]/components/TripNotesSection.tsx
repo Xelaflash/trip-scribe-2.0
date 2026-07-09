@@ -181,6 +181,7 @@ export const TripNotesSection = ({
                   }
                   icon={<NotebookPen className="size-6" aria-hidden="true" />}
                   confirmLabel="Delete note"
+                  decorationVariant="note"
                   onDelete={async () => {
                     await deleteNote(trip.slug, note.id);
                     onRefresh();

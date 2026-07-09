@@ -278,6 +278,7 @@ export const TripPlacesSection = ({
                     }
                     icon={<MapPin className="size-6" aria-hidden="true" />}
                     confirmLabel="Delete place"
+                    decorationVariant="place"
                     onDelete={async () => {
                       await deletePlace(trip.slug, place.id);
                       onRefresh();

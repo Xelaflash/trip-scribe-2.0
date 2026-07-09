@@ -388,6 +388,7 @@ export const TripItinerarySection = ({
                 }
                 icon={<Route className="size-6" aria-hidden="true" />}
                 confirmLabel="Delete stop"
+                decorationVariant="itinerary"
                 onDelete={async () => {
                   await deleteItineraryItem(trip.slug, item.id);
                   onRefresh();
