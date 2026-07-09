@@ -27,6 +27,9 @@ As a user,
 19. I want to be able to customize the appearance and layout (calendar view, timeline view, etc.) of my trip details so that I can personalize my travel documentation.
 
 20. I want to be able to add a map for places and itinerary items so that I can visualize my travel route and locations.
+21. I want to be able to invite participants via email to collaborate on a trip so that we can plan together effectively.
+
+22. I want to be able to add a todo list in the trip page so that I can keep track of tasks and activities related to my trip.
 
 ## TO CONFIRM
 
@@ -43,5 +46,4 @@ As a user,
 
 ## TODO:
 
-[ ] Style date picker.
 [ ] review TripArticle progress bar.
