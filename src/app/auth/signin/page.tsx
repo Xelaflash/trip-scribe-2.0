@@ -20,9 +20,9 @@ const SignIn = () => {
         </div>
 
         <div className="order-1 overflow-hidden rounded-4xl bg-emerald-950 shadow-elevationMedium lg:order-2">
-          <div className="relative min-h-80 md:min-h-120 lg:min-h-[42rem]">
+          <div className="relative min-h-80 md:min-h-120 lg:min-h-168">
             <Image
-              src="/signin-landscape.jpg"
+              src="/pics/signin-landscape.jpg"
               alt="Sunlit rice terraces below a mountain"
               fill
               priority
