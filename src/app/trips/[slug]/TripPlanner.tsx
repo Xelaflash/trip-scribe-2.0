@@ -133,7 +133,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
         />
       </section>
 
-      <section className="grid gap-6 lg:grid-cols-2">
+      <section className="flex flex-col gap-6">
         <TripNotesSection
           form={noteForm}
           placeholders={tripPlaceholderSets[notePlaceholderIndex]}

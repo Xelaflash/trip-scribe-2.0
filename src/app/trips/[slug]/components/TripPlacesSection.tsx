@@ -275,7 +275,7 @@ export const TripPlacesSection = ({
         </Dialog>
       </div>
 
-      <TripPlacesMap places={trip.places} className="mt-6 min-h-72" />
+      <TripPlacesMap places={trip.places} destination={trip.destinations[0] ?? null} className="mt-6 min-h-100" />
 
       <div className="mt-6 grid gap-4">
         {trip.places.length === 0 ? (
