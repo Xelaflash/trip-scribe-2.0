@@ -8,7 +8,7 @@ const NewUser = () => {
       <div className="mx-auto grid w-full max-w-outerContentWidth overflow-hidden rounded-4xl border border-border bg-card/95 text-card-foreground shadow-elevationMedium backdrop-blur-xl lg:grid-cols-[0.9fr_1.1fr]">
         <div className="relative min-h-72 bg-emerald-950 sm:min-h-88 lg:min-h-150">
           <Image
-            src="/pics/signin-landscape.jpg"
+            src="/pics/pexels-simon73-1118448.jpg"
             alt="Sunlit rice terraces below a mountain"
             fill
             priority
