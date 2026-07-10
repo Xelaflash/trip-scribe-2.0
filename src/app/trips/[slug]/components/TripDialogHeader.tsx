@@ -1,9 +1,22 @@
 'use client';
 
 import { DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { cn } from '@/lib/utils';
+
+const tripDialogBackgroundClasses = {
+  '/pics/pexels-belle-co-99483-342005.jpg': "bg-[url('/pics/pexels-belle-co-99483-342005.jpg')]",
+  '/pics/pexels-karlsolano-7282788.jpg': "bg-[url('/pics/pexels-karlsolano-7282788.jpg')]",
+  '/pics/pexels-martin-alargent-1165956-2224561.jpg': "bg-[url('/pics/pexels-martin-alargent-1165956-2224561.jpg')]",
+  '/pics/pexels-morais-90633.jpg': "bg-[url('/pics/pexels-morais-90633.jpg')]",
+  '/pics/pexels-tadeu-gabriel-arcieri-1160052-9209218.jpg':
+    "bg-[url('/pics/pexels-tadeu-gabriel-arcieri-1160052-9209218.jpg')]",
+  '/pics/pexels-tomas-malik-793526-3408354.jpg': "bg-[url('/pics/pexels-tomas-malik-793526-3408354.jpg')]",
+} as const;
+
+type TripDialogBackgroundImageSrc = keyof typeof tripDialogBackgroundClasses;
 
 interface TripDialogHeaderProps {
-  backgroundImageSrc: string;
+  backgroundImageSrc: TripDialogBackgroundImageSrc;
   description: string;
   emoji: string;
   eyebrow: string;
@@ -13,8 +26,7 @@ interface TripDialogHeaderProps {
 export const TripDialogHeader = ({ backgroundImageSrc, description, emoji, eyebrow, title }: TripDialogHeaderProps) => (
   <DialogHeader className="relative overflow-hidden border-b border-border/70 bg-card p-6 pr-14 text-left md:px-8 md:pr-16">
     <div
-      className="absolute inset-0 bg-cover bg-center"
-      style={{ backgroundImage: `url(${backgroundImageSrc})` }}
+      className={cn('absolute inset-0 bg-cover bg-center', tripDialogBackgroundClasses[backgroundImageSrc])}
       aria-hidden="true"
     />
     <div className="absolute inset-0 bg-[linear-gradient(90deg,hsl(var(--card)/0.94)_0%,hsl(var(--card)/0.86)_42%,hsl(var(--card)/0.50)_75%,hsl(var(--card)/0.20)_100%)]" />
