@@ -1,11 +1,12 @@
 'use client';
 
 import { useEffect, useMemo, useRef, useState } from 'react';
-import type * as MapLibre from 'maplibre-gl';
-import type { Map as MapLibreMap, Marker, Popup } from 'maplibre-gl';
+import type mapboxgl from 'mapbox-gl';
+import type { Map as MapboxMap, Marker, Popup } from 'mapbox-gl';
 import { cn } from '@/lib/utils';
 
-const DEFAULT_MAP_STYLE = 'https://demotiles.maplibre.org/globe.json';
+const DEFAULT_MAP_STYLE = 'mapbox://styles/mapbox/streets-v12';
+const MAPBOX_ACCESS_TOKEN = process.env.NEXT_PUBLIC_MAPBOX_ACCESS_TOKEN;
 
 interface TripPlacesMapPlace {
   id: string;
@@ -23,8 +24,8 @@ interface TripPlacesMapProps {
 
 export const TripPlacesMap = ({ places, className }: TripPlacesMapProps) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const mapRef = useRef<MapLibreMap | null>(null);
-  const maplibreRef = useRef<typeof MapLibre | null>(null);
+  const mapRef = useRef<MapboxMap | null>(null);
+  const mapboxglRef = useRef<typeof mapboxgl | null>(null);
   const markersRef = useRef<Marker[]>([]);
   const [isReady, setIsReady] = useState(false);
   const [hasMapError, setHasMapError] = useState(false);
@@ -49,25 +50,30 @@ export const TripPlacesMap = ({ places, className }: TripPlacesMapProps) => {
         return;
       }
 
+      if (!MAPBOX_ACCESS_TOKEN) {
+        setHasMapError(true);
+        return;
+      }
+
       try {
-        const maplibre = await import('maplibre-gl');
+        const mapboxglModule = await import('mapbox-gl');
+        const mapbox = mapboxglModule.default;
 
         if (!isMounted || !containerRef.current) {
           return;
         }
 
-        maplibreRef.current = maplibre;
+        mapbox.accessToken = MAPBOX_ACCESS_TOKEN;
+        mapboxglRef.current = mapbox;
 
-        const map = new maplibre.Map({
+        const map = new mapbox.Map({
           container: containerRef.current,
-          style: process.env.NEXT_PUBLIC_MAPLIBRE_STYLE_URL || DEFAULT_MAP_STYLE,
+          style: process.env.NEXT_PUBLIC_MAPBOX_STYLE_URL || DEFAULT_MAP_STYLE,
           center: [0, 20],
           zoom: 1.25,
-          attributionControl: false,
         });
 
-        map.addControl(new maplibre.NavigationControl({ showCompass: false }), 'top-right');
-        map.addControl(new maplibre.AttributionControl({ compact: true }), 'bottom-right');
+        map.addControl(new mapbox.NavigationControl({ showCompass: false }), 'top-right');
         map.on('load', () => {
           if (isMounted) {
             setIsReady(true);
@@ -95,17 +101,17 @@ export const TripPlacesMap = ({ places, className }: TripPlacesMapProps) => {
       markersRef.current = [];
       mapRef.current?.remove();
       mapRef.current = null;
-      maplibreRef.current = null;
+      mapboxglRef.current = null;
     };
   }, []);
 
-  // MapLibre markers are imperative DOM objects, so this effect keeps them in sync with React data.
+  // Mapbox markers are imperative DOM objects, so this effect keeps them in sync with React data.
   /* eslint-disable react-you-might-not-need-an-effect/no-event-handler */
   useEffect(() => {
     const map = mapRef.current;
-    const maplibre = maplibreRef.current;
+    const mapbox = mapboxglRef.current;
 
-    if (!isReady || !map || !maplibre) {
+    if (!isReady || !map || !mapbox) {
       return;
     }
 
@@ -116,20 +122,20 @@ export const TripPlacesMap = ({ places, className }: TripPlacesMapProps) => {
       markerElement.className = 'trip-map-marker';
       markerElement.setAttribute('aria-label', `Show ${place.name} on map`);
 
-      const popup: Popup = new maplibre.Popup({ offset: 18, closeButton: false }).setHTML(
+      const popup: Popup = new mapbox.Popup({ offset: 18, closeButton: false }).setHTML(
         `<strong>${escapeHtml(place.name)}</strong>${
           place.address ? `<span>${escapeHtml(place.address)}</span>` : ''
         }${place.category ? `<em>${escapeHtml(place.category)}</em>` : ''}`,
       );
 
-      return new maplibre.Marker({ element: markerElement, anchor: 'bottom' })
+      return new mapbox.Marker({ element: markerElement, anchor: 'bottom' })
         .setLngLat([place.longitude, place.latitude])
         .setPopup(popup)
         .addTo(map);
     });
 
     if (pinnedPlaces.length > 1) {
-      const bounds = new maplibre.LngLatBounds();
+      const bounds = new mapbox.LngLatBounds();
       pinnedPlaces.forEach((place) => bounds.extend([place.longitude, place.latitude]));
       map.fitBounds(bounds, { padding: 64, maxZoom: 14, duration: 600 });
     } else if (pinnedPlaces[0]) {
@@ -160,7 +166,7 @@ export const TripPlacesMap = ({ places, className }: TripPlacesMapProps) => {
             </p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">
               {hasMapError
-                ? 'Saved coordinates are still kept with each place.'
+                ? 'Saved coordinates are still kept with each place. Check the Mapbox token and style settings.'
                 : 'Pins appear after Trip Scribe finds coordinates for saved addresses.'}
             </p>
           </div>

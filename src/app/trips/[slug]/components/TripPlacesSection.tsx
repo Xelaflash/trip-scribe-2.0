@@ -10,6 +10,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { DeleteTripDetailItemAlertDialog } from '@/app/trips/[slug]/components/DeleteTripDetailItemAlertDialog';
+import { PlaceSearchField, type SelectedPlaceSearchResult } from '@/app/trips/[slug]/components/PlaceSearchField';
 import { TripDialogHeader } from '@/app/trips/[slug]/components/TripDialogHeader';
 import { TripPlacesMap } from '@/app/trips/[slug]/components/TripPlacesMap';
 import { placeSchema, type PlaceForm, type PlaceFormValues } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
@@ -21,9 +22,36 @@ const placePayload = (values: PlaceFormValues): PlaceCreateInput | PlaceUpdateIn
   name: values.name,
   category: values.category,
   address: values.address,
+  mapboxId: values.mapboxId,
+  featureType: values.featureType,
+  latitude: values.latitude,
+  longitude: values.longitude,
   url: values.url,
   notes: values.notes,
 });
+
+const clearPlaceSelection = (form: PlaceForm) => {
+  form.setValue('mapboxId', '', { shouldDirty: true });
+  form.setValue('featureType', '', { shouldDirty: true });
+  form.setValue('latitude', null, { shouldDirty: true });
+  form.setValue('longitude', null, { shouldDirty: true });
+};
+
+const applySelectedPlace = (form: PlaceForm, place: SelectedPlaceSearchResult) => {
+  form.setValue('address', place.address, { shouldDirty: true, shouldValidate: true });
+  form.setValue('mapboxId', place.mapboxId ?? '', { shouldDirty: true });
+  form.setValue('featureType', place.featureType ?? '', { shouldDirty: true });
+  form.setValue('latitude', place.latitude, { shouldDirty: true });
+  form.setValue('longitude', place.longitude, { shouldDirty: true });
+
+  if (place.name && !(form.getValues('name') ?? '').trim()) {
+    form.setValue('name', place.name, { shouldDirty: true, shouldValidate: true });
+  }
+
+  if (place.category && !(form.getValues('category') ?? '').trim()) {
+    form.setValue('category', place.category, { shouldDirty: true, shouldValidate: true });
+  }
+};
 
 const PlaceFormFields = ({ form }: { form: PlaceForm }) => {
   return (
@@ -71,10 +99,15 @@ const PlaceFormFields = ({ form }: { form: PlaceForm }) => {
           <FormItem>
             <FormLabel>Address</FormLabel>
             <FormControl>
-              <Input
-                className="h-12 rounded-2xl border-border/80 bg-card/80 px-4 font-semibold shadow-xs"
+              <PlaceSearchField
+                value={field.value ?? ''}
                 placeholder="Full address or place address"
-                {...field}
+                onBlur={field.onBlur}
+                onManualChange={(nextAddress) => {
+                  field.onChange(nextAddress);
+                  clearPlaceSelection(form);
+                }}
+                onSelect={(place) => applySelectedPlace(form, place)}
               />
             </FormControl>
             <FormMessage />
@@ -99,8 +132,7 @@ const PlaceFormFields = ({ form }: { form: PlaceForm }) => {
         )}
       />
       <p className="rounded-2xl border border-border/70 bg-muted/50 px-4 py-3 text-sm font-semibold text-muted-foreground">
-        Map pins are generated from the address when you save the place. If the address cannot be found, the place is
-        still saved without a pin.
+        Search for an address, hotel, cafe, landmark, or place. Pins are saved from the selected result coordinates.
       </p>
       <FormField
         control={form.control}
@@ -136,7 +168,17 @@ export const TripPlacesSection = ({
   const [editingPlaceId, setEditingPlaceId] = useState<string | null>(null);
   const editForm = useForm<PlaceFormValues>({
     resolver: zodResolver(placeSchema),
-    defaultValues: { name: '', category: '', address: '', url: '', notes: '' },
+    defaultValues: {
+      name: '',
+      category: '',
+      address: '',
+      mapboxId: '',
+      featureType: '',
+      latitude: null,
+      longitude: null,
+      url: '',
+      notes: '',
+    },
   });
 
   const editingPlace = trip.places.find((place) => place.id === editingPlaceId);
@@ -148,6 +190,10 @@ export const TripPlacesSection = ({
       name: place.name,
       category: place.category ?? '',
       address: place.address ?? '',
+      mapboxId: place.mapboxId ?? '',
+      featureType: place.featureType ?? '',
+      latitude: place.latitude,
+      longitude: place.longitude,
       url: place.url ?? '',
       notes: place.notes ?? '',
     });
@@ -188,7 +234,7 @@ export const TripPlacesSection = ({
           <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-4xl">
             <TripDialogHeader
               backgroundImageSrc="/pics/pexels-karlsolano-7282788.jpg"
-              description="Save a place with an address. Trip Scribe will derive the map pin when you save."
+              description="Search for a place or address and save its coordinates for the trip map."
               emoji="📍"
               eyebrow="Places"
               title="Add place"
@@ -211,14 +257,14 @@ export const TripPlacesSection = ({
 
       <TripPlacesMap places={trip.places} className="mt-6 min-h-72" />
       <p className="mt-3 text-xs font-semibold text-muted-foreground">
-        Address geocoding by{' '}
+        Place search and geocoding by{' '}
         <a
-          href="https://nominatim.openstreetmap.org/"
+          href="https://www.mapbox.com/search-service"
           target="_blank"
           rel="noreferrer"
           className="font-black text-primary no-underline hover:text-secondary"
         >
-          OpenStreetMap Nominatim
+          Mapbox
         </a>
         .
       </p>
@@ -295,7 +341,7 @@ export const TripPlacesSection = ({
         <DialogContent className="gap-0 overflow-hidden p-0 sm:max-w-4xl">
           <TripDialogHeader
             backgroundImageSrc="/pics/pexels-morais-90633.jpg"
-            description="Update the address to refresh the derived map pin."
+            description="Update the selected place or address to refresh the saved map pin."
             emoji="🗺️"
             eyebrow="Places"
             title="Edit place"

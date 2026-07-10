@@ -1,6 +1,7 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
-import { createUniqueTripSlug, requireUserSession } from '@/lib/tripServer';
+import { normalizeTripDestinations } from '@/lib/tripDestinations';
+import { createUniqueTripSlug, requireUserSession, tripInclude } from '@/lib/tripServer';
 import { tripCreateSchema } from '@/lib/tripValidation';
 
 export async function GET() {
@@ -34,15 +35,31 @@ export async function POST(request: Request) {
 
   try {
     const payload = tripCreateSchema.parse(await request.json());
+    const { destinations, ...tripPayload } = payload;
+    const normalizedDestinations = normalizeTripDestinations(destinations);
     const slug = await createUniqueTripSlug(payload.title);
 
     const trip = await prisma.trip.create({
       data: {
-        ...payload,
+        ...tripPayload,
         description: payload.description || null,
+        destinations: normalizedDestinations.labels,
+        tripDestinations: {
+          create: normalizedDestinations.records.map(
+            ({ sortOrder, label, mapboxId, featureType, latitude, longitude }) => ({
+              label,
+              mapboxId,
+              featureType,
+              latitude,
+              longitude,
+              sortOrder,
+            }),
+          ),
+        },
         user: { connect: { id: session.user.id } },
         slug,
       },
+      include: tripInclude,
     });
 
     return NextResponse.json(trip, { status: 201 });

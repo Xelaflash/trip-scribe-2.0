@@ -22,25 +22,43 @@ model User {
 }
 
 model Trip {
-  id             String          @id @default(uuid())
-  title          String
-  description    String?
-  visibility     Visibility      @default(PRIVATE)
-  planningStatus PlanningStatus  @default(DRAFT)
-  destinations   String[]
-  slug           String          @unique
-  userId         String
-  startDate      DateTime
-  endDate        DateTime
-  createdAt      DateTime        @default(now())
-  updatedAt      DateTime        @updatedAt
-  itineraryItems ItineraryItem[]
-  notes          TripNote[]
-  places         TripPlace[]
-  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id               String            @id @default(uuid())
+  title            String
+  description      String?
+  visibility       Visibility        @default(PRIVATE)
+  planningStatus   PlanningStatus    @default(DRAFT)
+  destinations     String[]
+  slug             String            @unique
+  userId           String
+  startDate        DateTime
+  endDate          DateTime
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  tripDestinations TripDestination[]
+  itineraryItems   ItineraryItem[]
+  notes            TripNote[]
+  places           TripPlace[]
+  user             User              @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])
   @@index([visibility])
+}
+
+model TripDestination {
+  id          String   @id @default(uuid())
+  tripId      String
+  label       String
+  mapboxId    String?
+  featureType String?
+  latitude    Float?
+  longitude   Float?
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+
+  @@unique([id, tripId])
+  @@index([tripId, sortOrder])
 }
 
 model ItineraryItem {
@@ -74,18 +92,20 @@ model TripNote {
 }
 
 model TripPlace {
-  id        String   @id @default(uuid())
-  tripId    String
-  name      String
-  category  String?
-  address   String?
-  url       String?
-  notes     String?
-  latitude  Float?
-  longitude Float?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  trip      Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
+  id          String   @id @default(uuid())
+  tripId      String
+  name        String
+  category    String?
+  address     String?
+  mapboxId    String?
+  featureType String?
+  url         String?
+  notes       String?
+  latitude    Float?
+  longitude   Float?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  trip        Trip     @relation(fields: [tripId], references: [id], onDelete: Cascade)
 
   @@unique([id, tripId])
   @@index([tripId, name])

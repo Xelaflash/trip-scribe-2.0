@@ -3,10 +3,20 @@ import { z } from 'zod';
 export const visibilitySchema = z.enum(['PRIVATE', 'PUBLIC']);
 export const planningStatusSchema = z.enum(['DRAFT', 'PLANNING', 'READY', 'ONGOING', 'TRAVELED', 'ARCHIVED']);
 
+export const selectedDestinationSchema = z.object({
+  label: z.string().trim().min(1),
+  mapboxId: z.string().trim().optional().or(z.literal('')),
+  featureType: z.string().trim().optional().or(z.literal('')),
+  latitude: z.number().finite().nullable().optional(),
+  longitude: z.number().finite().nullable().optional(),
+});
+
+const destinationInputSchema = z.union([z.string().trim().min(1), selectedDestinationSchema]);
+
 export const tripCreateSchema = z.object({
   title: z.string().trim().min(2, 'Title must be at least 2 characters.'),
   description: z.string().trim().optional().or(z.literal('')),
-  destinations: z.array(z.string().trim().min(1)).min(1, 'Add at least one destination.'),
+  destinations: z.array(destinationInputSchema).min(1, 'Add at least one destination.'),
   visibility: visibilitySchema.default('PRIVATE'),
   planningStatus: planningStatusSchema.default('DRAFT'),
   startDate: z.coerce.date(),
@@ -42,6 +52,10 @@ export const placeCreateSchema = z.object({
   name: z.string().trim().min(2, 'Name must be at least 2 characters.'),
   category: z.string().trim().optional().or(z.literal('')),
   address: z.string().trim().optional().or(z.literal('')),
+  mapboxId: z.string().trim().optional().or(z.literal('')),
+  featureType: z.string().trim().optional().or(z.literal('')),
+  latitude: z.number().finite().nullable().optional(),
+  longitude: z.number().finite().nullable().optional(),
   url: z.string().trim().url('Enter a valid URL.').optional().or(z.literal('')),
   notes: z.string().trim().optional().or(z.literal('')),
 });
@@ -50,6 +64,7 @@ export const placeUpdateSchema = placeCreateSchema.partial();
 
 export type TripCreateInput = z.infer<typeof tripCreateSchema>;
 export type TripUpdateInput = z.infer<typeof tripUpdateSchema>;
+export type SelectedDestinationInput = z.infer<typeof selectedDestinationSchema>;
 export type ItineraryCreateInput = z.infer<typeof itineraryCreateSchema>;
 export type ItineraryUpdateInput = z.infer<typeof itineraryUpdateSchema>;
 export type NoteCreateInput = z.infer<typeof noteCreateSchema>;

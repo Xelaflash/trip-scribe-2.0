@@ -22,6 +22,7 @@ import {
   type PlaceFormValues,
 } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import { tripPlaceholderSets } from '@/app/trips/[slug]/data/placeholders';
+import type { SelectedDestinationInput } from '@/lib/tripValidation';
 import { deleteTrip, type TripWithDetails } from '@/queries/tripQueries';
 
 const dateInputValue = (value: Date | string) => {
@@ -30,6 +31,20 @@ const dateInputValue = (value: Date | string) => {
 
 const nextPlaceholderIndex = (index: number) => {
   return (index + 1) % tripPlaceholderSets.length;
+};
+
+const tripDestinationDefaults = (trip: TripWithDetails): SelectedDestinationInput[] => {
+  if (trip.tripDestinations.length > 0) {
+    return trip.tripDestinations.map((destination) => ({
+      label: destination.label,
+      mapboxId: destination.mapboxId ?? undefined,
+      featureType: destination.featureType ?? undefined,
+      latitude: destination.latitude,
+      longitude: destination.longitude,
+    }));
+  }
+
+  return trip.destinations.map((destination) => ({ label: destination }));
 };
 
 export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
@@ -44,7 +59,7 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
     defaultValues: {
       title: trip.title,
       description: trip.description ?? '',
-      destinations: trip.destinations.join(', '),
+      destinations: tripDestinationDefaults(trip),
       visibility: trip.visibility,
       planningStatus: trip.planningStatus,
       startDate: dateInputValue(trip.startDate),
@@ -61,7 +76,17 @@ export const TripPlanner = ({ trip }: { trip: TripWithDetails }) => {
   });
   const placeForm = useForm<PlaceFormValues>({
     resolver: zodResolver(placeSchema),
-    defaultValues: { name: '', category: '', address: '', url: '', notes: '' },
+    defaultValues: {
+      name: '',
+      category: '',
+      address: '',
+      mapboxId: '',
+      featureType: '',
+      latitude: null,
+      longitude: null,
+      url: '',
+      notes: '',
+    },
   });
 
   const refresh = async () => {

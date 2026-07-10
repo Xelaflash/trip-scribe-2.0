@@ -1,5 +1,5 @@
 @import 'tailwindcss';
-@import 'maplibre-gl/dist/maplibre-gl.css';
+@import 'mapbox-gl/dist/mapbox-gl.css';
 
 @custom-variant dark (&:where(.dark, .dark *));
 
@@ -282,7 +282,18 @@ button:disabled {
   background: hsl(var(--card));
 }
 
-.maplibregl-popup-content {
+.mapbox-search-control {
+  min-height: 2.5rem;
+}
+
+.mapbox-search-control mapbox-geocoder,
+.mapbox-search-control mapbox-search-box {
+  display: block;
+  min-height: 2.5rem;
+  width: 100%;
+}
+
+.mapboxgl-popup-content {
   border: 1px solid hsl(var(--border));
   border-radius: 1rem;
   background: hsl(var(--card));
@@ -290,18 +301,18 @@ button:disabled {
   box-shadow: var(--shadow-elevation-low);
 }
 
-.maplibregl-popup-content strong,
-.maplibregl-popup-content span,
-.maplibregl-popup-content em {
+.mapboxgl-popup-content strong,
+.mapboxgl-popup-content span,
+.mapboxgl-popup-content em {
   display: block;
 }
 
-.maplibregl-popup-content strong {
+.mapboxgl-popup-content strong {
   font-weight: 900;
 }
 
-.maplibregl-popup-content span,
-.maplibregl-popup-content em {
+.mapboxgl-popup-content span,
+.mapboxgl-popup-content em {
   margin-top: 0.25rem;
   color: hsl(var(--muted-foreground));
   font-size: 0.75rem;

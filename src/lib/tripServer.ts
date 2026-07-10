@@ -3,6 +3,9 @@ import prisma from '@/lib/prisma';
 import { getServerSession } from 'next-auth';
 
 export const tripInclude = {
+  tripDestinations: {
+    orderBy: { sortOrder: 'asc' as const },
+  },
   itineraryItems: {
     orderBy: [{ startsAt: 'asc' as const }, { sortOrder: 'asc' as const }],
   },

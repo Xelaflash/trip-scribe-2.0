@@ -3,6 +3,7 @@ import { DatePicker } from '@/components/ui/date-picker';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { DestinationPicker } from '@/app/trips/components/DestinationPicker';
 import type { OverviewForm } from '@/app/trips/[slug]/schema/tripDetailFormSchemas';
 import type { TripPlaceholderSet } from '@/app/trips/[slug]/data/placeholders';
 import { getPlanningStatusOption, planningStatusOptions } from '@/lib/tripPlanningStatus';
@@ -31,10 +32,7 @@ export const TripOverviewSection = ({
       ...values,
       startDate: new Date(values.startDate),
       endDate: new Date(values.endDate),
-      destinations: values.destinations.split(',').flatMap((destination) => {
-        const trimmedDestination = destination.trim();
-        return trimmedDestination ? [trimmedDestination] : [];
-      }),
+      destinations: values.destinations,
     });
     onPlaceholderChange();
     onRefresh();
@@ -91,10 +89,11 @@ export const TripOverviewSection = ({
               <FormItem>
                 <FormLabel>Destinations</FormLabel>
                 <FormControl>
-                  <Input
-                    className="h-12 rounded-2xl border-border/80 bg-card/80 px-4 font-semibold shadow-xs"
+                  <DestinationPicker
                     placeholder={placeholders.tripDestinations}
-                    {...field}
+                    value={field.value}
+                    onChange={field.onChange}
+                    onBlur={field.onBlur}
                   />
                 </FormControl>
                 <FormMessage />

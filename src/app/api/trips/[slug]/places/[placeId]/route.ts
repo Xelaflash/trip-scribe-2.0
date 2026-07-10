@@ -1,8 +1,8 @@
 import { NextResponse } from 'next/server';
-import { geocodeAddress } from '@/lib/geocoding';
+import { geocodeAddressWithMapbox } from '@/lib/mapboxGeocoding';
 import prisma from '@/lib/prisma';
 import { requireOwnedTrip } from '@/lib/tripServer';
-import { placeUpdateSchema } from '@/lib/tripValidation';
+import { placeUpdateSchema, type PlaceUpdateInput } from '@/lib/tripValidation';
 
 type RouteContext = {
   params: Promise<{ slug: string; placeId: string }>;
@@ -21,10 +21,12 @@ export async function PATCH(request: Request, context: RouteContext) {
     const existingPlace = trip.places.find((place) => place.id === placeId);
     const nextAddress = payload.address === undefined ? undefined : normalizeOptionalText(payload.address);
     const existingAddress = normalizeOptionalText(existingPlace?.address);
-    const shouldRefreshCoordinates = nextAddress !== undefined && nextAddress !== existingAddress;
+    const selectedCoordinates = getSelectedCoordinates(payload);
+    const shouldRefreshCoordinates =
+      !selectedCoordinates && nextAddress !== undefined && nextAddress !== existingAddress;
     const geocodedPlace = !shouldRefreshCoordinates
       ? undefined
-      : await geocodeAddress({
+      : await geocodeAddressWithMapbox({
           address: nextAddress,
           destinations: trip.destinations,
         });
@@ -33,11 +35,27 @@ export async function PATCH(request: Request, context: RouteContext) {
       data: {
         ...payload,
         category: payload.category === undefined ? undefined : payload.category || null,
-        address: payload.address === undefined ? undefined : payload.address || null,
+        address: payload.address === undefined ? undefined : geocodedPlace?.address || payload.address || null,
+        mapboxId:
+          payload.mapboxId === undefined
+            ? geocodedPlace === undefined
+              ? undefined
+              : (geocodedPlace?.mapboxId ?? null)
+            : payload.mapboxId || null,
+        featureType:
+          payload.featureType === undefined
+            ? geocodedPlace === undefined
+              ? undefined
+              : (geocodedPlace?.featureType ?? null)
+            : payload.featureType || null,
         url: payload.url === undefined ? undefined : payload.url || null,
         notes: payload.notes === undefined ? undefined : payload.notes || null,
-        latitude: geocodedPlace === undefined ? undefined : (geocodedPlace?.latitude ?? null),
-        longitude: geocodedPlace === undefined ? undefined : (geocodedPlace?.longitude ?? null),
+        latitude:
+          selectedCoordinates?.latitude ??
+          (geocodedPlace === undefined ? undefined : (geocodedPlace?.latitude ?? null)),
+        longitude:
+          selectedCoordinates?.longitude ??
+          (geocodedPlace === undefined ? undefined : (geocodedPlace?.longitude ?? null)),
       },
     });
 
@@ -53,6 +71,17 @@ export async function PATCH(request: Request, context: RouteContext) {
 const normalizeOptionalText = (value: string | null | undefined) => {
   const trimmedValue = value?.trim();
   return trimmedValue || null;
+};
+
+const getSelectedCoordinates = (payload: Pick<PlaceUpdateInput, 'latitude' | 'longitude'>) => {
+  if (typeof payload.latitude !== 'number' || typeof payload.longitude !== 'number') {
+    return null;
+  }
+
+  return {
+    latitude: payload.latitude,
+    longitude: payload.longitude,
+  };
 };
 
 export async function DELETE(_request: Request, context: RouteContext) {

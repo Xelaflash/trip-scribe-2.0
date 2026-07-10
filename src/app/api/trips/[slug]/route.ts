@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
+import { normalizeTripDestinations } from '@/lib/tripDestinations';
 import { createUniqueTripSlug, requireOwnedTrip, requireUserSession, tripInclude } from '@/lib/tripServer';
 import { tripUpdateSchema } from '@/lib/tripValidation';
 
@@ -32,13 +33,31 @@ export async function PATCH(request: Request, context: RouteContext) {
 
   try {
     const payload = tripUpdateSchema.parse(await request.json());
+    const { destinations, ...tripPayload } = payload;
+    const normalizedDestinations = destinations ? normalizeTripDestinations(destinations) : null;
     const nextSlug = payload.title ? await createUniqueTripSlug(payload.title, trip.id) : trip.slug;
 
     const updatedTrip = await prisma.trip.update({
       where: { id: trip.id },
       data: {
-        ...payload,
+        ...tripPayload,
         description: payload.description === undefined ? undefined : payload.description || null,
+        destinations: normalizedDestinations?.labels,
+        tripDestinations: normalizedDestinations
+          ? {
+              deleteMany: {},
+              create: normalizedDestinations.records.map(
+                ({ sortOrder, label, mapboxId, featureType, latitude, longitude }) => ({
+                  label,
+                  mapboxId,
+                  featureType,
+                  latitude,
+                  longitude,
+                  sortOrder,
+                }),
+              ),
+            }
+          : undefined,
         slug: nextSlug,
       },
       include: tripInclude,

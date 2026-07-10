@@ -1,4 +1,4 @@
-import type { Prisma, Trip } from '@prisma/generated';
+import type { Prisma } from '@prisma/generated';
 import type {
   ItineraryCreateInput,
   ItineraryUpdateInput,
@@ -12,6 +12,7 @@ import type {
 
 export type TripWithDetails = Prisma.TripGetPayload<{
   include: {
+    tripDestinations: true;
     itineraryItems: true;
     notes: true;
     places: true;
@@ -66,7 +67,7 @@ export async function getTrip(slug: string) {
 }
 
 export async function createTrip(data: TripCreateInput) {
-  return requestJson<Trip>('/api/trips', {
+  return requestJson<TripWithDetails>('/api/trips', {
     method: 'POST',
     body: JSON.stringify(data),
   });

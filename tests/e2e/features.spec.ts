@@ -11,25 +11,71 @@ test('owner can create, update, and delete trips', async ({ browser }) => {
     data: {
       title: 'Test Alpine Route',
       description: 'Created from Playwright.',
-      destinations: ['Chamonix', 'Annecy'],
+      destinations: [
+        {
+          label: 'Chamonix, Auvergne-Rhone-Alpes, France',
+          mapboxId: 'mapbox.place.test-chamonix',
+          featureType: 'place',
+          latitude: 45.9237,
+          longitude: 6.8694,
+        },
+        {
+          label: 'Annecy, Auvergne-Rhone-Alpes, France',
+          mapboxId: 'mapbox.place.test-annecy',
+          featureType: 'place',
+          latitude: 45.8992,
+          longitude: 6.1294,
+        },
+      ],
       visibility: 'PRIVATE',
       startDate: '2031-01-10T00:00:00.000Z',
       endDate: '2031-01-14T00:00:00.000Z',
     },
   });
   expect(createResponse.status()).toBe(201);
-  const trip = (await createResponse.json()) as { slug: string };
+  const trip = (await createResponse.json()) as {
+    slug: string;
+    destinations: string[];
+    tripDestinations: Array<{
+      label: string;
+      mapboxId: string | null;
+      latitude: number | null;
+      longitude: number | null;
+    }>;
+  };
+  expect(trip.destinations).toEqual(['Chamonix, Auvergne-Rhone-Alpes, France', 'Annecy, Auvergne-Rhone-Alpes, France']);
+  expect(trip.tripDestinations).toEqual(
+    expect.arrayContaining([
+      expect.objectContaining({
+        label: 'Chamonix, Auvergne-Rhone-Alpes, France',
+        mapboxId: 'mapbox.place.test-chamonix',
+        latitude: 45.9237,
+        longitude: 6.8694,
+      }),
+    ]),
+  );
 
   const updateResponse = await api.patch(`/api/trips/${trip.slug}`, {
     data: {
       title: 'Test Alpine Route Updated',
+      destinations: ['Zermatt, Switzerland'],
       visibility: 'PUBLIC',
     },
   });
   expect(updateResponse.ok()).toBe(true);
-  const updatedTrip = (await updateResponse.json()) as { slug: string; title: string; visibility: string };
+  const updatedTrip = (await updateResponse.json()) as {
+    slug: string;
+    title: string;
+    visibility: string;
+    destinations: string[];
+    tripDestinations: Array<{ label: string; mapboxId: string | null }>;
+  };
   expect(updatedTrip.title).toBe('Test Alpine Route Updated');
   expect(updatedTrip.visibility).toBe('PUBLIC');
+  expect(updatedTrip.destinations).toEqual(['Zermatt, Switzerland']);
+  expect(updatedTrip.tripDestinations).toEqual([
+    expect.objectContaining({ label: 'Zermatt, Switzerland', mapboxId: null }),
+  ]);
 
   const deleteResponse = await api.delete(`/api/trips/${updatedTrip.slug}`);
   expect(deleteResponse.status()).toBe(204);
@@ -101,17 +147,45 @@ test('itinerary, notes, and places support CRUD', async ({ browser }) => {
     data: {
       name: 'Test Cafe',
       category: 'Cafe',
-      address: '1 Test Street',
+      address: '1201 S Main St, Ann Arbor, Michigan 48104, United States of America',
+      mapboxId: 'mapbox.poi.test-cafe',
+      featureType: 'poi',
+      latitude: 42.2658,
+      longitude: -83.7487,
       url: 'https://example.com',
       notes: 'Good breakfast.',
     },
   });
   expect(placeCreate.status()).toBe(201);
-  const place = (await placeCreate.json()) as { id: string };
+  const place = (await placeCreate.json()) as {
+    id: string;
+    address: string | null;
+    mapboxId: string | null;
+    latitude: number | null;
+    longitude: number | null;
+  };
+  expect(place.address).toBe('1201 S Main St, Ann Arbor, Michigan 48104, United States of America');
+  expect(place.mapboxId).toBe('mapbox.poi.test-cafe');
+  expect(place.latitude).toBe(42.2658);
+  expect(place.longitude).toBe(-83.7487);
   const placeUpdate = await api.patch(`/api/trips/${trip.slug}/places/${place.id}`, {
     data: { notes: 'Good breakfast and coffee.' },
   });
   expect(placeUpdate.ok()).toBe(true);
+  const placeClearAddress = await api.patch(`/api/trips/${trip.slug}/places/${place.id}`, {
+    data: { address: '' },
+  });
+  expect(placeClearAddress.ok()).toBe(true);
+  const placeWithoutPin = (await placeClearAddress.json()) as {
+    address: string | null;
+    mapboxId: string | null;
+    latitude: number | null;
+    longitude: number | null;
+  };
+  expect(placeWithoutPin.address).toBeNull();
+  expect(placeWithoutPin.mapboxId).toBeNull();
+  expect(placeWithoutPin.latitude).toBeNull();
+  expect(placeWithoutPin.longitude).toBeNull();
   const placeDelete = await api.delete(`/api/trips/${trip.slug}/places/${place.id}`);
   expect(placeDelete.status()).toBe(204);
 

@@ -1,10 +1,11 @@
 import { z } from 'zod';
 import type { UseFormReturn } from 'react-hook-form';
+import { selectedDestinationSchema } from '@/lib/tripValidation';
 
 export const overviewSchema = z.object({
   title: z.string().min(2),
   description: z.string().optional(),
-  destinations: z.string().min(2),
+  destinations: z.array(selectedDestinationSchema).min(1, 'Add at least one destination.'),
   visibility: z.enum(['PRIVATE', 'PUBLIC']),
   planningStatus: z.enum(['DRAFT', 'PLANNING', 'READY', 'ONGOING', 'TRAVELED', 'ARCHIVED']),
   startDate: z.string().min(1),
@@ -41,6 +42,10 @@ export const placeSchema = z.object({
   name: z.string().min(2),
   category: z.string().optional(),
   address: z.string().optional(),
+  mapboxId: z.string().optional(),
+  featureType: z.string().optional(),
+  latitude: z.number().nullable().optional(),
+  longitude: z.number().nullable().optional(),
   url: z.string().optional(),
   notes: z.string().optional(),
 });

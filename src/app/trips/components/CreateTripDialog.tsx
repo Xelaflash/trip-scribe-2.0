@@ -22,14 +22,16 @@ import {
 import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import { DestinationPicker } from '@/app/trips/components/DestinationPicker';
 import { cn } from '@/lib/utils';
+import { selectedDestinationSchema } from '@/lib/tripValidation';
 import { createTrip } from '@/queries/tripQueries';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 
 const tripFormSchema = z.object({
   title: z.string().min(2, 'Add a trip title.'),
   description: z.string().optional(),
-  destinations: z.string().min(2, 'Add at least one destination.'),
+  destinations: z.array(selectedDestinationSchema).min(1, 'Add at least one destination.'),
   visibility: z.enum(['PRIVATE', 'PUBLIC']),
   startDate: z.string().min(1, 'Choose a start date.'),
   endDate: z.string().min(1, 'Choose an end date.'),
@@ -57,7 +59,7 @@ export const CreateTripDialog = ({
     defaultValues: {
       title: '',
       description: '',
-      destinations: '',
+      destinations: [],
       visibility: 'PRIVATE',
       startDate: '',
       endDate: '',
@@ -71,10 +73,7 @@ export const CreateTripDialog = ({
         planningStatus: 'DRAFT',
         startDate: new Date(values.startDate),
         endDate: new Date(values.endDate),
-        destinations: values.destinations.split(',').flatMap((destination) => {
-          const trimmedDestination = destination.trim();
-          return trimmedDestination ? [trimmedDestination] : [];
-        }),
+        destinations: values.destinations,
       }),
     onSuccess: async (trip) => {
       await queryClient.invalidateQueries({ queryKey: ['trips'] });
@@ -159,13 +158,14 @@ export const CreateTripDialog = ({
                     <FormItem>
                       <FormLabel className="font-black text-card-foreground">Destinations</FormLabel>
                       <FormControl>
-                        <Input
-                          className="h-12 rounded-2xl border-border/80 bg-card/80 px-4 font-semibold shadow-xs"
+                        <DestinationPicker
                           placeholder="Lisbon, Porto, Sintra"
-                          {...field}
+                          value={field.value}
+                          onChange={field.onChange}
+                          onBlur={field.onBlur}
                         />
                       </FormControl>
-                      <FormDescription>Separate multiple destinations with commas.</FormDescription>
+                      <FormDescription>Search and add each city, region, or country.</FormDescription>
                       <FormMessage />
                     </FormItem>
                   )}
