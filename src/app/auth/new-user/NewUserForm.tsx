@@ -32,6 +32,7 @@ const NewUserForm = () => {
     },
   });
   const isSubmitting = form.formState.isSubmitting;
+  const isSubmitDisabled = isSubmitting || !currentUser;
 
   const handleSubmit = async (values: z.infer<typeof newUserFormSchema>) => {
     const { name } = values;
@@ -39,7 +40,8 @@ const NewUserForm = () => {
       return;
     }
     try {
-      await updateUser(currentUser.id, { name }).then(() => router.push('/trips'));
+      await updateUser(currentUser.id, { name });
+      router.push('/trips');
     } catch (error) {
       form.setError('name', { message: error instanceof Error ? error.message : 'Could not update your profile.' });
     }
@@ -48,10 +50,9 @@ const NewUserForm = () => {
   const handleNewUserSubmit = form.handleSubmit(handleSubmit);
 
   return (
-    <>
-      <h3>Please Enter your name</h3>
+    <div className="mt-8">
       <Form {...form}>
-        <form onSubmit={handleNewUserSubmit} className="space-y-6">
+        <form onSubmit={handleNewUserSubmit} className="space-y-5">
           <FormField
             control={form.control}
             name="name"
@@ -59,18 +60,23 @@ const NewUserForm = () => {
               <FormItem>
                 <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Jon doe" {...field} />
+                  <Input
+                    autoComplete="name"
+                    placeholder="Jane Doe"
+                    className="h-12 rounded-full bg-background px-5 font-semibold"
+                    {...field}
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          <Button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Saving...' : 'Submit'}
+          <Button type="submit" variant="gradient" size="pill" className="min-h-14 w-full" disabled={isSubmitDisabled}>
+            {isSubmitting ? 'Saving...' : 'Start planning'}
           </Button>
         </form>
       </Form>
-    </>
+    </div>
   );
 };
 
