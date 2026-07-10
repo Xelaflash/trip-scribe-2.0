@@ -353,7 +353,7 @@ export const TripItinerarySection = ({
             key={item.id}
             className="grid gap-4 rounded-3xl border border-border/80 bg-background/70 p-4 shadow-xs sm:grid-cols-[4.75rem_1fr_auto] sm:items-center"
           >
-            <span className="grid size-16 place-items-center whitespace-pre-line rounded-3xl bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] text-center text-xs leading-tight font-black text-white shadow-[0_14px_30px_var(--button-primary-shadow)]">
+            <span className="grid size-14 place-items-center whitespace-pre-line rounded-2xl bg-[linear-gradient(135deg,var(--button-primary-gradient-from),var(--button-primary-gradient-to))] text-center text-xs leading-tight font-black text-white shadow-[0_14px_30px_var(--button-primary-shadow)]">
               {formatDateBadge(item.startsAt)}
             </span>
             <div className="min-w-0">
