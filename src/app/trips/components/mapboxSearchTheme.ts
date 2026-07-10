@@ -52,6 +52,7 @@ export const MAPBOX_SEARCH_THEME = {
       text-overflow: ellipsis;
       white-space: nowrap;
       width: 100%;
+      font-weight: 600;
     }
 
     @media (min-width: 48rem) {
@@ -63,6 +64,7 @@ export const MAPBOX_SEARCH_THEME = {
     .Input::placeholder {
       color: hsl(var(--muted-foreground));
       opacity: 1;
+
     }
 
     .Input:focus {

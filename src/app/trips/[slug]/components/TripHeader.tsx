@@ -45,7 +45,7 @@ export const TripHeader = ({ trip, isDeletingTrip, onDeleteTrip }: TripHeaderPro
           {trip.title}
         </h1>
         <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-base font-semibold text-muted-foreground md:text-lg">
-          <span>{trip.destinations.join(', ')}</span>
+          <span>{trip.destinations.join(' - ')}</span>
           <span aria-hidden="true">·</span>
           <span className="inline-flex items-center gap-2">
             <CalendarDays className="size-5 text-primary" aria-hidden="true" />

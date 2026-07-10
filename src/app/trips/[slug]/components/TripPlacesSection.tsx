@@ -100,6 +100,7 @@ const PlaceFormFields = ({ form }: { form: PlaceForm }) => {
             <FormLabel>Address</FormLabel>
             <FormControl>
               <PlaceSearchField
+                mode="place"
                 value={field.value ?? ''}
                 placeholder="Full address or place address"
                 onBlur={field.onBlur}

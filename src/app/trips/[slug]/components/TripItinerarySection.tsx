@@ -13,6 +13,7 @@ import { Input } from '@/components/ui/input';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Textarea } from '@/components/ui/textarea';
 import { DeleteTripDetailItemAlertDialog } from '@/app/trips/[slug]/components/DeleteTripDetailItemAlertDialog';
+import { PlaceSearchField } from '@/app/trips/[slug]/components/PlaceSearchField';
 import { TripDialogHeader } from '@/app/trips/[slug]/components/TripDialogHeader';
 import {
   itinerarySchema,
@@ -215,10 +216,13 @@ const ItineraryFormFields = ({ form, placeholders }: ItineraryFormFieldsProps) =
           <FormItem>
             <FormLabel>Location</FormLabel>
             <FormControl>
-              <Input
-                className="h-12 rounded-2xl border-border/80 bg-card/80 px-4 font-semibold shadow-xs"
+              <PlaceSearchField
+                mode="area"
+                value={field.value ?? ''}
                 placeholder={placeholders.itineraryLocation}
-                {...field}
+                onBlur={field.onBlur}
+                onManualChange={field.onChange}
+                onSelect={(place) => field.onChange(place.label)}
               />
             </FormControl>
             <FormMessage />
