@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Clock, Edit3, Plus, Route } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
@@ -320,16 +321,25 @@ export const TripItinerarySection = ({
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(async (values) => {
-                  await createItineraryItem(trip.slug, {
-                    ...values,
-                    startsAt: dateTimePayloadValue(values.startsAt),
-                    endsAt: dateTimePayloadValue(values.endsAt),
-                    sortOrder: trip.itineraryItems.length,
-                  });
-                  form.reset();
-                  setIsCreateDialogOpen(false);
-                  onPlaceholderChange();
-                  onRefresh();
+                  try {
+                    await createItineraryItem(trip.slug, {
+                      ...values,
+                      startsAt: dateTimePayloadValue(values.startsAt),
+                      endsAt: dateTimePayloadValue(values.endsAt),
+                      sortOrder: trip.itineraryItems.length,
+                    });
+                    toast.success('Itinerary item added', {
+                      description: `${values.title} is now on the trip timeline.`,
+                    });
+                    form.reset();
+                    setIsCreateDialogOpen(false);
+                    onPlaceholderChange();
+                    onRefresh();
+                  } catch {
+                    toast.error('Could not add itinerary item', {
+                      description: 'Check the details and try adding it again.',
+                    });
+                  }
                 })}
               >
                 <div className="p-6">
@@ -394,8 +404,17 @@ export const TripItinerarySection = ({
                 confirmLabel="Delete stop"
                 decorationVariant="itinerary"
                 onDelete={async () => {
-                  await deleteItineraryItem(trip.slug, item.id);
-                  onRefresh();
+                  try {
+                    await deleteItineraryItem(trip.slug, item.id);
+                    toast.success('Itinerary item removed', {
+                      description: `${item.title} was removed from the timeline.`,
+                    });
+                    onRefresh();
+                  } catch {
+                    toast.error('Could not remove itinerary item', {
+                      description: 'The timeline was not changed. Try again in a moment.',
+                    });
+                  }
                 }}
               />
             </div>
@@ -419,13 +438,22 @@ export const TripItinerarySection = ({
                   return;
                 }
 
-                await updateItineraryItem(trip.slug, editingItem.id, {
-                  ...values,
-                  startsAt: dateTimePayloadValue(values.startsAt),
-                  endsAt: dateTimePayloadValue(values.endsAt),
-                });
-                setEditingItemId(null);
-                onRefresh();
+                try {
+                  await updateItineraryItem(trip.slug, editingItem.id, {
+                    ...values,
+                    startsAt: dateTimePayloadValue(values.startsAt),
+                    endsAt: dateTimePayloadValue(values.endsAt),
+                  });
+                  toast.success('Itinerary item updated', {
+                    description: `${values.title} was saved.`,
+                  });
+                  setEditingItemId(null);
+                  onRefresh();
+                } catch {
+                  toast.error('Could not update itinerary item', {
+                    description: 'Your changes were not saved. Try again in a moment.',
+                  });
+                }
               })}
             >
               <div className="p-6">

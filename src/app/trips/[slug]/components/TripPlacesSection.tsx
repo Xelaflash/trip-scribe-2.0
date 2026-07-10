@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Edit3, ExternalLink, MapPin, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -202,10 +203,19 @@ export const TripPlacesSection = ({
   };
 
   const handleCreatePlaceSubmit = form.handleSubmit(async (values) => {
-    await createPlace(trip.slug, placePayload(values) as PlaceCreateInput);
-    form.reset();
-    setIsCreateDialogOpen(false);
-    onRefresh();
+    try {
+      await createPlace(trip.slug, placePayload(values) as PlaceCreateInput);
+      toast.success('Place added', {
+        description: `${values.name} was saved to this trip.`,
+      });
+      form.reset();
+      setIsCreateDialogOpen(false);
+      onRefresh();
+    } catch {
+      toast.error('Could not add place', {
+        description: 'Check the details and try adding it again.',
+      });
+    }
   });
 
   const handleEditPlaceSubmit = editForm.handleSubmit(async (values) => {
@@ -213,9 +223,18 @@ export const TripPlacesSection = ({
       return;
     }
 
-    await updatePlace(trip.slug, editingPlace.id, placePayload(values) as PlaceUpdateInput);
-    setEditingPlaceId(null);
-    onRefresh();
+    try {
+      await updatePlace(trip.slug, editingPlace.id, placePayload(values) as PlaceUpdateInput);
+      toast.success('Place updated', {
+        description: `${values.name} was saved.`,
+      });
+      setEditingPlaceId(null);
+      onRefresh();
+    } catch {
+      toast.error('Could not update place', {
+        description: 'Your changes were not saved. Try again in a moment.',
+      });
+    }
   });
 
   return (
@@ -257,18 +276,6 @@ export const TripPlacesSection = ({
       </div>
 
       <TripPlacesMap places={trip.places} className="mt-6 min-h-72" />
-      <p className="mt-3 text-xs font-semibold text-muted-foreground">
-        Place search and geocoding by{' '}
-        <a
-          href="https://www.mapbox.com/search-service"
-          target="_blank"
-          rel="noreferrer"
-          className="font-black text-primary no-underline hover:text-secondary"
-        >
-          Mapbox
-        </a>
-        .
-      </p>
 
       <div className="mt-6 grid gap-4">
         {trip.places.length === 0 ? (
@@ -327,8 +334,17 @@ export const TripPlacesSection = ({
                     confirmLabel="Delete place"
                     decorationVariant="place"
                     onDelete={async () => {
-                      await deletePlace(trip.slug, place.id);
-                      onRefresh();
+                      try {
+                        await deletePlace(trip.slug, place.id);
+                        toast.success('Place deleted', {
+                          description: `${place.name} was removed from this trip.`,
+                        });
+                        onRefresh();
+                      } catch {
+                        toast.error('Could not delete place', {
+                          description: 'The place was not changed. Try again in a moment.',
+                        });
+                      }
                     }}
                   />
                 </div>

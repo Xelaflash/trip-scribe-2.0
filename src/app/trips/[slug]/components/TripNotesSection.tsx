@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { Edit3, NotebookPen, Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogFooter, DialogTrigger } from '@/components/ui/dialog';
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
@@ -93,11 +94,20 @@ export const TripNotesSection = ({
   };
 
   const handleCreateNoteSubmit = form.handleSubmit(async (values) => {
-    await createNote(trip.slug, values);
-    form.reset();
-    setIsCreateDialogOpen(false);
-    onPlaceholderChange();
-    onRefresh();
+    try {
+      await createNote(trip.slug, values);
+      toast.success('Note added', {
+        description: `${values.title} was saved to this trip.`,
+      });
+      form.reset();
+      setIsCreateDialogOpen(false);
+      onPlaceholderChange();
+      onRefresh();
+    } catch {
+      toast.error('Could not add note', {
+        description: 'Check the details and try adding it again.',
+      });
+    }
   });
 
   const handleEditNoteSubmit = editForm.handleSubmit(async (values) => {
@@ -105,9 +115,18 @@ export const TripNotesSection = ({
       return;
     }
 
-    await updateNote(trip.slug, editingNote.id, values);
-    setEditingNoteId(null);
-    onRefresh();
+    try {
+      await updateNote(trip.slug, editingNote.id, values);
+      toast.success('Note updated', {
+        description: `${values.title} was saved.`,
+      });
+      setEditingNoteId(null);
+      onRefresh();
+    } catch {
+      toast.error('Could not update note', {
+        description: 'Your changes were not saved. Try again in a moment.',
+      });
+    }
   });
 
   return (
@@ -183,8 +202,17 @@ export const TripNotesSection = ({
                   confirmLabel="Delete note"
                   decorationVariant="note"
                   onDelete={async () => {
-                    await deleteNote(trip.slug, note.id);
-                    onRefresh();
+                    try {
+                      await deleteNote(trip.slug, note.id);
+                      toast.success('Note deleted', {
+                        description: `${note.title} was removed from this trip.`,
+                      });
+                      onRefresh();
+                    } catch {
+                      toast.error('Could not delete note', {
+                        description: 'The note was not changed. Try again in a moment.',
+                      });
+                    }
                   }}
                 />
               </div>
